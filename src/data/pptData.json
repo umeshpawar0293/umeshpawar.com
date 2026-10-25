@@ -1,0 +1,618 @@
+[
+  {
+    "slideNumber": 1,
+    "baseImage": "/projects/07%20Amazon%20Prime%20-%20Gold%20Digger/Slide%2001.webp",
+    "backgroundColor": "#0d0d12",
+    "backgroundImage": "/projects/07%20Amazon%20Prime%20-%20Gold%20Digger/media/image1.webp",
+    "elements": [
+      {
+        "id": "elem-1",
+        "type": "gif",
+        "src": "/projects/07%20Amazon%20Prime%20-%20Gold%20Digger/media/image2.gif",
+        "filename": "image2.gif",
+        "x": 52.767,
+        "y": 55.293,
+        "w": 12.036,
+        "h": 21.397,
+        "zIndex": 15,
+        "objectFit": "contain"
+      }
+    ]
+  },
+  {
+    "slideNumber": 2,
+    "baseImage": "/projects/07%20Amazon%20Prime%20-%20Gold%20Digger/Slide%2002.webp",
+    "backgroundColor": "#0d0d12",
+    "backgroundImage": null,
+    "elements": [
+      {
+        "id": "elem-1",
+        "type": "gif",
+        "src": "/projects/07%20Amazon%20Prime%20-%20Gold%20Digger/media/image4.gif",
+        "filename": "image4.gif",
+        "x": 52.579,
+        "y": 13.574,
+        "w": 41.667,
+        "h": 55.556,
+        "zIndex": 15,
+        "objectFit": "contain"
+      }
+    ]
+  },
+  {
+    "slideNumber": 3,
+    "baseImage": "/projects/07%20Amazon%20Prime%20-%20Gold%20Digger/Slide%2003.webp",
+    "backgroundColor": "#0d0d12",
+    "backgroundImage": "/projects/07%20Amazon%20Prime%20-%20Gold%20Digger/media/image5.webp",
+    "elements": []
+  },
+  {
+    "slideNumber": 4,
+    "baseImage": "/projects/07%20Amazon%20Prime%20-%20Gold%20Digger/Slide%2004.webp",
+    "backgroundColor": "#0d0d12",
+    "backgroundImage": "/projects/07%20Amazon%20Prime%20-%20Gold%20Digger/media/image6.webp",
+    "elements": [
+      {
+        "id": "elem-1",
+        "type": "gif",
+        "src": "/projects/07%20Amazon%20Prime%20-%20Gold%20Digger/media/image7.gif",
+        "filename": "image7.gif",
+        "x": 45.56,
+        "y": 14.74,
+        "w": 10.277,
+        "h": 18.27,
+        "zIndex": 15,
+        "objectFit": "contain"
+      },
+      {
+        "id": "elem-2",
+        "type": "gif",
+        "src": "/projects/07%20Amazon%20Prime%20-%20Gold%20Digger/media/image7.gif",
+        "filename": "image7.gif",
+        "x": 45.223,
+        "y": 45.901,
+        "w": 10.277,
+        "h": 18.27,
+        "zIndex": 15,
+        "objectFit": "contain"
+      }
+    ]
+  },
+  {
+    "slideNumber": 5,
+    "baseImage": "/projects/07%20Amazon%20Prime%20-%20Gold%20Digger/Slide%2005.webp",
+    "backgroundColor": "#0d0d12",
+    "backgroundImage": "/projects/07%20Amazon%20Prime%20-%20Gold%20Digger/media/image8.webp",
+    "elements": []
+  },
+  {
+    "slideNumber": 6,
+    "baseImage": "/projects/07%20Amazon%20Prime%20-%20Gold%20Digger/Slide%2006.webp",
+    "backgroundColor": "#1B9AFF",
+    "backgroundImage": null,
+    "elements": []
+  },
+  {
+    "slideNumber": 7,
+    "baseImage": "/projects/07%20Amazon%20Prime%20-%20Gold%20Digger/Slide%2007.webp",
+    "backgroundColor": "#0d0d12",
+    "backgroundImage": "/projects/07%20Amazon%20Prime%20-%20Gold%20Digger/media/image9.webp",
+    "elements": [
+      {
+        "id": "elem-1",
+        "type": "gif",
+        "src": "/projects/07%20Amazon%20Prime%20-%20Gold%20Digger/media/image10.gif",
+        "filename": "image10.gif",
+        "x": 4.375,
+        "y": 55.73,
+        "w": 25.716,
+        "h": 45.718,
+        "zIndex": 15,
+        "objectFit": "contain"
+      }
+    ]
+  },
+  {
+    "slideNumber": 8,
+    "baseImage": "/projects/07%20Amazon%20Prime%20-%20Gold%20Digger/Slide%2008.webp",
+    "backgroundColor": "#0d0d12",
+    "backgroundImage": "/projects/07%20Amazon%20Prime%20-%20Gold%20Digger/media/image11.webp",
+    "elements": []
+  },
+  {
+    "slideNumber": 9,
+    "baseImage": "/projects/07%20Amazon%20Prime%20-%20Gold%20Digger/Slide%2009.webp",
+    "backgroundColor": "#1B9AFF",
+    "backgroundImage": null,
+    "elements": []
+  },
+  {
+    "slideNumber": 10,
+    "baseImage": "/projects/07%20Amazon%20Prime%20-%20Gold%20Digger/Slide%2010.webp",
+    "backgroundColor": "#1B9AFF",
+    "backgroundImage": "/projects/07%20Amazon%20Prime%20-%20Gold%20Digger/media/image12.webp",
+    "elements": [
+      {
+        "id": "elem-1",
+        "type": "gif",
+        "src": "/projects/07%20Amazon%20Prime%20-%20Gold%20Digger/media/image13.gif",
+        "filename": "image13.gif",
+        "x": 46.292,
+        "y": 82.63,
+        "w": 48.125,
+        "h": 14.259,
+        "zIndex": 15,
+        "objectFit": "contain"
+      }
+    ]
+  },
+  {
+    "slideNumber": 11,
+    "baseImage": "/projects/07%20Amazon%20Prime%20-%20Gold%20Digger/Slide%2011.webp",
+    "backgroundColor": "#1B9AFF",
+    "backgroundImage": null,
+    "elements": []
+  },
+  {
+    "slideNumber": 12,
+    "baseImage": "/projects/07%20Amazon%20Prime%20-%20Gold%20Digger/Slide%2012.webp",
+    "backgroundColor": "#0d0d12",
+    "backgroundImage": "/projects/07%20Amazon%20Prime%20-%20Gold%20Digger/media/image14.webp",
+    "elements": []
+  },
+  {
+    "slideNumber": 13,
+    "baseImage": "/projects/07%20Amazon%20Prime%20-%20Gold%20Digger/Slide%2013.webp",
+    "backgroundColor": "#0d0d12",
+    "backgroundImage": "/projects/07%20Amazon%20Prime%20-%20Gold%20Digger/media/image15.png",
+    "elements": []
+  },
+  {
+    "slideNumber": 14,
+    "baseImage": "/projects/07%20Amazon%20Prime%20-%20Gold%20Digger/Slide%2014.webp",
+    "backgroundColor": "#0d0d12",
+    "backgroundImage": "/projects/07%20Amazon%20Prime%20-%20Gold%20Digger/media/image17.webp",
+    "elements": []
+  },
+  {
+    "slideNumber": 15,
+    "baseImage": "/projects/07%20Amazon%20Prime%20-%20Gold%20Digger/Slide%2015.webp",
+    "backgroundColor": "#0d0d12",
+    "backgroundImage": "/projects/07%20Amazon%20Prime%20-%20Gold%20Digger/media/image18.webp",
+    "elements": []
+  },
+  {
+    "slideNumber": 16,
+    "baseImage": "/projects/07%20Amazon%20Prime%20-%20Gold%20Digger/Slide%2016.webp",
+    "backgroundColor": "#1B9AFF",
+    "backgroundImage": null,
+    "elements": []
+  },
+  {
+    "slideNumber": 17,
+    "baseImage": "/projects/07%20Amazon%20Prime%20-%20Gold%20Digger/Slide%2017.webp",
+    "backgroundColor": "#0d0d12",
+    "backgroundImage": "/projects/07%20Amazon%20Prime%20-%20Gold%20Digger/media/image19.webp",
+    "elements": [
+      {
+        "id": "elem-1",
+        "type": "gif",
+        "src": "/projects/07%20Amazon%20Prime%20-%20Gold%20Digger/media/image20.gif",
+        "filename": "image20.gif",
+        "x": 45.942,
+        "y": 55.556,
+        "w": 12.5,
+        "h": 44.444,
+        "zIndex": 15,
+        "objectFit": "contain"
+      }
+    ]
+  },
+  {
+    "slideNumber": 18,
+    "baseImage": "/projects/07%20Amazon%20Prime%20-%20Gold%20Digger/Slide%2018.webp",
+    "backgroundColor": "#0d0d12",
+    "backgroundImage": "/projects/07%20Amazon%20Prime%20-%20Gold%20Digger/media/image21.webp",
+    "elements": []
+  },
+  {
+    "slideNumber": 19,
+    "baseImage": "/projects/07%20Amazon%20Prime%20-%20Gold%20Digger/Slide%2019.webp",
+    "backgroundColor": "#1B9AFF",
+    "backgroundImage": null,
+    "elements": []
+  },
+  {
+    "slideNumber": 20,
+    "baseImage": "/projects/07%20Amazon%20Prime%20-%20Gold%20Digger/Slide%2020.webp",
+    "backgroundColor": "#0d0d12",
+    "backgroundImage": null,
+    "elements": [
+      {
+        "id": "elem-1",
+        "type": "gif",
+        "src": "/projects/07%20Amazon%20Prime%20-%20Gold%20Digger/media/image26.gif",
+        "filename": "image26.gif",
+        "x": 6.0,
+        "y": 14.831,
+        "w": 22.482,
+        "h": 71.232,
+        "zIndex": 15,
+        "objectFit": "contain"
+      },
+      {
+        "id": "elem-2",
+        "type": "image",
+        "src": "/projects/07%20Amazon%20Prime%20-%20Gold%20Digger/media/image27.png",
+        "filename": "image27.png",
+        "x": 5.972,
+        "y": 8.298,
+        "w": 22.51,
+        "h": 86.632,
+        "zIndex": 20,
+        "objectFit": "contain"
+      }
+    ]
+  },
+  {
+    "slideNumber": 21,
+    "baseImage": "/projects/07%20Amazon%20Prime%20-%20Gold%20Digger/Slide%2021.webp",
+    "backgroundColor": "#0d0d12",
+    "backgroundImage": null,
+    "elements": []
+  },
+  {
+    "slideNumber": 22,
+    "baseImage": "/projects/07%20Amazon%20Prime%20-%20Gold%20Digger/Slide%2022.webp",
+    "backgroundColor": "#0d0d12",
+    "backgroundImage": null,
+    "elements": []
+  },
+  {
+    "slideNumber": 23,
+    "baseImage": "/projects/07%20Amazon%20Prime%20-%20Gold%20Digger/Slide%2023.webp",
+    "backgroundColor": "#0d0d12",
+    "backgroundImage": null,
+    "elements": []
+  },
+  {
+    "slideNumber": 24,
+    "baseImage": "/projects/07%20Amazon%20Prime%20-%20Gold%20Digger/Slide%2024.webp",
+    "backgroundColor": "#1B9AFF",
+    "backgroundImage": null,
+    "elements": []
+  },
+  {
+    "slideNumber": 25,
+    "baseImage": "/projects/07%20Amazon%20Prime%20-%20Gold%20Digger/Slide%2025.webp",
+    "backgroundColor": "#1B9AFF",
+    "backgroundImage": null,
+    "elements": []
+  },
+  {
+    "slideNumber": 26,
+    "baseImage": "/projects/07%20Amazon%20Prime%20-%20Gold%20Digger/Slide%2026.webp",
+    "backgroundColor": "#1B9AFF",
+    "backgroundImage": null,
+    "elements": []
+  },
+  {
+    "slideNumber": 27,
+    "baseImage": "/projects/07%20Amazon%20Prime%20-%20Gold%20Digger/Slide%2027.webp",
+    "backgroundColor": "#E2E2E2",
+    "backgroundImage": null,
+    "elements": []
+  },
+  {
+    "slideNumber": 28,
+    "baseImage": "/projects/07%20Amazon%20Prime%20-%20Gold%20Digger/Slide%2028.webp",
+    "backgroundColor": "#1B9AFF",
+    "backgroundImage": null,
+    "elements": []
+  },
+  {
+    "slideNumber": 29,
+    "baseImage": "/projects/07%20Amazon%20Prime%20-%20Gold%20Digger/Slide%2029.webp",
+    "backgroundColor": "#E2E2E2",
+    "backgroundImage": null,
+    "elements": []
+  },
+  {
+    "slideNumber": 30,
+    "baseImage": "/projects/07%20Amazon%20Prime%20-%20Gold%20Digger/Slide%2030.webp",
+    "backgroundColor": "#1B9AFF",
+    "backgroundImage": null,
+    "elements": []
+  },
+  {
+    "slideNumber": 31,
+    "baseImage": "/projects/07%20Amazon%20Prime%20-%20Gold%20Digger/Slide%2031.webp",
+    "backgroundColor": "#E2E2E2",
+    "backgroundImage": null,
+    "elements": []
+  },
+  {
+    "slideNumber": 32,
+    "baseImage": "/projects/07%20Amazon%20Prime%20-%20Gold%20Digger/Slide%2032.webp",
+    "backgroundColor": "#1B9AFF",
+    "backgroundImage": null,
+    "elements": []
+  },
+  {
+    "slideNumber": 33,
+    "baseImage": "/projects/07%20Amazon%20Prime%20-%20Gold%20Digger/Slide%2033.webp",
+    "backgroundColor": "#E2E2E2",
+    "backgroundImage": null,
+    "elements": []
+  },
+  {
+    "slideNumber": 34,
+    "baseImage": "/projects/07%20Amazon%20Prime%20-%20Gold%20Digger/Slide%2034.webp",
+    "backgroundColor": "#1B9AFF",
+    "backgroundImage": null,
+    "elements": []
+  },
+  {
+    "slideNumber": 35,
+    "baseImage": "/projects/07%20Amazon%20Prime%20-%20Gold%20Digger/Slide%2035.webp",
+    "backgroundColor": "#0d0d12",
+    "backgroundImage": null,
+    "elements": []
+  },
+  {
+    "slideNumber": 36,
+    "baseImage": "/projects/07%20Amazon%20Prime%20-%20Gold%20Digger/Slide%2036.webp",
+    "backgroundColor": "#1B9AFF",
+    "backgroundImage": null,
+    "elements": []
+  },
+  {
+    "slideNumber": 37,
+    "baseImage": "/projects/07%20Amazon%20Prime%20-%20Gold%20Digger/Slide%2037.webp",
+    "backgroundColor": "#1B9AFF",
+    "backgroundImage": null,
+    "elements": []
+  },
+  {
+    "slideNumber": 38,
+    "baseImage": "/projects/07%20Amazon%20Prime%20-%20Gold%20Digger/Slide%2038.webp",
+    "backgroundColor": "#E2E2E2",
+    "backgroundImage": null,
+    "elements": []
+  },
+  {
+    "slideNumber": 39,
+    "baseImage": "/projects/07%20Amazon%20Prime%20-%20Gold%20Digger/Slide%2039.webp",
+    "backgroundColor": "#E2E2E2",
+    "backgroundImage": null,
+    "elements": []
+  },
+  {
+    "slideNumber": 40,
+    "baseImage": "/projects/07%20Amazon%20Prime%20-%20Gold%20Digger/Slide%2040.webp",
+    "backgroundColor": "#1B9AFF",
+    "backgroundImage": null,
+    "elements": []
+  },
+  {
+    "slideNumber": 41,
+    "baseImage": "/projects/07%20Amazon%20Prime%20-%20Gold%20Digger/Slide%2041.webp",
+    "backgroundColor": "#E2E2E2",
+    "backgroundImage": null,
+    "elements": []
+  },
+  {
+    "slideNumber": 42,
+    "baseImage": "/projects/07%20Amazon%20Prime%20-%20Gold%20Digger/Slide%2042.webp",
+    "backgroundColor": "#E2E2E2",
+    "backgroundImage": null,
+    "elements": []
+  },
+  {
+    "slideNumber": 43,
+    "baseImage": "/projects/07%20Amazon%20Prime%20-%20Gold%20Digger/Slide%2043.webp",
+    "backgroundColor": "#E2E2E2",
+    "backgroundImage": null,
+    "elements": []
+  },
+  {
+    "slideNumber": 44,
+    "baseImage": "/projects/07%20Amazon%20Prime%20-%20Gold%20Digger/Slide%2044.webp",
+    "backgroundColor": "#E2E2E2",
+    "backgroundImage": null,
+    "elements": []
+  },
+  {
+    "slideNumber": 45,
+    "baseImage": "/projects/07%20Amazon%20Prime%20-%20Gold%20Digger/Slide%2045.webp",
+    "backgroundColor": "#1B9AFF",
+    "backgroundImage": null,
+    "elements": []
+  },
+  {
+    "slideNumber": 46,
+    "baseImage": "/projects/07%20Amazon%20Prime%20-%20Gold%20Digger/Slide%2046.webp",
+    "backgroundColor": "#E2E2E2",
+    "backgroundImage": null,
+    "elements": []
+  },
+  {
+    "slideNumber": 47,
+    "baseImage": "/projects/07%20Amazon%20Prime%20-%20Gold%20Digger/Slide%2047.webp",
+    "backgroundColor": "#0d0d12",
+    "backgroundImage": null,
+    "elements": []
+  },
+  {
+    "slideNumber": 48,
+    "baseImage": "/projects/07%20Amazon%20Prime%20-%20Gold%20Digger/Slide%2048.webp",
+    "backgroundColor": "#0d0d12",
+    "backgroundImage": null,
+    "elements": []
+  },
+  {
+    "slideNumber": 49,
+    "baseImage": "/projects/07%20Amazon%20Prime%20-%20Gold%20Digger/Slide%2049.webp",
+    "backgroundColor": "#0d0d12",
+    "backgroundImage": null,
+    "elements": []
+  },
+  {
+    "slideNumber": 50,
+    "baseImage": "/projects/07%20Amazon%20Prime%20-%20Gold%20Digger/Slide%2050.webp",
+    "backgroundColor": "#0d0d12",
+    "backgroundImage": null,
+    "elements": [
+      {
+        "id": "elem-1",
+        "type": "gif",
+        "src": "/projects/07%20Amazon%20Prime%20-%20Gold%20Digger/media/image82.gif",
+        "filename": "image82.gif",
+        "x": 6.0,
+        "y": 14.831,
+        "w": 22.482,
+        "h": 71.232,
+        "zIndex": 15,
+        "objectFit": "contain"
+      },
+      {
+        "id": "elem-2",
+        "type": "image",
+        "src": "/projects/07%20Amazon%20Prime%20-%20Gold%20Digger/media/image27.png",
+        "filename": "image27.png",
+        "x": 5.972,
+        "y": 8.298,
+        "w": 22.51,
+        "h": 86.632,
+        "zIndex": 20,
+        "objectFit": "contain"
+      }
+    ]
+  },
+  {
+    "slideNumber": 51,
+    "baseImage": "/projects/07%20Amazon%20Prime%20-%20Gold%20Digger/Slide%2051.webp",
+    "backgroundColor": "#1B9AFF",
+    "backgroundImage": null,
+    "elements": []
+  },
+  {
+    "slideNumber": 52,
+    "baseImage": "/projects/07%20Amazon%20Prime%20-%20Gold%20Digger/Slide%2052.webp",
+    "backgroundColor": "#E2E2E2",
+    "backgroundImage": null,
+    "elements": []
+  },
+  {
+    "slideNumber": 53,
+    "baseImage": "/projects/07%20Amazon%20Prime%20-%20Gold%20Digger/Slide%2053.webp",
+    "backgroundColor": "#E2E2E2",
+    "backgroundImage": null,
+    "elements": []
+  },
+  {
+    "slideNumber": 54,
+    "baseImage": "/projects/07%20Amazon%20Prime%20-%20Gold%20Digger/Slide%2054.webp",
+    "backgroundColor": "#E2E2E2",
+    "backgroundImage": null,
+    "elements": []
+  },
+  {
+    "slideNumber": 55,
+    "baseImage": "/projects/07%20Amazon%20Prime%20-%20Gold%20Digger/Slide%2055.webp",
+    "backgroundColor": "#E2E2E2",
+    "backgroundImage": null,
+    "elements": []
+  },
+  {
+    "slideNumber": 56,
+    "baseImage": "/projects/07%20Amazon%20Prime%20-%20Gold%20Digger/Slide%2056.webp",
+    "backgroundColor": "#1B9AFF",
+    "backgroundImage": null,
+    "elements": []
+  },
+  {
+    "slideNumber": 57,
+    "baseImage": "/projects/07%20Amazon%20Prime%20-%20Gold%20Digger/Slide%2057.webp",
+    "backgroundColor": "#1B9AFF",
+    "backgroundImage": null,
+    "elements": []
+  },
+  {
+    "slideNumber": 58,
+    "baseImage": "/projects/07%20Amazon%20Prime%20-%20Gold%20Digger/Slide%2058.webp",
+    "backgroundColor": "#E2E2E2",
+    "backgroundImage": null,
+    "elements": []
+  },
+  {
+    "slideNumber": 59,
+    "baseImage": "/projects/07%20Amazon%20Prime%20-%20Gold%20Digger/Slide%2059.webp",
+    "backgroundColor": "#1B9AFF",
+    "backgroundImage": null,
+    "elements": []
+  },
+  {
+    "slideNumber": 60,
+    "baseImage": "/projects/07%20Amazon%20Prime%20-%20Gold%20Digger/Slide%2060.webp",
+    "backgroundColor": "#1B9AFF",
+    "backgroundImage": null,
+    "elements": []
+  },
+  {
+    "slideNumber": 61,
+    "baseImage": "/projects/07%20Amazon%20Prime%20-%20Gold%20Digger/Slide%2061.webp",
+    "backgroundColor": "#1B9AFF",
+    "backgroundImage": null,
+    "elements": []
+  },
+  {
+    "slideNumber": 62,
+    "baseImage": "/projects/07%20Amazon%20Prime%20-%20Gold%20Digger/Slide%2062.webp",
+    "backgroundColor": "#0d0d12",
+    "backgroundImage": "/projects/07%20Amazon%20Prime%20-%20Gold%20Digger/media/image102.png",
+    "elements": []
+  },
+  {
+    "slideNumber": 63,
+    "baseImage": "/projects/07%20Amazon%20Prime%20-%20Gold%20Digger/Slide%2063.webp",
+    "backgroundColor": "#E2E2E2",
+    "backgroundImage": null,
+    "elements": []
+  },
+  {
+    "slideNumber": 64,
+    "baseImage": "/projects/07%20Amazon%20Prime%20-%20Gold%20Digger/Slide%2064.webp",
+    "backgroundColor": "#1B9AFF",
+    "backgroundImage": null,
+    "elements": []
+  },
+  {
+    "slideNumber": 65,
+    "baseImage": "/projects/07%20Amazon%20Prime%20-%20Gold%20Digger/Slide%2065.webp",
+    "backgroundColor": "#1B9AFF",
+    "backgroundImage": null,
+    "elements": []
+  },
+  {
+    "slideNumber": 66,
+    "baseImage": "/projects/07%20Amazon%20Prime%20-%20Gold%20Digger/Slide%2066.webp",
+    "backgroundColor": "#E2E2E2",
+    "backgroundImage": null,
+    "elements": []
+  },
+  {
+    "slideNumber": 67,
+    "baseImage": "/projects/07%20Amazon%20Prime%20-%20Gold%20Digger/Slide%2067.webp",
+    "backgroundColor": "#E2E2E2",
+    "backgroundImage": null,
+    "elements": []
+  },
+  {
+    "slideNumber": 68,
+    "baseImage": "/projects/07%20Amazon%20Prime%20-%20Gold%20Digger/Slide%2068.webp",
+    "backgroundColor": "#1B9AFF",
+    "backgroundImage": null,
+    "elements": []
+  }
+]

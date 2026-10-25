@@ -1,0 +1,32 @@
+{
+  "name": "portfolio",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "concurrently -n \"vite,assets\" -c \"cyan,magenta\" \"vite\" \"node scripts/watch-and-move-assets.mjs\"",
+    "dev:vite": "vite",
+    "dev:watch-assets": "node scripts/watch-and-move-assets.mjs",
+    "build": "vite build",
+    "preview": "vite preview",
+    "optimize": "node optimize-assets.mjs",
+    "restore": "node restore-assets.mjs"
+  },
+  "dependencies": {
+    "@react-three/drei": "^10.7.9",
+    "@react-three/fiber": "^9.7.0",
+    "gsap": "^3.15.0",
+    "react": "^19.2.0",
+    "react-dom": "^19.2.0",
+    "three": "^0.186.0",
+    "troika-three-text": "^0.52.5"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-react": "^6.1.1",
+    "chokidar": "^5.0.0",
+    "concurrently": "^9.2.5",
+    "opentype.js": "^2.0.0",
+    "sharp": "^0.35.5",
+    "vite": "^8.3.0"
+  }
+}
