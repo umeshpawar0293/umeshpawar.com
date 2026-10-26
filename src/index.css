@@ -2363,6 +2363,8 @@ body.is-character-dragging * {
   overflow-y: auto;
   overflow-x: hidden;
   overscroll-behavior: contain;
+  overscroll-behavior-y: contain !important;
+  -webkit-overflow-scrolling: touch;
   box-sizing: border-box;
   padding: 4px;
   user-select: none;
@@ -5809,17 +5811,18 @@ body.is-character-dragging * {
     padding: 7px 8px !important; /* py-2 px-2 compact */
     border-radius: 6px !important;
     background: #d0ff00 !important;
-    color: #000000 !important;
+    color: #004af2 !important;
     font-family: var(--font-body) !important;
     font-weight: 700 !important;
-    font-size: 11px !important; /* text-[11px] */
+    font-size: 9.5px !important;
     text-transform: uppercase !important;
-    letter-spacing: -0.015em !important; /* tracking-tight */
+    letter-spacing: -0.025em !important; /* tracking-tight */
     text-align: center !important;
     display: flex !important;
     align-items: center !important;
     justify-content: center !important;
     gap: 4px !important;
+    white-space: nowrap !important;
     text-decoration: none !important;
     box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3) !important;
     border: none !important;
@@ -5835,17 +5838,17 @@ body.is-character-dragging * {
   .contact-mobile-action-btn:active,
   .contact-mobile-action-btn:focus {
     background: #e6ff33 !important;
-    color: #000000 !important;
+    color: #004af2 !important;
     text-decoration: none !important;
   }
 
   .contact-mobile-action-btn:visited {
-    color: #000000 !important;
+    color: #004af2 !important;
     text-decoration: none !important;
   }
 
   .contact-mobile-action-btn .arrow-btn {
-    color: #000000 !important;
+    color: #004af2 !important;
     font-size: 9.5px !important;
     display: inline-block !important;
     flex-shrink: 0 !important;
@@ -6044,6 +6047,8 @@ body.is-character-dragging * {
     max-height: 100% !important;
     grid-template-rows: repeat(3, calc(var(--work-card-w) * 4.3 / 4)) !important;
     grid-auto-rows: calc(var(--work-card-w) * 4.3 / 4) !important;
+    overscroll-behavior-y: contain !important;
+    -webkit-overflow-scrolling: touch;
   }
 }
 

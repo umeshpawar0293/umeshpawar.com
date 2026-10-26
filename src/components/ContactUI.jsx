@@ -611,8 +611,8 @@ export default function ContactUI({
               >
                 <a
                   href="mailto:umeshpawar93@gmail.com?subject=Project%20Inquiry"
-                  className="contact-mobile-action-btn btn-collab-primary has-transform-box w-full max-w-full box-border overflow-hidden py-2 px-2.5 rounded-md bg-[#d0ff00] text-black font-bold text-[11px] uppercase tracking-tight text-center flex items-center justify-center no-underline shadow-sm cursor-pointer select-none leading-tight"
-                  style={{ color: '#000000', textDecoration: 'none', background: '#d0ff00', pointerEvents: 'auto', position: 'relative', zIndex: 999, touchAction: 'manipulation' }}
+                  className="contact-mobile-action-btn btn-collab-primary has-transform-box w-full max-w-full box-border overflow-hidden py-2 px-2 rounded-md bg-[#d0ff00] text-[#004af2] font-bold text-[9.5px] uppercase tracking-tight text-center flex items-center justify-center whitespace-nowrap no-underline shadow-sm cursor-pointer select-none leading-tight"
+                  style={{ color: '#004af2', textDecoration: 'none', background: '#d0ff00', pointerEvents: 'auto', position: 'relative', zIndex: 999, touchAction: 'manipulation' }}
                   onClick={(e) => {
                     e.stopPropagation()
                     window.location.href = 'mailto:umeshpawar93@gmail.com?subject=Project%20Inquiry'
@@ -621,7 +621,9 @@ export default function ContactUI({
                     e.stopPropagation()
                   }}
                 >
-                  <span className="truncate min-w-0 flex-1 text-center">START A CONVERSATION</span> <span className="arrow-btn text-[10px] ml-1 flex-shrink-0" aria-hidden="true">→</span>
+                  <span className="whitespace-nowrap flex items-center justify-center gap-1">
+                    START A CONVERSATION <span className="arrow-btn text-[9.5px] flex-shrink-0" style={{ color: '#004af2' }} aria-hidden="true">→</span>
+                  </span>
                   <TransformBoundingBox />
                 </a>
 
@@ -629,8 +631,8 @@ export default function ContactUI({
                   href="https://wa.me/919664359422"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="contact-mobile-action-btn btn-collab-secondary has-transform-box w-full max-w-full box-border overflow-hidden py-2 px-2.5 rounded-md bg-[#d0ff00] text-black font-bold text-[11px] uppercase tracking-tight text-center flex items-center justify-center no-underline shadow-sm cursor-pointer select-none leading-tight"
-                  style={{ color: '#000000', textDecoration: 'none', background: '#d0ff00', pointerEvents: 'auto', position: 'relative', zIndex: 999, touchAction: 'manipulation' }}
+                  className="contact-mobile-action-btn btn-collab-secondary has-transform-box w-full max-w-full box-border overflow-hidden py-2 px-2 rounded-md bg-[#d0ff00] text-[#004af2] font-bold text-[9.5px] uppercase tracking-tight text-center flex items-center justify-center whitespace-nowrap no-underline shadow-sm cursor-pointer select-none leading-tight"
+                  style={{ color: '#004af2', textDecoration: 'none', background: '#d0ff00', pointerEvents: 'auto', position: 'relative', zIndex: 999, touchAction: 'manipulation' }}
                   onClick={(e) => {
                     e.stopPropagation()
                     window.open('https://wa.me/919664359422', '_blank')
@@ -639,7 +641,7 @@ export default function ContactUI({
                     e.stopPropagation()
                   }}
                 >
-                  <span className="truncate min-w-0 flex-1 text-center">CHAT ON WHATSAPP</span>
+                  <span className="whitespace-nowrap flex items-center justify-center">CHAT ON WHATSAPP</span>
                   <TransformBoundingBox />
                 </a>
 
@@ -648,8 +650,8 @@ export default function ContactUI({
                   download="Umesh_Pawar_CV.pdf"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="contact-mobile-action-btn btn-collab-cv has-transform-box w-full max-w-full box-border overflow-hidden py-2 px-2.5 rounded-md bg-[#d0ff00] text-black font-bold text-[11px] uppercase tracking-tight text-center flex items-center justify-center no-underline shadow-sm cursor-pointer select-none leading-tight"
-                  style={{ color: '#000000', textDecoration: 'none', background: '#d0ff00', pointerEvents: 'auto', position: 'relative', zIndex: 999, touchAction: 'manipulation' }}
+                  className="contact-mobile-action-btn btn-collab-cv has-transform-box w-full max-w-full box-border overflow-hidden py-2 px-2 rounded-md bg-[#d0ff00] text-[#004af2] font-bold text-[9.5px] uppercase tracking-tight text-center flex items-center justify-center whitespace-nowrap no-underline shadow-sm cursor-pointer select-none leading-tight"
+                  style={{ color: '#004af2', textDecoration: 'none', background: '#d0ff00', pointerEvents: 'auto', position: 'relative', zIndex: 999, touchAction: 'manipulation' }}
                   aria-label="Download CV: Umesh_Pawar_CV.pdf"
                   onClick={(e) => {
                     e.stopPropagation()
@@ -658,7 +660,9 @@ export default function ContactUI({
                     e.stopPropagation()
                   }}
                 >
-                  <span className="truncate min-w-0 flex-1 text-center">DOWNLOAD CV</span> <span className="arrow-btn text-[10px] ml-1 flex-shrink-0" aria-hidden="true">↓</span>
+                  <span className="whitespace-nowrap flex items-center justify-center gap-1">
+                    DOWNLOAD CV <span className="arrow-btn text-[9.5px] flex-shrink-0" style={{ color: '#004af2' }} aria-hidden="true">↓</span>
+                  </span>
                   <TransformBoundingBox />
                 </a>
               </div>

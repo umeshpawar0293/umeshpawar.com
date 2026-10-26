@@ -513,6 +513,7 @@ export default function App() {
     // Touch handling for mobile
     let touchStartY = 0
     let touchStartX = 0
+    let touchStartGridEl = null
 
     const handleTouchStart = (e) => {
       if (
@@ -528,6 +529,7 @@ export default function App() {
         return
       }
       if (e.target?.closest?.('a, button, input, textarea, select, [role="button"], .interactive-card, .contact-card, .footer-social-btn, .footer-scroll-top-btn, .mobile-menu-toggle')) return
+      touchStartGridEl = e.target?.closest?.('.work-grid-3col') || null
       if (e.touches && e.touches.length > 0) {
         touchStartY = e.touches[0].clientY
         touchStartX = e.touches[0].clientX
@@ -548,7 +550,7 @@ export default function App() {
         return // DO NOT call e.preventDefault()! Let native vertical scroll happen!
       }
       if (e.target?.closest?.('a, button, [role="button"], input, textarea, select')) return
-      if (e.target.closest('.work-grid-3col')) return
+      if (e.target.closest('.work-grid-3col') || touchStartGridEl) return
       if (isTransitioningRef.current) {
         e.preventDefault()
       }
@@ -573,6 +575,19 @@ export default function App() {
 
       const deltaY = touchStartY - e.changedTouches[0].clientY
       const deltaX = touchStartX - e.changedTouches[0].clientX
+
+      // If touch originated or ended inside the 3x3 Work grid, only trigger section change when scrolling past boundaries
+      const gridEl = e.target?.closest?.('.work-grid-3col') || touchStartGridEl
+      touchStartGridEl = null
+      if (gridEl) {
+        const isDown = deltaY > 0
+        const canScrollDown =
+          gridEl.scrollTop + gridEl.clientHeight < gridEl.scrollHeight - 5
+        const canScrollUp = gridEl.scrollTop > 5
+        if ((isDown && canScrollDown) || (!isDown && canScrollUp)) {
+          return // Allow internal grid scroll without switching section
+        }
+      }
 
       // Dominant vertical swipe over horizontal
       if (Math.abs(deltaY) > 48 && Math.abs(deltaY) > Math.abs(deltaX) * 1.2) {

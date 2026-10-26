@@ -91,6 +91,7 @@ export default function WorkUI({
   // Drag-to-scroll state for the grid container
   const isPointerDownOnGrid = useRef(false)
   const gridDragStartY = useRef(0)
+  const gridTouchStartY = useRef(0)
   const gridDragStartScroll = useRef(0)
   const hasDraggedGrid = useRef(false)
 
@@ -216,6 +217,49 @@ export default function WorkUI({
       return
     }
     e.stopPropagation()
+  }
+
+  // Tablet / iPad Touch Handlers: Isolate grid scrolling & stop bubbling if actively scrollable
+  const handleGridTouchStart = (e) => {
+    if (!gridRef.current || !e.touches || e.touches.length === 0) return
+    gridTouchStartY.current = e.touches[0].clientY
+    const el = gridRef.current
+    const isScrollable = el.scrollHeight > el.clientHeight + 2
+    if (isScrollable) {
+      e.stopPropagation()
+    }
+  }
+
+  const handleGridTouchMove = (e) => {
+    if (!gridRef.current || !e.touches || e.touches.length === 0) return
+    const currentY = e.touches[0].clientY
+    const deltaY = gridTouchStartY.current - currentY // > 0: swiping up (scrolling down), < 0: swiping down (scrolling up)
+    const el = gridRef.current
+    const isScrollable = el.scrollHeight > el.clientHeight + 2
+    if (!isScrollable) return
+
+    const canScrollDown = el.scrollTop + el.clientHeight < el.scrollHeight - 5
+    const canScrollUp = el.scrollTop > 5
+
+    if ((deltaY > 0 && canScrollDown) || (deltaY < 0 && canScrollUp)) {
+      e.stopPropagation()
+    }
+  }
+
+  const handleGridTouchEnd = (e) => {
+    if (!gridRef.current || !e.changedTouches || e.changedTouches.length === 0) return
+    const currentY = e.changedTouches[0].clientY
+    const deltaY = gridTouchStartY.current - currentY
+    const el = gridRef.current
+    const isScrollable = el.scrollHeight > el.clientHeight + 2
+    if (!isScrollable) return
+
+    const canScrollDown = el.scrollTop + el.clientHeight < el.scrollHeight - 5
+    const canScrollUp = el.scrollTop > 5
+
+    if ((deltaY > 0 && canScrollDown) || (deltaY < 0 && canScrollUp)) {
+      e.stopPropagation()
+    }
   }
 
   // Interactive scrubber: updates grid scroll and indicator pill in real time
@@ -477,7 +521,7 @@ export default function WorkUI({
               <div className="work-grid-tracker-wrapper">
                 {/* 3x3 Grid with Contained Smooth Vertical Scroll (No Pagination Numbers) */}
                 <div
-                  className="work-grid-3col"
+                  className="work-grid-3col overscroll-y-contain"
                   ref={gridRef}
                   role="region"
                   aria-label="Selected Projects Grid"
@@ -489,6 +533,9 @@ export default function WorkUI({
                   }}
                   onScroll={handleGridScroll}
                   onWheel={handleGridWheel}
+                  onTouchStart={handleGridTouchStart}
+                  onTouchMove={handleGridTouchMove}
+                  onTouchEnd={handleGridTouchEnd}
                   onPointerDown={handleGridPointerDown}
                   onPointerMove={handleGridPointerMove}
                   onPointerUp={handleGridPointerUp}
