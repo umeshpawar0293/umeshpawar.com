@@ -69,16 +69,6 @@ export default function Footer({ scrollProgress = 0 }) {
         />
       </div>
 
-      {/* SEGMENT 1: Logo & Brand (Far Left) - Always visible on mobile */}
-      <div className="footer-left-section flex items-center gap-1 shrink-0">
-        <span className="footer-brand-name text-[8.5px] xs:text-[9.5px] font-bold text-white uppercase whitespace-nowrap shrink-0">
-          UMESH PAWAR
-        </span>
-        <span className="footer-bullet-dot w-1 h-1 rounded-full bg-[#c8ff00] shrink-0" aria-hidden="true" />
-        <span className="footer-brand-role text-[7.5px] xs:text-[8px] text-zinc-400 whitespace-nowrap hidden min-[360px]:inline shrink-0">
-          Creative | Skilled | Motivated
-        </span>
-      </div>
 
       {/* SEGMENT 2: Status Capsule & Time (Center) */}
       <div className="footer-center-section flex items-center justify-center shrink-0">

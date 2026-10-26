@@ -443,63 +443,6 @@ export default function ContactUI({
             onTouchCancel={onCharacterTouchEnd}
           />
         </div>
-
-        {/* Premium Minimal Contact Footer (Desktop) */}
-        <footer
-          className="contact-site-footer"
-          style={{ pointerEvents: isInteractive ? 'auto' : 'none' }}
-        >
-          <div className="footer-brand-box">
-            <span className="footer-brand-name">UMESH PAWAR</span>
-            <span className="footer-brand-dot">•</span>
-            <span className="footer-tagline">Creative Director &amp; Designer</span>
-          </div>
-
-          <nav className="footer-nav" aria-label="Footer Navigation">
-            <a
-              href="#home"
-              onClick={(e) => {
-                e.preventDefault()
-                scrollToRatio(0)
-              }}
-            >
-              HOME
-            </a>
-            <a
-              href="#about"
-              onClick={(e) => {
-                e.preventDefault()
-                scrollToRatio(1 / 3)
-              }}
-            >
-              ABOUT
-            </a>
-            <a
-              href="#work"
-              onClick={(e) => {
-                e.preventDefault()
-                scrollToRatio(2 / 3)
-              }}
-            >
-              WORK
-            </a>
-            <a
-              href="#contact"
-              onClick={(e) => {
-                e.preventDefault()
-                scrollToRatio(1)
-              }}
-            >
-              CONTACT
-            </a>
-          </nav>
-
-          <div className="footer-legal-box">
-            <span className="footer-copy-text">
-              &copy; 2026 Umesh Pawar. All rights reserved.
-            </span>
-          </div>
-        </footer>
       </div>
 
       {/* Mobile Stage: 2-Column Bento Layout (Direct Lines + Connect next to Direct Collaboration) */}
@@ -516,28 +459,32 @@ export default function ContactUI({
         <div
           ref={mobileBentoRef}
           className="contact-cards-wrapper contact-mobile-bento-container"
-          style={{ pointerEvents: 'auto', zIndex: 999 }}
+          style={{
+            pointerEvents: 'auto',
+            zIndex: 999,
+            bottom: 'calc(115px + env(safe-area-inset-bottom, 0px))',
+          }}
           onPointerDown={(e) => e.stopPropagation()}
           onTouchStart={(e) => e.stopPropagation()}
           onTouchMove={(e) => e.stopPropagation()}
           onTouchEnd={(e) => e.stopPropagation()}
         >
           {/* LEFT COLUMN ON MOBILE: DIRECT LINES (TOP) + CONNECT (BOTTOM) */}
-          <div className="contact-mobile-col-left flex flex-col gap-2 justify-between h-full" style={{ pointerEvents: 'auto', zIndex: 999 }}>
+          <div className="contact-mobile-col-left flex flex-col gap-2 justify-between h-full min-w-0 w-full" style={{ pointerEvents: 'auto', zIndex: 999 }}>
             {/* Card 1: DIRECT LINES */}
-            <div className="contact-card contact-mobile-card direct-lines-card" style={{ pointerEvents: 'auto', zIndex: 999 }}>
-              <span className="contact-mobile-card-heading text-[9px] md:text-[11px] font-bold tracking-wider uppercase text-[#d0ff00] mb-1.5 block">
+            <div className="contact-card contact-mobile-card direct-lines-card p-3 sm:p-3.5 w-full max-w-full box-border" style={{ pointerEvents: 'auto', zIndex: 999 }}>
+              <span className="contact-mobile-card-heading text-xs font-bold tracking-wider uppercase text-[#d0ff00] mb-1 block">
                 DIRECT LINES
               </span>
 
               {/* Field 1: EMAIL */}
-              <div className="contact-mobile-field-entry entry-spaced" style={{ pointerEvents: 'auto', zIndex: 999 }}>
-                <span className="contact-mobile-field-label block text-[8px] md:text-[10px] uppercase tracking-wider text-white/50">
+              <div className="contact-mobile-field-entry entry-spaced w-full max-w-full" style={{ pointerEvents: 'auto', zIndex: 999 }}>
+                <span className="contact-mobile-field-label block text-xs uppercase tracking-wider text-white/50 leading-tight">
                   EMAIL
                 </span>
                 <a
                   href="mailto:umeshpawar93@gmail.com"
-                  className="contact-mobile-field-value block text-[10px] md:text-xs font-bold text-white no-underline hover:text-[#d0ff00] break-all leading-tight mt-0.5 cursor-pointer select-none"
+                  className="contact-mobile-field-value block text-xs font-medium text-white no-underline hover:text-[#d0ff00] break-all leading-tight mt-0.5 cursor-pointer select-none"
                   style={{ color: '#ffffff', textDecoration: 'none', pointerEvents: 'auto', position: 'relative', zIndex: 999, touchAction: 'manipulation' }}
                   onClick={(e) => {
                     e.stopPropagation()
@@ -549,21 +496,21 @@ export default function ContactUI({
                 >
                   umeshpawar93@gmail.com
                 </a>
-                <span className="contact-mobile-field-subtext text-[8px] md:text-[10px] text-white/40 leading-tight mt-0.5 mb-2 block">
+                <span className="contact-mobile-field-subtext text-[8.5px] xs:text-[9.5px] tracking-tight whitespace-nowrap text-zinc-400 overflow-visible mt-0.5 mb-1 block w-full">
                   Best for project briefs, decks, and detailed scopes.
                 </span>
               </div>
 
               {/* Field 2: CALL / WHATSAPP */}
-              <div className="contact-mobile-field-entry" style={{ pointerEvents: 'auto', zIndex: 999 }}>
-                <span className="contact-mobile-field-label block text-[8px] md:text-[10px] uppercase tracking-wider text-white/50">
+              <div className="contact-mobile-field-entry w-full max-w-full" style={{ pointerEvents: 'auto', zIndex: 999 }}>
+                <span className="contact-mobile-field-label block text-xs uppercase tracking-wider text-white/50 leading-tight">
                   CALL / WHATSAPP
                 </span>
                 <a
                   href="https://wa.me/919664359422"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="contact-mobile-field-value block text-[10px] md:text-xs font-bold text-white no-underline hover:text-[#d0ff00] leading-tight mt-0.5 cursor-pointer select-none"
+                  className="contact-mobile-field-value block text-xs font-medium text-white no-underline hover:text-[#d0ff00] leading-tight mt-0.5 cursor-pointer select-none"
                   style={{ color: '#ffffff', textDecoration: 'none', pointerEvents: 'auto', position: 'relative', zIndex: 999, touchAction: 'manipulation' }}
                   onClick={(e) => {
                     e.stopPropagation()
@@ -575,24 +522,24 @@ export default function ContactUI({
                 >
                   +91 96643 59422
                 </a>
-                <span className="contact-mobile-field-subtext text-[8px] md:text-[10px] text-white/40 leading-tight mt-0.5 block">
+                <span className="contact-mobile-field-subtext text-[8.5px] xs:text-[9.5px] tracking-tight whitespace-nowrap text-zinc-400 overflow-visible mt-0.5 block w-full">
                   For quick syncs and fast turnarounds.
                 </span>
               </div>
             </div>
 
             {/* Card 2: CONNECT */}
-            <div className="contact-card contact-mobile-card connect-card" style={{ pointerEvents: 'auto', zIndex: 999 }}>
-              <div className="contact-mobile-connect-header-row flex items-center justify-between w-full">
-                <span className="contact-mobile-card-heading text-[9px] md:text-[11px] font-bold uppercase text-[#d0ff00]">
+            <div className="contact-card contact-mobile-card connect-card p-2.5 sm:p-3 w-full max-w-full box-border overflow-hidden" style={{ pointerEvents: 'auto', zIndex: 999 }}>
+              <div className="contact-mobile-connect-header-row flex items-center justify-between w-full flex-nowrap gap-1.5">
+                <span className="contact-mobile-card-heading text-[10.5px] font-bold uppercase tracking-wider text-[#d0ff00] flex-shrink-0 m-0 leading-none">
                   CONNECT
                 </span>
-                <div className="contact-mobile-pills-row flex items-center gap-1">
+                <div className="contact-mobile-pills-row flex items-center gap-1.5 flex-nowrap flex-shrink-0">
                   <a
                     href="https://www.linkedin.com/in/umeshpawar93"
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="contact-mobile-social-pill-btn border border-white/15 rounded px-2 py-1 text-[9px] md:text-[11px] text-white flex items-center gap-1 bg-white/5 no-underline hover:text-[#d0ff00] cursor-pointer select-none"
+                    className="contact-mobile-social-pill-btn border border-white/10 rounded-md px-1.5 py-0.5 text-[9.5px] font-medium tracking-tight text-white inline-flex items-center gap-1 bg-white/5 no-underline hover:text-[#d0ff00] cursor-pointer select-none leading-tight flex-shrink-0"
                     style={{ color: '#ffffff', textDecoration: 'none', pointerEvents: 'auto', position: 'relative', zIndex: 999, touchAction: 'manipulation' }}
                     aria-label="LinkedIn profile"
                     onClick={(e) => {
@@ -603,7 +550,7 @@ export default function ContactUI({
                       e.stopPropagation()
                     }}
                   >
-                    <svg width="10" height="10" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                    <svg width="10" height="10" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" className="w-2.5 h-2.5 flex-shrink-0">
                       <path d="M19 3a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h14m-.5 15.5v-5.3a3.26 3.26 0 0 0-3.26-3.26c-.85 0-1.84.52-2.28 1.3v-1.11h-2.79v8.37h2.79v-4.93c0-.77.62-1.4 1.39-1.4a1.4 1.4 0 0 1 1.4 1.4v4.93h2.75M6.88 8.56a1.68 1.68 0 0 0 1.68-1.68c0-.93-.75-1.69-1.68-1.69a1.69 1.69 0 0 0-1.69 1.69c0 .93.76 1.68 1.69 1.68m1.39 9.94v-8.37H5.5v8.37h2.77z"/>
                     </svg>
                     <span>LinkedIn</span>
@@ -613,7 +560,7 @@ export default function ContactUI({
                     href="https://www.instagram.com/umesh_pawar_/"
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="contact-mobile-social-pill-btn border border-white/15 rounded px-2 py-1 text-[9px] md:text-[11px] text-white flex items-center gap-1 bg-white/5 no-underline hover:text-[#d0ff00] cursor-pointer select-none"
+                    className="contact-mobile-social-pill-btn border border-white/10 rounded-md px-1.5 py-0.5 text-[9.5px] font-medium tracking-tight text-white inline-flex items-center gap-1 bg-white/5 no-underline hover:text-[#d0ff00] cursor-pointer select-none leading-tight flex-shrink-0"
                     style={{ color: '#ffffff', textDecoration: 'none', pointerEvents: 'auto', position: 'relative', zIndex: 999, touchAction: 'manipulation' }}
                     aria-label="Instagram profile"
                     onClick={(e) => {
@@ -624,7 +571,7 @@ export default function ContactUI({
                       e.stopPropagation()
                     }}
                   >
-                    <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                    <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true" className="w-2.5 h-2.5 flex-shrink-0">
                       <rect x="2" y="2" width="20" height="20" rx="5" ry="5" />
                       <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z" />
                       <line x1="17.5" y1="6.5" x2="17.51" y2="6.5" />
@@ -634,11 +581,11 @@ export default function ContactUI({
                 </div>
               </div>
 
-              <div className="contact-mobile-base-row flex items-center">
-                <span className="contact-mobile-base-label text-[8px] md:text-[10px] uppercase text-white/50 mr-2">
+              <div className="contact-mobile-base-row flex items-center mt-1.5">
+                <span className="contact-mobile-base-label text-[10px] uppercase text-zinc-400 mr-2 leading-tight">
                   BASE
                 </span>
-                <span className="contact-mobile-base-val text-[10px] md:text-xs font-bold text-white">
+                <span className="contact-mobile-base-val text-[11px] font-bold text-white leading-tight">
                   Mumbai, India
                 </span>
               </div>
@@ -646,22 +593,25 @@ export default function ContactUI({
           </div>
 
           {/* RIGHT COLUMN ON MOBILE: DIRECT COLLABORATION (EQUAL COMBINED HEIGHT) */}
-          <div className="contact-mobile-col-right h-full" style={{ pointerEvents: 'auto', zIndex: 999 }}>
-            <div className="contact-card contact-mobile-card collab-card h-full flex flex-col justify-between" style={{ pointerEvents: 'auto', zIndex: 999 }}>
+          <div className="contact-mobile-col-right h-full min-w-0 w-full" style={{ pointerEvents: 'auto', zIndex: 999 }}>
+            <div className="contact-card contact-mobile-card collab-card h-full flex flex-col justify-between p-3 sm:p-3.5 w-full max-w-full box-border overflow-hidden" style={{ pointerEvents: 'auto', zIndex: 999 }}>
               <div>
-                <h4 className="contact-mobile-card-heading text-[9px] md:text-[11px] font-bold uppercase tracking-wider text-[#d0ff00]">
+                <h4 className="contact-mobile-card-heading text-xs font-bold uppercase tracking-wider text-[#d0ff00]">
                   DIRECT COLLABORATION
                 </h4>
-                <div className="contact-mobile-collab-subtitle text-[10px] md:text-xs font-extrabold uppercase text-white leading-snug mt-1 mb-2">
+                <div className="contact-mobile-collab-subtitle text-xs font-extrabold uppercase text-white leading-tight mt-1 mb-2">
                   LET'S BUILD SOMETHING MEMORABLE.
                 </div>
               </div>
 
               {/* 3 Action Buttons */}
-              <div className="contact-mobile-collab-buttons-stack flex flex-col gap-1.5 md:gap-2" style={{ pointerEvents: 'auto', zIndex: 999 }}>
+              <div
+                className="contact-mobile-collab-buttons-stack flex flex-col gap-2 w-full max-w-full box-border overflow-hidden"
+                style={{ pointerEvents: 'auto', zIndex: 999 }}
+              >
                 <a
                   href="mailto:umeshpawar93@gmail.com?subject=Project%20Inquiry"
-                  className="contact-mobile-action-btn btn-collab-primary has-transform-box w-full py-1.5 md:py-2 px-2 rounded-md bg-[#d0ff00] text-black font-bold text-[8.5px] md:text-[11px] uppercase tracking-wide text-center flex items-center justify-center no-underline shadow-sm cursor-pointer select-none"
+                  className="contact-mobile-action-btn btn-collab-primary has-transform-box w-full max-w-full box-border overflow-hidden py-2 px-2.5 rounded-md bg-[#d0ff00] text-black font-bold text-[11px] uppercase tracking-tight text-center flex items-center justify-center no-underline shadow-sm cursor-pointer select-none leading-tight"
                   style={{ color: '#000000', textDecoration: 'none', background: '#d0ff00', pointerEvents: 'auto', position: 'relative', zIndex: 999, touchAction: 'manipulation' }}
                   onClick={(e) => {
                     e.stopPropagation()
@@ -671,7 +621,7 @@ export default function ContactUI({
                     e.stopPropagation()
                   }}
                 >
-                  START A CONVERSATION <span className="arrow-btn text-[9px] ml-1" aria-hidden="true">→</span>
+                  <span className="truncate min-w-0 flex-1 text-center">START A CONVERSATION</span> <span className="arrow-btn text-[10px] ml-1 flex-shrink-0" aria-hidden="true">→</span>
                   <TransformBoundingBox />
                 </a>
 
@@ -679,7 +629,7 @@ export default function ContactUI({
                   href="https://wa.me/919664359422"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="contact-mobile-action-btn btn-collab-secondary has-transform-box w-full py-1.5 md:py-2 px-2 rounded-md bg-[#d0ff00] text-black font-bold text-[8.5px] md:text-[11px] uppercase tracking-wide text-center flex items-center justify-center no-underline shadow-sm cursor-pointer select-none"
+                  className="contact-mobile-action-btn btn-collab-secondary has-transform-box w-full max-w-full box-border overflow-hidden py-2 px-2.5 rounded-md bg-[#d0ff00] text-black font-bold text-[11px] uppercase tracking-tight text-center flex items-center justify-center no-underline shadow-sm cursor-pointer select-none leading-tight"
                   style={{ color: '#000000', textDecoration: 'none', background: '#d0ff00', pointerEvents: 'auto', position: 'relative', zIndex: 999, touchAction: 'manipulation' }}
                   onClick={(e) => {
                     e.stopPropagation()
@@ -689,7 +639,7 @@ export default function ContactUI({
                     e.stopPropagation()
                   }}
                 >
-                  CHAT ON WHATSAPP
+                  <span className="truncate min-w-0 flex-1 text-center">CHAT ON WHATSAPP</span>
                   <TransformBoundingBox />
                 </a>
 
@@ -698,7 +648,7 @@ export default function ContactUI({
                   download="Umesh_Pawar_CV.pdf"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="contact-mobile-action-btn btn-collab-cv has-transform-box w-full py-1.5 md:py-2 px-2 rounded-md bg-[#d0ff00] text-black font-bold text-[8.5px] md:text-[11px] uppercase tracking-wide text-center flex items-center justify-center no-underline shadow-sm cursor-pointer select-none"
+                  className="contact-mobile-action-btn btn-collab-cv has-transform-box w-full max-w-full box-border overflow-hidden py-2 px-2.5 rounded-md bg-[#d0ff00] text-black font-bold text-[11px] uppercase tracking-tight text-center flex items-center justify-center no-underline shadow-sm cursor-pointer select-none leading-tight"
                   style={{ color: '#000000', textDecoration: 'none', background: '#d0ff00', pointerEvents: 'auto', position: 'relative', zIndex: 999, touchAction: 'manipulation' }}
                   aria-label="Download CV: Umesh_Pawar_CV.pdf"
                   onClick={(e) => {
@@ -708,7 +658,7 @@ export default function ContactUI({
                     e.stopPropagation()
                   }}
                 >
-                  DOWNLOAD CV <span className="arrow-btn text-[9px] ml-1" aria-hidden="true">↓</span>
+                  <span className="truncate min-w-0 flex-1 text-center">DOWNLOAD CV</span> <span className="arrow-btn text-[10px] ml-1 flex-shrink-0" aria-hidden="true">↓</span>
                   <TransformBoundingBox />
                 </a>
               </div>

@@ -170,7 +170,6 @@ a,
 .docked-footer button,
 .footer-social-btn,
 .footer-scroll-top-btn,
-.work-coverflow-card,
 .work-card,
 .work-card-arrow-btn,
 .work-view-btn,
@@ -958,9 +957,9 @@ body.is-character-dragging * {
   text-transform: uppercase;
   letter-spacing: 0.045em;
   word-spacing: 0.25em;
-  line-height: 0.88;
+  line-height: 0.9;
   font-weight: 900;
-  font-size: clamp(16px, 4.4vw, 22px);
+  font-size: clamp(12px, 3.3vw, 16px);
   color: #F8FAFC;
   padding: 0 8px;
   -webkit-text-stroke: 0.6px rgba(13, 6, 26, 0.55);
@@ -977,10 +976,10 @@ body.is-character-dragging * {
   text-transform: uppercase;
   letter-spacing: 0.045em;
   word-spacing: 0.25em;
-  line-height: 0.88;
+  line-height: 0.9;
   font-weight: 900;
-  font-size: clamp(20px, 5.8vw, 28px);
-  margin-top: 5px;
+  font-size: clamp(15px, 4.2vw, 20px);
+  margin-top: 4px;
   color: #D4F868;
   padding: 0 8px;
   -webkit-text-stroke: 0.6px rgba(13, 6, 26, 0.55);
@@ -1595,10 +1594,10 @@ body.is-character-dragging * {
     font-family: 'Six Caps', sans-serif;
     white-space: nowrap;
     overflow-wrap: normal;
-    font-size: clamp(4.35rem, 18vw, 6.3rem);
-    line-height: 1.05 !important;
+    font-size: clamp(3.2rem, 13.5vw, 4.75rem);
+    line-height: 0.95 !important;
     letter-spacing: 0.03em;
-    margin: 0 0 clamp(1.2rem, 4.5vw, 1.65rem) 0 !important;
+    margin: 0 0 clamp(0.45rem, 1.8vh, 0.75rem) 0 !important;
     color: #d8ff00;
     font-weight: 400;
     text-shadow: 
@@ -1619,8 +1618,8 @@ body.is-character-dragging * {
 
   .hero-tagline {
     font-family: var(--font-primary);
-    font-size: clamp(0.88rem, 3.5vw, 1.01rem);
-    line-height: 1.35;
+    font-size: clamp(0.78rem, 3.0vw, 0.88rem);
+    line-height: 1.25;
     margin: 0 0 0.12rem 0;
     color: var(--color-text-sub);
     font-weight: 700 !important;
@@ -1630,24 +1629,24 @@ body.is-character-dragging * {
 
   .hero-aside {
     font-family: var(--font-primary);
-    font-size: clamp(0.68rem, 2.7vw, 0.78rem);
+    font-size: clamp(0.62rem, 2.4vw, 0.70rem);
     font-weight: 500;
     font-style: italic;
     margin: 0 0 0.12rem 0;
     color: rgba(255, 255, 255, 0.75);
-    line-height: 1.3;
+    line-height: 1.2;
     text-shadow: 0 1px 6px rgba(0, 0, 0, 0.8);
   }
 
   .hero-statement {
     display: block;
-    max-width: 100%;
+    max-width: 340px;
     font-family: var(--font-primary);
-    font-size: clamp(0.68rem, 2.7vw, 0.78rem);
+    font-size: clamp(0.64rem, 2.45vw, 0.72rem);
     font-weight: 700;
-    line-height: 1.45;
+    line-height: 1.35;
     color: rgba(255, 255, 255, 0.90);
-    margin: 0.12rem 0 0.45rem;
+    margin: 0.1rem 0 0.35rem;
     text-shadow: 0 1px 6px rgba(0, 0, 0, 0.9);
   }
 
@@ -1977,7 +1976,7 @@ body.is-character-dragging * {
 
   .about-backdrop-heading {
     font-family: var(--font-display);
-    font-size: clamp(5.46rem, 22.1vw, 8.32rem);
+    font-size: clamp(4.2rem, 17vw, 6.4rem);
     font-weight: 400;
     letter-spacing: 0.035em;
     line-height: 0.90;
@@ -2055,7 +2054,7 @@ body.is-character-dragging * {
   */
   .about-mobile-stat {
     font-family: var(--font-body);
-    font-size: clamp(1.85rem, 8vw, 2.45rem);
+    font-size: clamp(1.4rem, 5.8vw, 1.85rem);
     font-weight: 800;
     letter-spacing: -0.01em;
     line-height: 1.05;
@@ -2066,20 +2065,20 @@ body.is-character-dragging * {
 
   .about-mobile-subheading {
     font-family: var(--font-primary);
-    font-size: clamp(0.92rem, 3.8vw, 1.15rem);
+    font-size: clamp(0.74rem, 3.0vw, 0.88rem);
     font-weight: 800;
     letter-spacing: -0.01em;
-    line-height: 1.25;
+    line-height: 1.2;
     color: #ffffff;
-    margin: 0.12rem 0 0.2rem 0;
+    margin: 0.1rem 0 0.18rem 0;
     text-shadow: 0 2px 12px rgba(0, 0, 0, 0.9), 0 1px 3px rgba(0, 0, 0, 0.8);
   }
 
   .about-mobile-headline {
     font-family: var(--font-primary);
-    font-size: clamp(0.92rem, 3.8vw, 1.15rem);
+    font-size: clamp(0.74rem, 3.0vw, 0.88rem);
     font-weight: 800;
-    line-height: 1.25;
+    line-height: 1.2;
     color: #ffffff;
     margin: 0 0 0.15rem 0;
     letter-spacing: -0.01em;
@@ -2088,7 +2087,7 @@ body.is-character-dragging * {
 
   .about-mobile-highlight {
     display: block;
-    font-size: clamp(1.85rem, 8vw, 2.45rem);
+    font-size: clamp(1.4rem, 5.8vw, 1.85rem);
     font-weight: 900;
     letter-spacing: -0.02em;
     line-height: 1.05;
@@ -2099,17 +2098,18 @@ body.is-character-dragging * {
   .about-mobile-copy-block {
     display: flex;
     flex-direction: column;
-    gap: 0.32rem;
-    margin: 0.08rem 0 0.2rem 0;
+    gap: 0.28rem;
+    margin: 0.08rem 0 0.18rem 0;
   }
 
   .about-mobile-paragraph {
     font-family: var(--font-primary);
-    font-size: clamp(0.68rem, 2.7vw, 0.78rem);
+    font-size: clamp(0.63rem, 2.45vw, 0.72rem);
     font-weight: 700;
-    line-height: 1.45;
+    line-height: 1.35;
     color: rgba(255, 255, 255, 0.90);
     margin: 0;
+    max-width: 340px;
     text-shadow: 0 1px 6px rgba(0, 0, 0, 0.9);
   }
 
@@ -2117,8 +2117,8 @@ body.is-character-dragging * {
   .about-mobile-roles-block {
     display: flex !important;
     flex-direction: column !important;
-    gap: 0.25rem !important;
-    margin: 0.35rem 0 0.15rem 0 !important;
+    gap: 0.22rem !important;
+    margin: 0.28rem 0 0.12rem 0 !important;
     padding: 0 !important;
     list-style: none !important;
     text-align: left !important;
@@ -2130,11 +2130,11 @@ body.is-character-dragging * {
     display: block !important;
     width: 100% !important;
     font-family: var(--font-primary) !important;
-    font-size: clamp(0.68rem, 2.7vw, 0.78rem) !important;
+    font-size: clamp(0.63rem, 2.45vw, 0.72rem) !important;
     font-weight: 500 !important;
-    line-height: 1.45 !important;
+    line-height: 1.35 !important;
     color: rgba(255, 255, 255, 0.90) !important;
-    margin: 0 0 0.2rem 0 !important;
+    margin: 0 0 0.16rem 0 !important;
     padding: 0 !important;
     text-align: left !important;
     list-style: none !important;
@@ -2144,13 +2144,14 @@ body.is-character-dragging * {
 
   .about-mobile-statement {
     font-family: var(--font-primary);
-    font-size: clamp(0.68rem, 2.7vw, 0.78rem);
+    font-size: clamp(0.63rem, 2.45vw, 0.72rem);
     font-weight: 700;
-    line-height: 1.45;
+    line-height: 1.35;
     color: rgba(255, 255, 255, 0.90);
-    margin: 0.35rem 0 0 0;
+    margin: 0.25rem 0 0 0;
     text-shadow: 0 1px 6px rgba(0, 0, 0, 0.9);
     width: 100%;
+    max-width: 340px;
     text-align: left;
   }
 
@@ -2646,9 +2647,9 @@ body.is-character-dragging * {
    ========================================================================== */
 
 .project-preview-backdrop {
-  position: fixed;
+  position: absolute;
   inset: 0;
-  z-index: 1000;
+  z-index: 10;
   /* Dark semi-translucent backdrop smoothly dimming the underlying grid */
   background: rgba(2, 4, 8, 0.74);
   backdrop-filter: blur(16px);
@@ -3033,7 +3034,7 @@ body.is-character-dragging * {
   display: flex;
   flex-direction: column;
   overflow: visible;
-  z-index: 1001;
+  z-index: 20;
   animation: previewPanelSlide 0.36s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
 
@@ -3048,13 +3049,14 @@ body.is-character-dragging * {
   }
 }
 
-/* Circular Electric Lime Close Button with Electric Blue "✕" (Pinned top-right) */
+/* Circular Electric Lime Close Button with Electric Blue "✕" */
 .preview-circle-close-btn {
-  position: absolute;
-  top: -16px;
-  right: -16px;
-  width: 52px;
-  height: 52px;
+  position: relative;
+  top: auto;
+  right: auto;
+  flex-shrink: 0;
+  width: 48px;
+  height: 48px;
   border-radius: 50%;
   background: #d8ff00;
   border: 2.5px solid #090a0f;
@@ -3063,7 +3065,7 @@ body.is-character-dragging * {
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  z-index: 1050;
+  z-index: 30;
   box-shadow: 0 4px 20px rgba(216, 255, 0, 0.4), 0 6px 24px rgba(0, 0, 0, 0.6);
   transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1),
     background-color 0.2s ease;
@@ -3082,9 +3084,12 @@ body.is-character-dragging * {
   line-height: 1;
 }
 
-/* Panel Header: Orange display title + Project description */
+/* Panel Header: Display title + Close Button */
 .preview-panel-header {
-  padding: clamp(1.8rem, 3.2vh, 2.6rem) clamp(2.4rem, 4vw, 3.8rem) 1rem clamp(2.4rem, 4vw, 3.8rem);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1rem 1.5rem;
   flex-shrink: 0;
 }
 
@@ -3854,6 +3859,48 @@ body.is-character-dragging * {
   max-height: 78vh;
   border-radius: 10px;
   outline: none;
+  pointer-events: auto;
+}
+
+.lightbox-video-player-wrapper {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  max-width: 92vw;
+  max-height: 78vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 12px;
+  overflow: hidden;
+  background-color: #000000;
+  cursor: pointer;
+  user-select: none;
+  pointer-events: auto;
+}
+
+@keyframes videoFeedbackPop {
+  0% {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(0.65);
+  }
+  40% {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1.08);
+  }
+  100% {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(1.18);
+  }
+}
+
+.lightbox-video-controls-overlay {
+  transition: opacity 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.lightbox-video-scrubber-track:hover > div:first-child {
+  height: 7px !important;
+  transition: height 0.15s ease;
 }
 
 .lightbox-pdf-wrapper {
@@ -4299,83 +4346,180 @@ body.is-character-dragging * {
   transform: translateY(2px);
 }
 
-/* Premium Minimal Contact Footer */
-.contact-site-footer {
-  position: absolute;
-  bottom: 0.8rem;
-  left: 0;
-  width: 100%;
-  box-sizing: border-box;
-  padding: 0 clamp(2rem, 5vw, 6rem);
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  border-top: 1px solid rgba(255, 255, 255, 0.08);
-  pointer-events: auto;
-  opacity: 0.7;
-  transition: opacity 0.2s ease;
-  z-index: 10;
+/* ==========================================================================
+   CONTACT SECTION: IPAD LANDSCAPE & SHORT VIEWPORT HEIGHTS (< 900px)
+   Prevents any overlap with the bottom dock bar on iPad landscape (1024x768,
+   1180x820, 1194x834) and standard compact laptop displays.
+   ========================================================================== */
+@media (min-width: 769px) and (max-height: 900px), 
+       (min-width: 768px) and (orientation: landscape) and (max-height: 900px) {
+  
+  /* Safe clearance: ensure contact section and wrapper stop safely above the dock */
+  .contact-composition-wrapper {
+    padding-bottom: 96px;
+    box-sizing: border-box;
+  }
+
+  /* Lift backdrop heading slightly so it stays clear and prominent */
+  .contact-backdrop-layer {
+    top: clamp(105px, 14.5vh, 145px) !important;
+  }
+
+  .contact-backdrop-heading {
+    font-size: clamp(4.4rem, 8.2vw, 7.5rem) !important;
+  }
+
+  /* Left card container: starts higher, bounded max-height, safe bottom clearance */
+  .contact-left-block {
+    top: clamp(170px, 22.5vh, 210px) !important;
+    width: clamp(320px, 27vw, 380px) !important;
+    max-height: calc(100vh - clamp(170px, 22.5vh, 210px) - 100px) !important;
+    margin-bottom: 80px !important;
+    overflow-y: auto !important;
+    overflow-x: hidden !important;
+    scrollbar-width: none !important;
+    -ms-overflow-style: none !important;
+    padding-bottom: 0.5rem !important;
+    box-sizing: border-box !important;
+  }
+
+  .contact-left-block::-webkit-scrollbar {
+    display: none !important;
+  }
+
+  /* Compact spacing across cards */
+  .contact-cards-stack {
+    gap: 0.35rem !important; /* Reduced from 0.8rem */
+  }
+
+  .contact-card {
+    padding: 0.5rem 0.8rem !important; /* Reduced from 1.35rem */
+  }
+
+  .contact-micro-label {
+    font-size: 0.65rem !important;
+    margin-bottom: 0.2rem !important;
+    letter-spacing: 0.12em !important;
+  }
+
+  /* Card 1: DIRECT LINES */
+  .contact-field-block {
+    margin-bottom: 0 !important;
+  }
+
+  .contact-field-label {
+    font-size: 9.5px !important;
+    margin-bottom: 0.1rem !important;
+  }
+
+  .contact-field-value {
+    font-size: 0.85rem !important;
+  }
+
+  .contact-field-subtext {
+    font-size: 0.66rem !important;
+    margin-top: 0.1rem !important;
+    line-height: 1.25 !important;
+  }
+
+  .contact-subtext-mb {
+    margin-bottom: 0.3rem !important;
+  }
+
+  /* Card 2: CONNECT */
+  .connect-top-row {
+    gap: 0.35rem !important;
+  }
+
+  .connect-social-pills {
+    gap: 0.35rem !important;
+  }
+
+  .contact-social-pill {
+    padding: 0.18rem 0.55rem !important;
+    font-size: 0.68rem !important;
+  }
+
+  .contact-social-pill .social-svg-icon {
+    width: 12px !important;
+    height: 12px !important;
+  }
+
+  .connect-bottom-section .contact-field-label {
+    margin-top: 0.25rem !important;
+  }
+
+  .connect-location-val {
+    font-size: 0.88rem !important;
+  }
+
+  /* Card 3: DIRECT COLLABORATION */
+  .collab-heading {
+    font-size: 0.74rem !important;
+    margin: 0 0 0.35rem !important;
+    line-height: 1.25 !important;
+  }
+
+  .collab-actions-group {
+    gap: 0.3rem !important;
+  }
+
+  .btn-collab-primary,
+  .btn-collab-secondary,
+  .btn-collab-cv {
+    padding: 0.42rem 0.75rem !important; /* Compact py-2 height */
+    font-size: 0.68rem !important;
+    letter-spacing: 0.05em !important;
+  }
+
+  /* Docked footer compact sizing on short desktop/iPad landscape */
+  .docked-footer {
+    height: 52px !important;
+    bottom: 0.85rem !important;
+  }
 }
 
-.contact-site-footer:hover {
-  opacity: 1;
+/* Extra short viewports (< 760px height) */
+@media (min-width: 769px) and (max-height: 760px),
+       (min-width: 768px) and (orientation: landscape) and (max-height: 760px) {
+  .contact-backdrop-layer {
+    top: 90px !important;
+  }
+
+  .contact-backdrop-heading {
+    font-size: clamp(3.6rem, 7vw, 5.2rem) !important;
+  }
+
+  .contact-left-block {
+    top: 150px !important;
+    max-height: calc(100vh - 150px - 80px) !important;
+  }
+
+  .contact-cards-stack {
+    gap: 0.25rem !important;
+  }
+
+  .contact-card {
+    padding: 0.42rem 0.7rem !important;
+  }
+
+  .contact-field-subtext {
+    display: none !important; /* Hide secondary subtext lines so action buttons remain 100% visible */
+  }
+
+  .btn-collab-primary,
+  .btn-collab-secondary,
+  .btn-collab-cv {
+    padding: 0.35rem 0.65rem !important;
+    font-size: 0.65rem !important;
+  }
+
+  .docked-footer {
+    height: 46px !important;
+    bottom: 0.65rem !important;
+  }
 }
 
-.footer-brand-box {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-}
-
-.footer-brand-name {
-  font-family: var(--font-primary);
-  font-size: 0.74rem;
-  font-weight: 800;
-  letter-spacing: 0.12em;
-  color: #ffffff;
-}
-
-.footer-brand-dot {
-  color: #d8ff00;
-  font-size: 0.72rem;
-}
-
-.footer-tagline {
-  font-family: var(--font-primary);
-  font-size: 0.68rem;
-  color: rgba(255, 255, 255, 0.5);
-}
-
-.footer-nav {
-  display: flex;
-  align-items: center;
-  gap: 1.4rem;
-}
-
-.footer-nav a {
-  font-family: var(--font-primary);
-  font-size: 0.68rem;
-  font-weight: 700;
-  letter-spacing: 0.12em;
-  color: rgba(255, 255, 255, 0.55);
-  text-decoration: none;
-  transition: color 0.2s ease;
-}
-
-.footer-nav a:hover {
-  color: #d8ff00;
-}
-
-.footer-legal-box {
-  display: flex;
-  align-items: center;
-}
-
-.footer-copy-text {
-  font-family: var(--font-primary);
-  font-size: 0.66rem;
-  color: rgba(255, 255, 255, 0.35);
-}
 
 /* Tablet & Mobile Media Queries for Work & Contact (< 1024px) */
 @media (max-width: 1023px) {
@@ -4407,10 +4551,6 @@ body.is-character-dragging * {
 
   .contact-backdrop-heading {
     font-size: clamp(4.8rem, 8.8vw, 7.6rem);
-  }
-
-  .footer-nav {
-    gap: 0.9rem;
   }
 }
 
@@ -4450,7 +4590,32 @@ body.is-character-dragging * {
   }
 
   .about-backdrop-heading,
-  .work-backdrop-heading,
+  .work-backdrop-heading {
+    font-family: var(--font-display);
+    font-size: clamp(4.2rem, 17vw, 6.4rem);
+    font-weight: 400;
+    letter-spacing: 0.035em;
+    line-height: 0.90;
+    color: #d8ff00;
+    text-transform: uppercase;
+    white-space: nowrap !important;
+    margin: 0;
+    padding: 0;
+    text-shadow: 
+      1px 1px 0px #004af2,
+      2px 2px 0px #004af2,
+      3px 3px 0px #004af2,
+      4px 4px 0px #004af2,
+      5px 5px 0px #004af2,
+      6px 6px 0px #004af2,
+      7px 7px 0px #004af2,
+      8px 8px 0px #004af2,
+      9px 9px 0px #004af2,
+      10px 10px 0px #004af2,
+      11px 11px 0px #004af2,
+      12px 12px 0px #004af2;
+  }
+
   .contact-backdrop-heading {
     font-family: var(--font-display);
     font-size: clamp(5.46rem, 22.1vw, 8.32rem);
@@ -4695,12 +4860,12 @@ body.is-character-dragging * {
 
   .work-mobile-subtitle {
     font-family: var(--font-primary);
-    font-size: clamp(12.5px, 3.3vw, 13.5px) !important; /* ~13px (reduced from 10.5pt / 14px) */
+    font-size: clamp(11px, 2.9vw, 12.2px) !important;
     font-weight: 700 !important;
     color: #ffffff;
     text-align: center;
-    margin: 0 1rem 0.2rem;
-    line-height: 1.3;
+    margin: 0 1rem 0.15rem;
+    line-height: 1.22;
     text-shadow: 0 1px 6px rgba(0, 0, 0, 0.9);
     pointer-events: auto !important;
     user-select: text !important;
@@ -4710,12 +4875,12 @@ body.is-character-dragging * {
 
   .work-mobile-subtext {
     font-family: var(--font-primary);
-    font-size: clamp(11px, 2.9vw, 11.8px) !important; /* Strictly 1 point smaller (~11.3px / text-[11px]) */
+    font-size: clamp(9.8px, 2.5vw, 10.8px) !important;
     font-weight: 700 !important;
     color: rgba(255, 255, 255, 0.82);
     text-align: center;
     margin: 0;
-    line-height: 1.25;
+    line-height: 1.2;
     text-shadow: 0 1px 5px rgba(0, 0, 0, 0.9);
     pointer-events: auto !important;
     user-select: text !important;
@@ -4735,7 +4900,7 @@ body.is-character-dragging * {
     -webkit-perspective: 1100px;
     perspective-origin: center center;
     transform-style: preserve-3d;
-    touch-action: pan-y;
+    touch-action: pan-y !important;
     box-sizing: border-box;
     margin: 0.25rem auto 0;
     overflow: visible;
@@ -4745,6 +4910,7 @@ body.is-character-dragging * {
 
   .work-mobile-deck-bar {
     pointer-events: auto !important;
+    touch-action: pan-y !important;
   }
 
   /* 3D Coverflow Project Cards (Center & Left/Right Flanks) - Restyled to Exact Reference Spec */
@@ -4768,9 +4934,15 @@ body.is-character-dragging * {
     cursor: pointer;
     user-select: none;
     -webkit-user-select: none;
+    touch-action: pan-y !important;
     transform-origin: center center;
     will-change: transform, opacity;
     transition: transform 0.22s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.2s ease-out, z-index 0.22s step-end;
+  }
+
+  .work-coverflow-card *,
+  .work-mobile-deck-container * {
+    touch-action: pan-y;
   }
 
   .work-coverflow-card.is-dragging,
@@ -5114,94 +5286,129 @@ body.is-character-dragging * {
   }
 
   /* ==========================================================================
-     PROJECT PREVIEW MODAL (FULL-SCREEN OVERLAY ON MOBILE)
+     PROJECT PREVIEW MODAL (MOBILE CENTRIC DIALOG & BACKDROP)
      ========================================================================== */
+  .project-preview-modal-root {
+    position: fixed !important;
+    inset: 0 !important;
+    width: 100vw !important;
+    height: 100vh !important;
+    height: 100dvh !important;
+    z-index: 1000 !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    padding: 12px !important;
+    box-sizing: border-box !important;
+    pointer-events: auto !important;
+  }
+
   .project-preview-backdrop {
-    position: fixed;
-    inset: 0;
-    width: 100vw;
-    height: 100vh;
-    background: rgba(0, 0, 0, 0.88);
-    backdrop-filter: blur(16px);
-    -webkit-backdrop-filter: blur(16px);
-    z-index: 99999;
-    padding: 0;
+    position: absolute !important;
+    inset: 0 !important;
+    width: 100% !important;
+    height: 100% !important;
+    background: rgba(0, 0, 0, 0.82) !important;
+    backdrop-filter: blur(14px) !important;
+    -webkit-backdrop-filter: blur(14px) !important;
+    z-index: 10 !important;
+    padding: 0 !important;
+    pointer-events: auto !important;
   }
 
   .project-preview-panel {
-    position: fixed;
-    inset: 0;
-    width: 100vw;
-    width: 100dvw;
-    height: 100vh;
-    height: 100dvh;
-    max-height: none;
-    border-radius: 0;
-    border: none;
-    background: #090a0f;
-    box-shadow: none;
-    display: flex;
-    flex-direction: column;
-    overflow: hidden;
-    right: 0;
-    top: 0;
-    bottom: 0;
-    left: 0;
-    animation: previewMobileFade 0.32s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    position: relative !important;
+    z-index: 20 !important;
+    width: 92vw !important;
+    max-width: 520px !important;
+    height: auto !important;
+    max-height: 85vh !important;
+    max-height: 85dvh !important;
+    border-radius: 16px !important;
+    border: 1px solid rgba(255, 255, 255, 0.12) !important;
+    background: #0d0d12 !important;
+    box-shadow: 0 24px 60px rgba(0, 0, 0, 0.9) !important;
+    display: flex !important;
+    flex-direction: column !important;
+    overflow: hidden !important;
+    right: auto !important;
+    top: auto !important;
+    bottom: auto !important;
+    left: auto !important;
+    margin: auto !important;
+    animation: previewMobileFade 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards !important;
   }
 
   @keyframes previewMobileFade {
     from {
       opacity: 0;
-      transform: translateY(20px) scale(0.95);
+      transform: scale(0.96) translateY(12px);
     }
     to {
       opacity: 1;
-      transform: translateY(0) scale(1);
+      transform: scale(1) translateY(0);
     }
   }
 
   .preview-circle-close-btn {
-    top: 12px;
-    right: 12px;
-    width: 46px;
-    height: 46px;
-    min-width: 44px;
-    min-height: 44px;
-    border-radius: 50%;
-    z-index: 60;
-    box-shadow: 0 4px 18px rgba(216, 255, 0, 0.45);
+    position: relative !important;
+    top: auto !important;
+    right: auto !important;
+    flex-shrink: 0 !important;
+    width: 38px !important;
+    height: 38px !important;
+    min-width: 38px !important;
+    min-height: 38px !important;
+    border-radius: 50% !important;
+    background: #d8ff00 !important;
+    color: #004af2 !important;
+    border: 2px solid #0d0d12 !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    z-index: 30 !important;
+    box-shadow: 0 4px 18px rgba(216, 255, 0, 0.45) !important;
+    cursor: pointer !important;
+    pointer-events: auto !important;
   }
 
   .preview-panel-header {
-    padding: 1.25rem 4.6rem 0.85rem 1.25rem;
-    flex-shrink: 0;
-    background: rgba(9, 10, 15, 0.96);
-    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    display: flex !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+    padding: 12px 16px !important;
+    gap: 12px !important;
+    flex-shrink: 0 !important;
+    background: #121218 !important;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08) !important;
   }
 
   .preview-panel-title {
-    font-size: 0.95rem;
-    line-height: 1.15;
-    margin: 0;
+    font-size: 1.05rem !important;
+    line-height: 1.2 !important;
+    font-weight: 800 !important;
+    color: #ffffff !important;
+    margin: 0 !important;
+    text-transform: uppercase !important;
   }
 
   .preview-panel-desc {
-    font-size: 0.6rem;
-    line-height: 1.35;
-    margin-top: 0.25rem;
+    font-size: 0.82rem !important;
+    line-height: 1.4 !important;
+    margin-top: 0.25rem !important;
+    color: rgba(255, 255, 255, 0.85) !important;
   }
 
   .preview-panel-scroll {
-    flex: 1;
-    min-height: 0;
-    overflow-y: auto;
-    -webkit-overflow-scrolling: touch;
-    touch-action: pan-y;
-    padding: 1.2rem 1.25rem 4rem 1.25rem;
-    display: flex;
-    flex-direction: column;
-    gap: 1.2rem;
+    flex: 1 !important;
+    min-height: 0 !important;
+    overflow-y: auto !important;
+    -webkit-overflow-scrolling: touch !important;
+    touch-action: pan-y !important;
+    padding: 14px 16px 20px 16px !important;
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 12px !important;
   }
 
   .modal-content-wrapper {
@@ -5260,9 +5467,10 @@ body.is-character-dragging * {
   }
 
   .lightbox-media-img,
-  .lightbox-media-video {
+  .lightbox-media-video,
+  .lightbox-video-player-wrapper {
     max-width: 96vw;
-    max-height: 78vh;
+    max-height: 80vh;
   }
 
   .fullscreen-image-nav button,
@@ -5337,14 +5545,14 @@ body.is-character-dragging * {
   .contact-cards-wrapper,
   .contact-mobile-bento-container {
     position: fixed !important;
-    bottom: 68px !important; /* Safe gap above footer dock */
+    bottom: calc(115px + env(safe-area-inset-bottom, 0px)) !important; /* Explicit safe-area clearance above footer dock on iPhone 13 */
     left: 50% !important;
     transform: translateX(-50%) !important;
-    width: calc(100vw - 24px) !important; /* 12px padding on left and right edges so nothing clips */
-    max-width: 400px !important;
+    width: calc(100vw - 16px) !important; /* Clean 8px padding on left/right edges for maximum breathing space */
+    max-width: 440px !important;
     display: grid !important;
-    grid-template-columns: 1.08fr 0.92fr !important; /* Slightly wider left column for email, right column fits 3 buttons */
-    gap: 8px !important;
+    grid-template-columns: 1.1fr 0.9fr !important; /* Slightly wider left column for single-line helper text */
+    gap: 8px !important; /* gap-2 */
     align-items: stretch !important;
     box-sizing: border-box !important;
     margin: 0 auto !important;
@@ -5358,12 +5566,13 @@ body.is-character-dragging * {
   .contact-mobile-bento-container .contact-card,
   .contact-mobile-card {
     width: 100% !important;
+    max-width: 100% !important;
     background: rgba(13, 13, 18, 0.92) !important;
     backdrop-filter: blur(14px) !important;
     -webkit-backdrop-filter: blur(14px) !important;
     border: 1px solid rgba(255, 255, 255, 0.12) !important;
-    border-radius: 8px !important;
-    padding: 8px !important;
+    border-radius: 10px !important;
+    padding: 10px 11px !important; /* Compact balanced padding */
     box-sizing: border-box !important;
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.65) !important;
     display: flex !important;
@@ -5374,20 +5583,31 @@ body.is-character-dragging * {
     overflow: hidden !important;
   }
 
+  .contact-cards-wrapper .direct-lines-card,
+  .contact-mobile-bento-container .direct-lines-card {
+    overflow: visible !important;
+  }
+
   /* Left column in mobile bento: stacks Card 1 (Direct Lines) and Card 2 (Connect) */
   .contact-mobile-col-left {
     display: flex !important;
     flex-direction: column !important;
-    gap: 8px !important;
+    gap: 8px !important; /* gap-2 */
     justify-content: space-between !important;
     height: 100% !important;
     min-width: 0 !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    box-sizing: border-box !important;
   }
 
   /* Right column in mobile bento: Card 3 (Direct Collaboration) */
   .contact-mobile-col-right {
     height: 100% !important;
     min-width: 0 !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    box-sizing: border-box !important;
     display: flex !important;
     flex-direction: column !important;
   }
@@ -5395,14 +5615,14 @@ body.is-character-dragging * {
   /* Card Headings */
   .contact-mobile-card-heading {
     font-family: var(--font-body) !important;
-    font-size: 9px !important;
+    font-size: 11px !important; /* text-xs */
     font-weight: 700 !important;
     letter-spacing: 0.08em !important;
     text-transform: uppercase !important;
     color: #d0ff00 !important;
     display: block !important;
-    margin: 0 0 5px 0 !important;
-    line-height: 1.2 !important;
+    margin: 0 0 4px 0 !important;
+    line-height: 1.25 !important; /* leading-tight */
   }
 
   /* Card 1 Field Entries */
@@ -5412,33 +5632,36 @@ body.is-character-dragging * {
     align-items: flex-start !important;
     text-align: left !important;
     width: 100% !important;
+    max-width: 100% !important;
+    min-width: 0 !important;
+    box-sizing: border-box !important;
   }
 
   .contact-mobile-field-entry.entry-spaced {
-    margin-bottom: 7px !important;
+    margin-bottom: 6px !important;
   }
 
   .contact-mobile-field-label {
     display: block !important;
     font-family: var(--font-body) !important;
-    font-size: 8px !important;
+    font-size: 11px !important; /* text-xs (11px) */
     font-weight: 600 !important;
     text-transform: uppercase !important;
     letter-spacing: 0.06em !important;
     color: rgba(255, 255, 255, 0.5) !important;
     margin: 0 !important;
-    line-height: 1.2 !important;
+    line-height: 1.25 !important; /* leading-tight */
   }
 
   .contact-mobile-field-value {
     display: block !important;
     font-family: var(--font-body) !important;
-    font-size: 10px !important;
-    font-weight: 700 !important;
+    font-size: 12px !important; /* text-xs */
+    font-weight: 500 !important; /* font-medium */
     color: #ffffff !important;
     text-decoration: none !important;
     word-break: break-all !important;
-    line-height: 1.2 !important;
+    line-height: 1.25 !important; /* leading-tight */
     margin-top: 2px !important;
     transition: color 0.15s ease !important;
   }
@@ -5458,43 +5681,56 @@ body.is-character-dragging * {
   .contact-mobile-field-subtext {
     display: block !important;
     font-family: var(--font-body) !important;
-    font-size: 8px !important;
-    color: rgba(255, 255, 255, 0.4) !important;
+    font-size: clamp(8px, 2.3vw, 9.5px) !important;
+    color: #a1a1aa !important; /* text-zinc-400 */
     line-height: 1.25 !important;
     margin-top: 2px !important;
+    letter-spacing: -0.025em !important; /* tracking-tight */
+    white-space: nowrap !important;
+    overflow: visible !important;
+    text-overflow: clip !important;
+    width: 100% !important;
+    max-width: 100% !important;
   }
 
   /* Card 2: CONNECT */
   .contact-mobile-connect-header-row {
     display: flex !important;
+    flex-wrap: nowrap !important;
     align-items: center !important;
     justify-content: space-between !important;
     width: 100% !important;
-    gap: 4px !important;
+    gap: 6px !important;
+    min-width: 0 !important;
   }
 
   .contact-mobile-pills-row {
     display: flex !important;
+    flex-wrap: nowrap !important;
     align-items: center !important;
-    gap: 4px !important;
+    gap: 5px !important;
+    min-width: 0 !important;
+    flex-shrink: 0 !important;
   }
 
   .contact-mobile-social-pill-btn {
-    border: 1px solid rgba(255, 255, 255, 0.15) !important;
-    border-radius: 4px !important;
-    padding: 2px 6px !important; /* px-2 py-1 */
+    border: 1px solid rgba(255, 255, 255, 0.1) !important;
+    border-radius: 6px !important; /* rounded-md */
+    padding: 2px 6px !important; /* px-1.5 py-0.5 */
     font-family: var(--font-body) !important;
-    font-size: 9px !important;
-    font-weight: 600 !important;
+    font-size: 9.5px !important; /* text-[9.5px] */
+    font-weight: 500 !important; /* font-medium */
+    letter-spacing: -0.015em !important; /* tracking-tight */
     color: #ffffff !important;
     display: inline-flex !important;
     align-items: center !important;
-    gap: 4px !important;
+    gap: 4px !important; /* gap-1 */
     background: rgba(255, 255, 255, 0.05) !important;
     text-decoration: none !important;
     transition: background 0.15s ease, border-color 0.15s ease, color 0.15s ease !important;
     white-space: nowrap !important;
-    line-height: 1 !important;
+    line-height: 1.2 !important;
+    flex-shrink: 0 !important;
   }
 
   .contact-mobile-social-pill-btn:hover,
@@ -5512,7 +5748,7 @@ body.is-character-dragging * {
   }
 
   .contact-mobile-social-pill-btn svg {
-    width: 10px !important;
+    width: 10px !important; /* w-2.5 h-2.5 */
     height: 10px !important;
     flex-shrink: 0 !important;
     display: inline-block !important;
@@ -5526,53 +5762,59 @@ body.is-character-dragging * {
 
   .contact-mobile-base-label {
     font-family: var(--font-body) !important;
-    font-size: 8px !important;
+    font-size: 10px !important; /* text-[10px] */
     font-weight: 600 !important;
     text-transform: uppercase !important;
     letter-spacing: 0.06em !important;
-    color: rgba(255, 255, 255, 0.5) !important;
-    margin-right: 8px !important; /* mr-2 */
+    color: #a1a1aa !important; /* text-zinc-400 */
+    margin-right: 6px !important;
     display: inline-block !important;
+    line-height: 1.25 !important;
   }
 
   .contact-mobile-base-val {
     font-family: var(--font-body) !important;
-    font-size: 10px !important;
-    font-weight: 700 !important;
+    font-size: 11px !important;
+    font-weight: 600 !important;
     color: #ffffff !important;
     display: inline-block !important;
+    line-height: 1.25 !important;
   }
 
   /* Card 3: DIRECT COLLABORATION */
   .contact-mobile-collab-subtitle {
     font-family: var(--font-body) !important;
-    font-size: 10px !important;
+    font-size: 11.5px !important; /* text-xs */
     font-weight: 800 !important;
     text-transform: uppercase !important;
     color: #ffffff !important;
-    line-height: 1.25 !important;
-    margin: 4px 0 8px 0 !important; /* mt-1 mb-2 */
+    line-height: 1.25 !important; /* leading-tight */
+    margin: 2px 0 6px 0 !important;
   }
 
   .contact-mobile-collab-buttons-stack {
     display: flex !important;
     flex-direction: column !important;
-    gap: 6px !important; /* gap-1.5 */
+    gap: 8px !important; /* gap-2 */
     width: 100% !important;
+    max-width: 100% !important;
+    box-sizing: border-box !important;
+    overflow: hidden !important;
     margin-top: auto !important;
   }
 
   .contact-mobile-action-btn {
     width: 100% !important;
-    padding: 6px 8px !important; /* py-1.5 px-2 */
-    border-radius: 6px !important; /* rounded-md */
+    max-width: 100% !important;
+    padding: 7px 8px !important; /* py-2 px-2 compact */
+    border-radius: 6px !important;
     background: #d0ff00 !important;
     color: #000000 !important;
     font-family: var(--font-body) !important;
     font-weight: 700 !important;
-    font-size: 8.5px !important;
+    font-size: 11px !important; /* text-[11px] */
     text-transform: uppercase !important;
-    letter-spacing: 0.04em !important;
+    letter-spacing: -0.015em !important; /* tracking-tight */
     text-align: center !important;
     display: flex !important;
     align-items: center !important;
@@ -5582,8 +5824,10 @@ body.is-character-dragging * {
     box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3) !important;
     border: none !important;
     box-sizing: border-box !important;
-    white-space: nowrap !important;
-    line-height: 1.2 !important;
+    overflow: hidden !important;
+    line-height: 1.25 !important; /* leading-tight */
+    margin: 0 !important;
+    min-width: 0 !important;
     transition: background 0.15s ease, transform 0.12s ease !important;
   }
 
@@ -5604,6 +5848,7 @@ body.is-character-dragging * {
     color: #000000 !important;
     font-size: 9.5px !important;
     display: inline-block !important;
+    flex-shrink: 0 !important;
   }
 
   /* Responsive Character-Anchored Scroll Indicator (Mobile View: max-width: 768px)
@@ -5829,7 +6074,7 @@ body.is-character-dragging * {
   .docked-footer.mobile-contact-visible {
     display: flex !important;
     position: fixed !important;
-    bottom: 0.75rem !important;
+    bottom: calc(12px + env(safe-area-inset-bottom, 0px)) !important;
     left: 50% !important;
     transform: translateX(-50%) !important;
     z-index: 50 !important;
@@ -6283,12 +6528,12 @@ body.is-character-dragging * {
     white-space: nowrap;
   }
 
-  /* Center Status & Live Mumbai Time Pill */
+  /* Status & Live Mumbai Time Pill */
   .footer-center-section {
     display: flex !important;
     align-items: center !important;
-    justify-content: center !important;
-    flex: 1 !important;
+    justify-content: flex-start !important;
+    flex-shrink: 0 !important;
   }
 
   .footer-pill-capsule {

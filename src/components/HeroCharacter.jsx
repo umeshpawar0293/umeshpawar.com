@@ -232,6 +232,23 @@ export default function HeroCharacter({
     }
   }, [isMobile, cloneScene])
 
+  // Cleanup cloned reflection materials on unmount to prevent VRAM memory leak on mobile
+  useEffect(() => {
+    return () => {
+      if (cloneScene) {
+        cloneScene.traverse((child) => {
+          if (child.isMesh && child.material) {
+            if (Array.isArray(child.material)) {
+              child.material.forEach((m) => m.dispose())
+            } else {
+              child.material.dispose()
+            }
+          }
+        })
+      }
+    }
+  }, [cloneScene])
+
   // Pre-allocated Euler and Quaternion to eliminate GC allocations in useFrame
   const headEulerRef = useRef(new THREE.Euler(0, 0, 0, 'YXZ'))
   const headQuatRef = useRef(new THREE.Quaternion())
@@ -1345,6 +1362,7 @@ export default function HeroCharacter({
           far={2}
           opacity={0.46}
           color="#060710"
+          resolution={isMobile ? 512 : 1024}
           raycast={null}
         />
       </group>

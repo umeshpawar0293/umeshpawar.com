@@ -209,6 +209,10 @@ function CinematicLighting({ scrollProgress = 0, currentScene = 'day' }) {
   // Interior lamp key light with +12% contrast calibration ([1.5, 1.7] -> [1.68, 1.90])
   const keyIntensity = THREE.MathUtils.lerp(1.68, 1.90, nightT)
 
+  // Mobile GPU optimization: clamp shadow map sizes to avoid VRAM exhaustion on mobile GPUs
+  const isMobile = typeof window !== 'undefined' ? window.innerWidth < 768 : false
+  const shadowMapSize = isMobile ? [512, 512] : [1024, 1024]
+
   return (
     <>
       {/* Ambient room light anchored to environment color palette */}
@@ -219,6 +223,7 @@ function CinematicLighting({ scrollProgress = 0, currentScene = 'day' }) {
         position={[0, 4, -3]}
         intensity={0.65}
         color={currentScene === 'night' ? '#7dd3fc' : '#ffffff'}
+        shadow-mapSize={shadowMapSize}
       />
 
       {/* Dynamic environment-responsive side kicker */}
@@ -226,6 +231,7 @@ function CinematicLighting({ scrollProgress = 0, currentScene = 'day' }) {
         position={[4.5, 3.5, -2.5]}
         intensity={rimIntensity}
         color={rimColor}
+        shadow-mapSize={shadowMapSize}
       />
 
       {/* Calibrated front key light (+12% contrast) */}
@@ -233,6 +239,7 @@ function CinematicLighting({ scrollProgress = 0, currentScene = 'day' }) {
         position={[-3, 2.5, 3]}
         intensity={keyIntensity}
         color="#f8fafc"
+        shadow-mapSize={shadowMapSize}
       />
 
       {/* Warm fill light */}
@@ -240,6 +247,7 @@ function CinematicLighting({ scrollProgress = 0, currentScene = 'day' }) {
         position={[3, 1, 2.5]}
         intensity={0.9}
         color="#fed7aa"
+        shadow-mapSize={shadowMapSize}
       />
 
       {/* Subtle floor bounce light */}
@@ -247,6 +255,7 @@ function CinematicLighting({ scrollProgress = 0, currentScene = 'day' }) {
         position={[0, -2, 1]}
         intensity={0.35}
         color="#94a3b8"
+        shadow-mapSize={shadowMapSize}
       />
     </>
   )
@@ -518,7 +527,7 @@ export default function App() {
       ) {
         return
       }
-      if (e.target?.closest?.('a, button, input, textarea, select, [role="button"], .interactive-card, .contact-card, .footer-social-btn, .footer-scroll-top-btn, .mobile-menu-toggle, .work-coverflow-card, .work-mobile-deck-container')) return
+      if (e.target?.closest?.('a, button, input, textarea, select, [role="button"], .interactive-card, .contact-card, .footer-social-btn, .footer-scroll-top-btn, .mobile-menu-toggle')) return
       if (e.touches && e.touches.length > 0) {
         touchStartY = e.touches[0].clientY
         touchStartX = e.touches[0].clientX
@@ -540,8 +549,6 @@ export default function App() {
       }
       if (e.target?.closest?.('a, button, [role="button"], input, textarea, select')) return
       if (e.target.closest('.work-grid-3col')) return
-      if (e.target.closest('.work-mobile-carousel')) return
-      if (e.target.closest('.work-coverflow-card') || e.target.closest('.work-mobile-deck-container')) return
       if (isTransitioningRef.current) {
         e.preventDefault()
       }
@@ -562,8 +569,7 @@ export default function App() {
       }
       if (isTransitioningRef.current) return
       if (!e.changedTouches || e.changedTouches.length === 0) return
-      if (e.target.closest('.work-mobile-carousel')) return
-      if (e.target?.closest?.('a, button, input, textarea, select, [role="button"], .interactive-card, .contact-card, .footer-social-btn, .footer-scroll-top-btn, .mobile-menu-toggle, .work-coverflow-card, .work-mobile-deck-container')) return
+      if (e.target?.closest?.('a, button, input, textarea, select, [role="button"], .interactive-card, .contact-card, .footer-social-btn, .footer-scroll-top-btn, .mobile-menu-toggle')) return
 
       const deltaY = touchStartY - e.changedTouches[0].clientY
       const deltaX = touchStartX - e.changedTouches[0].clientX
@@ -1050,12 +1056,14 @@ export default function App() {
             camera={{ position: [0, 0, 3], fov: 42 }}
             gl={{
               alpha: true,
-              antialias: true,
               powerPreference: 'high-performance',
+              antialias: typeof window !== 'undefined' ? window.innerWidth >= 768 : true,
+              precision: typeof window !== 'undefined' && window.innerWidth < 768 ? 'mediump' : 'highp',
+              preserveDrawingBuffer: false,
               toneMapping: THREE.ACESFilmicToneMapping,
               toneMappingExposure: 1.1,
             }}
-            dpr={[1, 2]}
+            dpr={typeof window !== 'undefined' && window.innerWidth < 768 ? [1, 1.5] : [1, 2]}
           >
             <ResponsiveCamera />
             <CinematicLighting scrollProgress={scrollProgress} currentScene={currentScene} />

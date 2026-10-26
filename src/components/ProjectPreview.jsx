@@ -1,4 +1,4 @@
-import React, { useEffect, useCallback, useRef, useState, useMemo } from 'react'
+import React, { useEffect, useCallback, useRef, useState, useMemo, forwardRef, useImperativeHandle } from 'react'
 import { createPortal } from 'react-dom'
 import TransformBoundingBox from './TransformBoundingBox'
 import SafeProjectGallery, { getAssetUrl, checkIsVideo, cleanAssetUrl, DIMENSION_CACHE } from './BehanceStyleGallery'
@@ -789,6 +789,533 @@ export function UniversalProjectPreviewContent({
 
 
 /**
+ * Format video time in m:ss
+ */
+function formatVideoTime(seconds) {
+  if (isNaN(seconds) || seconds < 0) return '0:00'
+  const mins = Math.floor(seconds / 60)
+  const secs = Math.floor(seconds % 60)
+  return `${mins}:${secs < 10 ? '0' : ''}${secs}`
+}
+
+/**
+ * Interactive Fullscreen Video Player:
+ * - Desktop: Click anywhere or press Spacebar to play/pause. Floating control bar with scrubber & mute.
+ * - Mobile: Tap anywhere to toggle play/pause with animated central indicator. Floating controls.
+ * - Seamless pointer-events isolation so 'X' close button and navigation arrows remain unblocked.
+ */
+export const LightboxVideoPlayer = forwardRef(function LightboxVideoPlayer(
+  { src, project },
+  ref
+) {
+  const videoRef = useRef(null)
+  const [isPlaying, setIsPlaying] = useState(true)
+  const [isMuted, setIsMuted] = useState(false)
+  const [progress, setProgress] = useState(0)
+  const [currentTime, setCurrentTime] = useState(0)
+  const [duration, setDuration] = useState(0)
+  const [showControls, setShowControls] = useState(true)
+  const [feedbackIcon, setFeedbackIcon] = useState(null) // 'play' | 'pause' | null
+  const controlsTimeoutRef = useRef(null)
+  const feedbackTimeoutRef = useRef(null)
+  const isDraggingScrubberRef = useRef(false)
+  const touchStartPosRef = useRef({ x: 0, y: 0 })
+  const lastToggleTimeRef = useRef(0)
+
+  // Reveal controls and reset auto-hide timer
+  const revealControls = useCallback(() => {
+    setShowControls(true)
+    if (controlsTimeoutRef.current) clearTimeout(controlsTimeoutRef.current)
+    controlsTimeoutRef.current = setTimeout(() => {
+      if (!videoRef.current?.paused && !isDraggingScrubberRef.current) {
+        setShowControls(false)
+      }
+    }, 2800)
+  }, [])
+
+  const triggerFeedback = useCallback((type) => {
+    setFeedbackIcon(type)
+    if (feedbackTimeoutRef.current) clearTimeout(feedbackTimeoutRef.current)
+    feedbackTimeoutRef.current = setTimeout(() => {
+      setFeedbackIcon(null)
+    }, 600)
+  }, [])
+
+  const togglePlayPause = useCallback((e) => {
+    if (e) {
+      if (e.type === 'touchend' && e.cancelable) e.preventDefault()
+      e.stopPropagation()
+    }
+    const now = Date.now()
+    if (now - lastToggleTimeRef.current < 350) {
+      return
+    }
+    lastToggleTimeRef.current = now
+
+    const video = videoRef.current
+    if (!video) return
+
+    if (video.paused || video.ended) {
+      video.play().then(() => {
+        setIsPlaying(true)
+        triggerFeedback('play')
+      }).catch(() => {
+        // Fallback: if browser blocked unmuted playback, mute and retry
+        video.muted = true
+        setIsMuted(true)
+        video.play().then(() => {
+          setIsPlaying(true)
+          triggerFeedback('play')
+        }).catch(() => {})
+      })
+    } else {
+      video.pause()
+      setIsPlaying(false)
+      triggerFeedback('pause')
+    }
+    revealControls()
+  }, [triggerFeedback, revealControls])
+
+  const toggleMute = useCallback((e) => {
+    if (e) {
+      if (e.type === 'touchend' && e.cancelable) e.preventDefault()
+      e.stopPropagation()
+    }
+    const video = videoRef.current
+    if (!video) return
+    video.muted = !video.muted
+    setIsMuted(video.muted)
+    revealControls()
+  }, [revealControls])
+
+  const handleTouchStart = (e) => {
+    revealControls()
+    if (e.touches && e.touches[0]) {
+      touchStartPosRef.current = {
+        x: e.touches[0].clientX,
+        y: e.touches[0].clientY,
+      }
+    }
+  }
+
+  const handleTouchEnd = (e) => {
+    if (e.changedTouches && e.changedTouches[0]) {
+      const dx = Math.abs(e.changedTouches[0].clientX - touchStartPosRef.current.x)
+      const dy = Math.abs(e.changedTouches[0].clientY - touchStartPosRef.current.y)
+      if (dx > 12 || dy > 12) {
+        return // Drag gesture, ignore
+      }
+    }
+    togglePlayPause(e)
+  }
+
+  useImperativeHandle(ref, () => ({
+    togglePlayPause,
+    play: () => videoRef.current?.play(),
+    pause: () => videoRef.current?.pause(),
+    toggleMute,
+    videoElement: videoRef.current,
+  }), [togglePlayPause, toggleMute])
+
+  // Track video progress
+  const handleTimeUpdate = () => {
+    const video = videoRef.current
+    if (!video || isDraggingScrubberRef.current) return
+    setCurrentTime(video.currentTime)
+    if (video.duration > 0) {
+      setProgress((video.currentTime / video.duration) * 100)
+    }
+  }
+
+  const handleLoadedMetadata = () => {
+    const video = videoRef.current
+    if (!video) return
+    setDuration(video.duration || 0)
+    setIsMuted(video.muted)
+    setIsPlaying(!video.paused)
+  }
+
+  // Seek bar interaction with support for touch & mouse
+  const handleSeek = (e) => {
+    e.stopPropagation()
+    const video = videoRef.current
+    if (!video || !video.duration) return
+    const clientX =
+      e.clientX ??
+      (e.touches && e.touches[0] ? e.touches[0].clientX : null) ??
+      (e.changedTouches && e.changedTouches[0] ? e.changedTouches[0].clientX : null)
+    if (clientX == null) return
+    const rect = e.currentTarget.getBoundingClientRect()
+    const clickX = clientX - rect.left
+    const newProgress = Math.max(0, Math.min(1, clickX / rect.width))
+    video.currentTime = newProgress * video.duration
+    setProgress(newProgress * 100)
+    setCurrentTime(video.currentTime)
+    revealControls()
+  }
+
+  // Toggle fullscreen mode on video if supported
+  const toggleFullscreen = (e) => {
+    if (e) e.stopPropagation()
+    const video = videoRef.current
+    if (!video) return
+    if (document.fullscreenElement) {
+      document.exitFullscreen?.().catch(() => {})
+    } else {
+      if (video.requestFullscreen) {
+        video.requestFullscreen().catch(() => {})
+      } else if (video.webkitEnterFullscreen) {
+        video.webkitEnterFullscreen()
+      }
+    }
+  }
+
+  // Auto-play on mount
+  useEffect(() => {
+    const video = videoRef.current
+    if (!video) return
+    video.play().catch(() => {
+      // Browser autoplay policy might require muted initially
+      video.muted = true
+      setIsMuted(true)
+      video.play().catch(() => {})
+    })
+    revealControls()
+
+    return () => {
+      if (controlsTimeoutRef.current) clearTimeout(controlsTimeoutRef.current)
+      if (feedbackTimeoutRef.current) clearTimeout(feedbackTimeoutRef.current)
+    }
+  }, [revealControls])
+
+  return (
+    <div
+      className="lightbox-video-player-wrapper"
+      onClick={togglePlayPause}
+      onMouseMove={revealControls}
+      onTouchStart={handleTouchStart}
+      onTouchEnd={handleTouchEnd}
+      style={{
+        position: 'relative',
+        width: '100%',
+        height: '100%',
+        maxWidth: '92vw',
+        maxHeight: '78vh',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        borderRadius: '12px',
+        overflow: 'hidden',
+        backgroundColor: '#000000',
+        cursor: 'pointer',
+        userSelect: 'none',
+        pointerEvents: 'auto',
+      }}
+    >
+      <video
+        ref={videoRef}
+        key={src}
+        src={cleanAssetUrl(src)}
+        playsInline
+        webkit-playsinline="true"
+        preload="metadata"
+        className="lightbox-media-video"
+        onTimeUpdate={handleTimeUpdate}
+        onLoadedMetadata={handleLoadedMetadata}
+        onPlay={() => setIsPlaying(true)}
+        onPause={() => setIsPlaying(false)}
+        onEnded={() => setIsPlaying(false)}
+        onClick={(e) => {
+          e.stopPropagation()
+          togglePlayPause(e)
+        }}
+        onTouchStart={handleTouchStart}
+        onTouchEnd={handleTouchEnd}
+        style={{
+          width: '100%',
+          height: '100%',
+          maxHeight: '78vh',
+          objectFit: 'contain',
+          borderRadius: '10px',
+          outline: 'none',
+          display: 'block',
+          pointerEvents: 'auto',
+        }}
+      />
+
+      {/* Central Play/Pause Flash Animation Badge */}
+      {feedbackIcon && (
+        <div
+          className="lightbox-video-feedback-badge"
+          style={{
+            position: 'absolute',
+            top: '50%',
+            left: '50%',
+            transform: 'translate(-50%, -50%)',
+            width: '72px',
+            height: '72px',
+            borderRadius: '50%',
+            backgroundColor: 'rgba(10, 12, 18, 0.85)',
+            border: '2px solid rgba(216, 255, 0, 0.6)',
+            boxShadow: '0 8px 32px rgba(0, 0, 0, 0.8), 0 0 24px rgba(216, 255, 0, 0.3)',
+            backdropFilter: 'blur(12px)',
+            WebkitBackdropFilter: 'blur(12px)',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            color: '#d8ff00',
+            fontSize: '26px',
+            pointerEvents: 'none',
+            zIndex: 30,
+            animation: 'videoFeedbackPop 0.5s ease-out forwards',
+          }}
+        >
+          {feedbackIcon === 'play' ? (
+            <span style={{ marginLeft: '4px' }}>▶</span>
+          ) : (
+            <span>❚❚</span>
+          )}
+        </div>
+      )}
+
+      {/* Center Persistent Pause Icon when video is paused */}
+      {!isPlaying && !feedbackIcon && (
+        <div
+          style={{
+            position: 'absolute',
+            top: '50%',
+            left: '50%',
+            transform: 'translate(-50%, -50%)',
+            width: '64px',
+            height: '64px',
+            borderRadius: '50%',
+            backgroundColor: 'rgba(10, 12, 18, 0.75)',
+            border: '1.5px solid rgba(255, 255, 255, 0.3)',
+            boxShadow: '0 8px 32px rgba(0, 0, 0, 0.7)',
+            backdropFilter: 'blur(8px)',
+            WebkitBackdropFilter: 'blur(8px)',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            color: '#ffffff',
+            fontSize: '22px',
+            pointerEvents: 'none',
+            zIndex: 25,
+            transition: 'opacity 0.2s ease',
+          }}
+        >
+          <span style={{ marginLeft: '3px' }}>▶</span>
+        </div>
+      )}
+
+      {/* Floating Bottom Control Bar */}
+      <div
+        className="lightbox-video-controls-overlay"
+        onClick={(e) => e.stopPropagation()}
+        onTouchStart={(e) => e.stopPropagation()}
+        onTouchEnd={(e) => e.stopPropagation()}
+        style={{
+          position: 'absolute',
+          bottom: 0,
+          left: 0,
+          right: 0,
+          padding: '24px 16px 14px 16px',
+          background: 'linear-gradient(to top, rgba(5, 7, 12, 0.95) 0%, rgba(5, 7, 12, 0.75) 60%, transparent 100%)',
+          display: 'flex',
+          flexDirection: 'column',
+          gap: '8px',
+          zIndex: 35,
+          opacity: showControls || !isPlaying ? 1 : 0,
+          pointerEvents: showControls || !isPlaying ? 'auto' : 'none',
+          transition: 'opacity 0.25s ease',
+        }}
+      >
+        {/* Scrubber Progress Bar */}
+        <div
+          className="lightbox-video-scrubber-track"
+          onClick={handleSeek}
+          onTouchStart={(e) => {
+            e.stopPropagation()
+            isDraggingScrubberRef.current = true
+            handleSeek(e)
+          }}
+          onTouchMove={(e) => {
+            e.stopPropagation()
+            handleSeek(e)
+          }}
+          onTouchEnd={(e) => {
+            e.stopPropagation()
+            isDraggingScrubberRef.current = false
+            handleSeek(e)
+          }}
+          style={{
+            position: 'relative',
+            width: '100%',
+            height: '14px',
+            display: 'flex',
+            alignItems: 'center',
+            cursor: 'pointer',
+            touchAction: 'none',
+          }}
+        >
+          {/* Background Bar */}
+          <div
+            style={{
+              width: '100%',
+              height: '5px',
+              backgroundColor: 'rgba(255, 255, 255, 0.25)',
+              borderRadius: '999px',
+              overflow: 'hidden',
+              position: 'relative',
+            }}
+          >
+            {/* Filled Progress Bar */}
+            <div
+              style={{
+                width: `${progress}%`,
+                height: '100%',
+                backgroundColor: '#d8ff00',
+                borderRadius: '999px',
+                transition: isDraggingScrubberRef.current ? 'none' : 'width 0.1s linear',
+              }}
+            />
+          </div>
+
+          {/* Scrub Thumb */}
+          <div
+            style={{
+              position: 'absolute',
+              left: `${progress}%`,
+              transform: 'translateX(-50%)',
+              width: '13px',
+              height: '13px',
+              borderRadius: '50%',
+              backgroundColor: '#d8ff00',
+              boxShadow: '0 0 10px rgba(216, 255, 0, 0.8)',
+              pointerEvents: 'none',
+              transition: isDraggingScrubberRef.current ? 'none' : 'left 0.1s linear',
+            }}
+          />
+        </div>
+
+        {/* Buttons Row */}
+        <div
+          style={{
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'space-between',
+            gap: '12px',
+          }}
+        >
+          {/* Left Controls: Play/Pause, Time */}
+          <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+            <button
+              type="button"
+              onClick={togglePlayPause}
+              onTouchEnd={(e) => {
+                if (e.cancelable) e.preventDefault()
+                e.stopPropagation()
+                togglePlayPause(e)
+              }}
+              style={{
+                width: '36px',
+                height: '36px',
+                borderRadius: '50%',
+                backgroundColor: 'rgba(255, 255, 255, 0.12)',
+                border: '1px solid rgba(255, 255, 255, 0.2)',
+                color: '#ffffff',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                cursor: 'pointer',
+                fontSize: '15px',
+                transition: 'all 0.15s ease',
+              }}
+              aria-label={isPlaying ? 'Pause video' : 'Play video'}
+            >
+              {isPlaying ? '❚❚' : '▶'}
+            </button>
+
+            {/* Time Display */}
+            <span
+              style={{
+                color: 'rgba(255, 255, 255, 0.85)',
+                fontSize: '12px',
+                fontFamily: 'monospace',
+                fontWeight: 600,
+                letterSpacing: '0.5px',
+                userSelect: 'none',
+              }}
+            >
+              {formatVideoTime(currentTime)} / {formatVideoTime(duration)}
+            </span>
+          </div>
+
+          {/* Right Controls: Mute, Fullscreen */}
+          <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+            <button
+              type="button"
+              onClick={toggleMute}
+              onTouchEnd={(e) => {
+                if (e.cancelable) e.preventDefault()
+                e.stopPropagation()
+                toggleMute(e)
+              }}
+              style={{
+                padding: '6px 12px',
+                borderRadius: '999px',
+                backgroundColor: isMuted ? 'rgba(216, 255, 0, 0.18)' : 'rgba(255, 255, 255, 0.1)',
+                border: `1px solid ${isMuted ? '#d8ff00' : 'rgba(255, 255, 255, 0.2)'}`,
+                color: isMuted ? '#d8ff00' : '#ffffff',
+                display: 'flex',
+                alignItems: 'center',
+                gap: '6px',
+                cursor: 'pointer',
+                fontSize: '12px',
+                fontWeight: 600,
+                transition: 'all 0.15s ease',
+              }}
+              aria-label={isMuted ? 'Unmute video' : 'Mute video'}
+            >
+              <span>{isMuted ? '🔇' : '🔊'}</span>
+              <span style={{ fontSize: '11px', textTransform: 'uppercase' }}>
+                {isMuted ? 'Unmute' : 'Mute'}
+              </span>
+            </button>
+
+            <button
+              type="button"
+              onClick={toggleFullscreen}
+              onTouchEnd={(e) => {
+                if (e.cancelable) e.preventDefault()
+                e.stopPropagation()
+                toggleFullscreen(e)
+              }}
+              style={{
+                width: '36px',
+                height: '36px',
+                borderRadius: '50%',
+                backgroundColor: 'rgba(255, 255, 255, 0.1)',
+                border: '1px solid rgba(255, 255, 255, 0.2)',
+                color: '#ffffff',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                cursor: 'pointer',
+                fontSize: '14px',
+              }}
+              aria-label="Maximize video"
+            >
+              ⛶
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  )
+})
+
+/**
  * ProjectPreview Modal / Panel Component (Behance-Style Adaptive Grid & Lightbox)
  */
 export default function ProjectPreview({
@@ -822,6 +1349,7 @@ export default function ProjectPreview({
 
   // Lightbox state for true Fullscreen Media View
   const [activeLightboxMedia, setActiveLightboxMedia] = useState(null)
+  const videoPlayerRef = useRef(null)
   const lightboxOpenTimeRef = useRef(0)
   const pptScrollRef = useRef(null)
 
@@ -1191,12 +1719,23 @@ export default function ProjectPreview({
     setIsPPTViewerOpen(true)
   }, [])
 
-  const handleCloseLightbox = (e) => {
-    e?.stopPropagation()
-    // Guard against accidental closure if tap or synthetic click fires right upon opening
-    if (Date.now() - lightboxOpenTimeRef.current < 350) return
-    setActiveLightboxMedia(null)
-  }
+  const lastFullscreenCloseTimeRef = useRef(0)
+  const isPoppingStateRef = useRef(false)
+  const historyPushedRef = useRef(false)
+  const modalMountTimeRef = useRef(Date.now())
+  const onCloseRef = useRef(onClose)
+  onCloseRef.current = onClose
+
+  // Keep modal mount timestamp fresh if project prop switches
+  useEffect(() => {
+    modalMountTimeRef.current = Date.now()
+    console.log("Opening project:", project?.id, "(ProjectPreview mounted)")
+    return () => {
+      console.log("Modal unmounted", project?.id)
+    }
+  }, [project?.id])
+
+  const [isLevel2Clickable, setIsLevel2Clickable] = useState(true)
 
   // Active state refs to avoid stale closures in event listeners
   const activeLightboxMediaRef = useRef(activeLightboxMedia)
@@ -1204,6 +1743,195 @@ export default function ProjectPreview({
 
   const isPPTViewerOpenRef = useRef(isPPTViewerOpen)
   isPPTViewerOpenRef.current = isPPTViewerOpen
+
+  // Cooldown protection: Disable Level 2 pointer events while Level 3 is open and for 450ms after it closes
+  useEffect(() => {
+    if (activeLightboxMedia || isPPTViewerOpen) {
+      setIsLevel2Clickable(false)
+    } else {
+      const timer = setTimeout(() => {
+        setIsLevel2Clickable(true)
+      }, 450)
+      return () => clearTimeout(timer)
+    }
+  }, [Boolean(activeLightboxMedia || isPPTViewerOpen)])
+
+  // Manage browser history state for Level 2 & Level 3 step-wise navigation
+  useEffect(() => {
+    if (typeof window === 'undefined') return
+
+    // Push Level 2 state when preview modal mounts if not already at modal level
+    if (window.history.state?.modalLevel !== 2 && window.history.state?.modalLevel !== 3) {
+      window.history.pushState({ modalLevel: 2, projectId: project?.id }, '')
+      historyPushedRef.current = true
+    }
+
+    const onPopState = (e) => {
+      console.log("onPopState event fired, history state:", window.history.state)
+      if (isPoppingStateRef.current) {
+        console.log("onPopState ignored (isPoppingStateRef is true)")
+        isPoppingStateRef.current = false
+        return
+      }
+
+      // Ignore popstate events occurring within 450ms of modal mounting to discard trailing transitions
+      if (Date.now() - modalMountTimeRef.current < 450) {
+        console.log("onPopState ignored: within 450ms cooldown of modal mount")
+        return
+      }
+
+      // Step-wise pop: If user hits browser Back while in Level 3, only close Level 3
+      if (activeLightboxMediaRef.current || isPPTViewerOpenRef.current) {
+        console.log("Closing Level 3 media triggered by: popstate")
+        lastFullscreenCloseTimeRef.current = Date.now()
+        setActiveLightboxMedia(null)
+        setIsPPTViewerOpen(false)
+        return
+      }
+
+      // If still at modal level 2, do not close modal
+      if (window.history.state?.modalLevel === 2) {
+        console.log("onPopState ignored: still at modalLevel 2")
+        return
+      }
+
+      // If at Level 2, browser Back closes Level 2 and returns to Level 1 (Work page)
+      console.log("Closing modal triggered by: browser popstate")
+      historyPushedRef.current = false
+      onCloseRef.current?.("browser popstate")
+    }
+
+    window.addEventListener('popstate', onPopState)
+    return () => {
+      window.removeEventListener('popstate', onPopState)
+      // Note: Do NOT trigger window.history.back() on effect unmount cleanup!
+      // In React StrictMode and during fast navigation, executing history.back() in unmount
+      // emits an asynchronous popstate into the window, which prematurely destroys the modal.
+      // History is popped cleanly in handleClosePreviewModal when the user explicitly closes.
+    }
+  }, [])
+
+  // Track project changes within Level 2 (e.g. Next / Prev project)
+  useEffect(() => {
+    if (typeof window === 'undefined') return
+    if (window.history.state?.modalLevel === 2 && project?.id) {
+      window.history.replaceState({ modalLevel: 2, projectId: project?.id }, '')
+    }
+  }, [project?.id])
+
+  // Track Level 3 (Fullscreen Preview) in browser history
+  useEffect(() => {
+    if (typeof window === 'undefined') return
+    if (activeLightboxMedia || isPPTViewerOpen) {
+      if (window.history.state?.modalLevel !== 3) {
+        window.history.pushState({ modalLevel: 3, projectId: project?.id }, '')
+      }
+    }
+  }, [Boolean(activeLightboxMedia || isPPTViewerOpen), project?.id])
+
+  // Level 3 Close: Only closes Full Screen Preview, NEVER closes Level 2
+  const handleCloseLightbox = useCallback((e) => {
+    if (e) {
+      if (e.cancelable) e.preventDefault()
+      e.stopPropagation()
+    }
+    // Guard against accidental closure if tap fires right upon opening
+    if (Date.now() - lightboxOpenTimeRef.current < 350) return
+
+    lastFullscreenCloseTimeRef.current = Date.now()
+    setActiveLightboxMedia(null)
+    setIsPPTViewerOpen(false)
+
+    // Sync history state if Level 3 was active
+    if (window.history.state?.modalLevel === 3) {
+      isPoppingStateRef.current = true
+      window.history.back()
+    }
+  }, [])
+
+  // Level 2 Close: Closes Project Preview modal, returns to Level 1 (Work page)
+  const handleClosePreviewModal = useCallback((e, reason = "close button ('X')") => {
+    console.log("handleClosePreviewModal called with reason:", reason, {
+      timeSinceMount: Date.now() - modalMountTimeRef.current,
+      eventTarget: e?.target,
+    })
+
+    // Cooldown guard: Discard clicks/ghost clicks within 450ms of modal mounting
+    if (Date.now() - modalMountTimeRef.current < 450) {
+      console.log("handleClosePreviewModal ignored: within 450ms cooldown of mount")
+      return
+    }
+
+    if (e) {
+      if (e.cancelable) e.preventDefault()
+      e.stopPropagation()
+    }
+
+    // Safety guard: If Level 3 is open, NEVER close Level 2 - close Level 3 instead!
+    if (activeLightboxMediaRef.current || isPPTViewerOpenRef.current) {
+      handleCloseLightbox(e)
+      return
+    }
+
+    // Cooldown guard: Discard ghost clicks arriving within 500ms of Level 3 closing
+    if (Date.now() - lastFullscreenCloseTimeRef.current < 500) {
+      console.log("handleClosePreviewModal ignored: within 500ms cooldown of Level 3 closing")
+      return
+    }
+
+    if (historyPushedRef.current && window.history.state?.modalLevel === 2) {
+      historyPushedRef.current = false
+      isPoppingStateRef.current = true
+      window.history.back()
+    }
+
+    console.log("Closing modal triggered by:", reason)
+    onCloseRef.current?.(reason)
+  }, [handleCloseLightbox])
+
+  const handleBackdropClick = useCallback((e) => {
+    console.log("handleBackdropClick fired:", {
+      target: e.target,
+      currentTarget: e.currentTarget,
+      isEqual: e.target === e.currentTarget,
+      timeSinceMount: Date.now() - modalMountTimeRef.current,
+    })
+
+    // Strict backdrop check: only fire when clicking directly on the backdrop itself
+    if (e.target !== e.currentTarget) {
+      console.log("handleBackdropClick ignored: e.target !== e.currentTarget")
+      return
+    }
+
+    // Cooldown guard: Discard clicks/ghost clicks within 450ms of modal mounting
+    if (Date.now() - modalMountTimeRef.current < 450) {
+      console.log("handleBackdropClick ignored: within 450ms cooldown")
+      return
+    }
+
+    if (e) {
+      if (e.cancelable) e.preventDefault()
+      e.stopPropagation()
+    }
+
+    if (activeLightboxMediaRef.current || isPPTViewerOpenRef.current) {
+      handleCloseLightbox(e)
+      return
+    }
+
+    if (Date.now() - lastFullscreenCloseTimeRef.current < 500) {
+      return
+    }
+
+    if (historyPushedRef.current && window.history.state?.modalLevel === 2) {
+      historyPushedRef.current = false
+      isPoppingStateRef.current = true
+      window.history.back()
+    }
+
+    console.log("Closing modal triggered by: backdrop-click")
+    onCloseRef.current?.("backdrop-click")
+  }, [handleCloseLightbox])
 
   // Strict Body Scroll Lock: freeze page scroll triggers & section transitions
   useEffect(() => {
@@ -1298,12 +2026,47 @@ export default function ProjectPreview({
     const handleKeyDown = (e) => {
       if (e.key === 'Escape') {
         e.preventDefault()
-        if (isPPTViewerOpen) {
-          setIsPPTViewerOpen(false)
-        } else if (activeLightboxMedia) {
-          setActiveLightboxMedia(null)
+        if (isPPTViewerOpenRef.current || activeLightboxMediaRef.current) {
+          handleCloseLightbox(e)
         } else {
-          onClose()
+          handleClosePreviewModal(e)
+        }
+      } else if (e.key === ' ' || e.code === 'Space') {
+        const isVideoActive =
+          activeLightboxMedia &&
+          (activeLightboxMedia.type === 'video' ||
+            checkIsVideo(activeLightboxMedia.src || activeLightboxMedia.url))
+        if (isVideoActive && videoPlayerRef.current?.togglePlayPause) {
+          e.preventDefault()
+          e.stopPropagation()
+          videoPlayerRef.current.togglePlayPause()
+          return
+        }
+        if (activeLightboxMedia && activeLightboxMedia.type !== 'ppt' && activeLightboxMedia.type !== 'pdf') {
+          e.preventDefault()
+          handleNextItem(e)
+        }
+      } else if (e.key === 'k' || e.key === 'K') {
+        const isVideoActive =
+          activeLightboxMedia &&
+          (activeLightboxMedia.type === 'video' ||
+            checkIsVideo(activeLightboxMedia.src || activeLightboxMedia.url))
+        if (isVideoActive && videoPlayerRef.current?.togglePlayPause) {
+          e.preventDefault()
+          e.stopPropagation()
+          videoPlayerRef.current.togglePlayPause()
+          return
+        }
+      } else if (e.key === 'm' || e.key === 'M') {
+        const isVideoActive =
+          activeLightboxMedia &&
+          (activeLightboxMedia.type === 'video' ||
+            checkIsVideo(activeLightboxMedia.src || activeLightboxMedia.url))
+        if (isVideoActive && videoPlayerRef.current?.toggleMute) {
+          e.preventDefault()
+          e.stopPropagation()
+          videoPlayerRef.current.toggleMute()
+          return
         }
       } else if (e.key === 'ArrowLeft') {
         e.preventDefault()
@@ -1312,10 +2075,7 @@ export default function ProjectPreview({
         } else if (!activeLightboxMedia && !isPPTViewerOpen) {
           handlePrev(e)
         }
-      } else if (
-        e.key === 'ArrowRight' ||
-        (activeLightboxMedia && activeLightboxMedia.type !== 'ppt' && e.key === ' ')
-      ) {
+      } else if (e.key === 'ArrowRight') {
         e.preventDefault()
         if (activeLightboxMedia && activeLightboxMedia.type !== 'pdf') {
           handleNextItem(e)
@@ -1362,33 +2122,61 @@ export default function ProjectPreview({
 
   return (
     <>
-      {/* Semi-translucent backdrop: 3x3 grid remains visible behind it */}
+      {/* Modal Dialog Root Container */}
       <div
-        className="project-preview-backdrop"
-        onClick={onClose}
+        className="project-preview-modal-root fixed inset-0 flex items-center justify-center p-3 sm:p-4"
         role="dialog"
         aria-modal="true"
-        aria-label={`${project.title} Preview Panel`}
+        aria-label={`${project.cleanTitle || project.title} Preview Panel`}
+        style={{
+          position: 'fixed',
+          inset: 0,
+          zIndex: 1000,
+          pointerEvents: isLevel2Clickable ? 'auto' : 'none',
+        }}
       >
-        {/* Right-Side Cinematic Preview Panel (Matching Reference 3) */}
+        {/* 1. Distinct Dedicated Backdrop Overlay Element (separate from content container) */}
         <div
-          className="project-preview-panel"
-          onClick={(e) => e.stopPropagation()}
-        >
-          {/* Sharp Circular Lime Close Button with Electric Blue "✕" (Pinned top-right) */}
-          <button
-            type="button"
-            className="preview-circle-close-btn has-transform-box"
-            onClick={onClose}
-            aria-label="Close project preview"
-          >
-            <span className="preview-close-icon">✕</span>
-            <TransformBoundingBox />
-          </button>
+          className="project-preview-backdrop absolute inset-0 bg-black/80 backdrop-blur-md"
+          onClick={handleBackdropClick}
+          onPointerDown={(e) => e.stopPropagation()}
+          aria-hidden="true"
+          style={{
+            position: 'absolute',
+            inset: 0,
+            zIndex: 10,
+            pointerEvents: isLevel2Clickable ? 'auto' : 'none',
+          }}
+        />
 
-          {/* Panel Top Header: Orange display title */}
-          <div className="preview-panel-header">
-            <h2 className="preview-panel-title">{project.title}</h2>
+        {/* 2. Modal Content Card / Panel Container (distinct sibling element) */}
+        <div
+          className="project-preview-panel relative z-20 w-[92vw] max-w-lg md:max-w-none mx-auto bg-[#0d0d12] border border-white/10 rounded-2xl max-h-[85vh] md:max-h-none flex flex-col overflow-hidden shadow-2xl"
+          onClick={(e) => e.stopPropagation()}
+          onPointerDown={(e) => e.stopPropagation()}
+          onTouchStart={(e) => e.stopPropagation()}
+          onTouchEnd={(e) => e.stopPropagation()}
+          style={{
+            zIndex: 20,
+            pointerEvents: isLevel2Clickable ? 'auto' : 'none',
+          }}
+        >
+          {/* Panel Top Header: Display title and Close Button aligned cleanly */}
+          <div className="preview-panel-header flex items-center justify-between px-6 py-4">
+            <h2 className="preview-panel-title">{project.cleanTitle || project.title}</h2>
+            <button
+              type="button"
+              className="preview-circle-close-btn has-transform-box"
+              onClick={handleClosePreviewModal}
+              aria-label="Close project preview"
+              style={{
+                zIndex: 30,
+                pointerEvents: isLevel2Clickable ? 'auto' : 'none',
+              }}
+            >
+              <span className="preview-close-icon">✕</span>
+              <TransformBoundingBox />
+            </button>
           </div>
 
           {/* Scrollable Panel Body */}
@@ -1404,8 +2192,9 @@ export default function ProjectPreview({
           >
             {/* If Behance Project: Dedicated High-Fidelity Curated Showcase Hub */}
             {isBehanceCard ? (
-              <BehanceShowcaseModal onClose={onClose} />
-            ) : Array.isArray(project?.sections) && project.sections.length > 0 ? (
+              <BehanceShowcaseModal onClose={handleClosePreviewModal} />
+            ) : (
+              Array.isArray(project?.sections) && project.sections.length > 0 ? (
               <div className="project-sections-container w-full flex flex-col gap-8 py-2">
                 {project.sections.map((section, sIdx) => (
                   <div key={section.id || `preview-sec-${sIdx}`} className="project-section-block w-full">
@@ -1657,7 +2446,8 @@ export default function ProjectPreview({
                   </div>
                 )}
               </>
-            )}
+            )
+          )}
 
             {/* Previous / Next Navigation Controls (Retained with clean spacing) */}
             <div className="preview-nav-controls">
@@ -1814,8 +2604,15 @@ export default function ProjectPreview({
             {/* Dedicated Fullscreen Close Button at top-right */}
             <button
               type="button"
-              onClick={handleCloseLightbox}
-              onTouchEnd={handleCloseLightbox}
+              onClick={(e) => {
+                e.stopPropagation()
+                handleCloseLightbox(e)
+              }}
+              onTouchEnd={(e) => {
+                if (e.cancelable) e.preventDefault()
+                e.stopPropagation()
+                handleCloseLightbox(e)
+              }}
               style={{
                 position: 'fixed',
                 top: '24px',
@@ -2159,7 +2956,11 @@ export default function ProjectPreview({
       ) : activeLightboxMedia ? (
         <div
           className="media-fullscreen-lightbox"
-          onClick={handleCloseLightbox}
+          onClick={(e) => {
+            if (e.target === e.currentTarget) {
+              handleCloseLightbox(e)
+            }
+          }}
           role="dialog"
           aria-modal="true"
           aria-label="Fullscreen Media Lightbox"
@@ -2244,13 +3045,20 @@ export default function ProjectPreview({
           {/* Dedicated Fullscreen Close Button at top-right */}
           <button
             type="button"
-            onClick={handleCloseLightbox}
-            onTouchEnd={handleCloseLightbox}
+            onClick={(e) => {
+              e.stopPropagation()
+              handleCloseLightbox(e)
+            }}
+            onTouchEnd={(e) => {
+              if (e.cancelable) e.preventDefault()
+              e.stopPropagation()
+              handleCloseLightbox(e)
+            }}
             style={{
               position: 'fixed',
               top: '24px',
               right: '28px',
-              zIndex: 10006,
+              zIndex: 200025,
               width: '48px',
               height: '48px',
               borderRadius: '9999px',
@@ -2348,13 +3156,11 @@ export default function ProjectPreview({
 
               if (isCurrentVideo) {
                 return (
-                  <video
+                  <LightboxVideoPlayer
                     key={currentAssetUrl}
-                    src={cleanAssetUrl(currentAssetUrl)}
-                    controls
-                    autoPlay
-                    preload="metadata"
-                    className="lightbox-media-video"
+                    ref={videoPlayerRef}
+                    src={currentAssetUrl}
+                    project={project}
                   />
                 )
               }

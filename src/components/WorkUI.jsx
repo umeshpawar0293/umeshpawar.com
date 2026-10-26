@@ -82,6 +82,7 @@ export default function WorkUI({
   const touchStartTimeRef = useRef(0)
   const touchDirectionRef = useRef(null)
   const hasDraggedCardRef = useRef(false)
+  const dragOffsetRef = useRef(0)
 
   const gridRef = useRef(null)
   const trackerTrackRef = useRef(null)
@@ -148,9 +149,10 @@ export default function WorkUI({
   // STRICT GUARD: If user navigates away from Work section, immediately close any active preview
   useEffect(() => {
     if (!isWorkActive && previewProject) {
+      console.log("Closing modal triggered by: WorkUI !isWorkActive guard", { scrollProgress, isWorkActive, projectId: previewProject?.id })
       setPreviewProject(null)
     }
-  }, [isWorkActive, previewProject])
+  }, [isWorkActive, previewProject, scrollProgress])
 
   // Work section active range: enters at 0.48, fully visible 0.60 - 0.74, fades out 0.74 - 0.88
   let opacity = 0
@@ -298,27 +300,38 @@ export default function WorkUI({
 
   // Touch Gesture handlers for 3D Coverflow swipe
   const handleDeckTouchStart = useCallback((e) => {
-    e.stopPropagation()
+    // Note: Do NOT stopPropagation so touchstart bubbles to window for section navigation
     const touch = e.touches[0]
+    if (!touch) return
     touchStartXRef.current = touch.clientX
     touchStartYRef.current = touch.clientY
     touchStartTimeRef.current = Date.now()
     touchDirectionRef.current = null
     hasDraggedCardRef.current = false
-    setIsDeckDragging(true)
+    dragOffsetRef.current = 0
     setDragOffset(0)
   }, [])
 
   const handleDeckTouchMove = useCallback((e) => {
-    if (!isDeckDragging) return
     const touch = e.touches[0]
+    if (!touch) return
     const dx = touch.clientX - touchStartXRef.current
     const dy = touch.clientY - touchStartYRef.current
 
     if (!touchDirectionRef.current) {
       if (Math.abs(dx) > 6 || Math.abs(dy) > 6) {
-        touchDirectionRef.current = Math.abs(dx) > Math.abs(dy) ? 'horizontal' : 'vertical'
+        if (Math.abs(dy) >= Math.abs(dx)) {
+          touchDirectionRef.current = 'vertical'
+        } else {
+          touchDirectionRef.current = 'horizontal'
+          setIsDeckDragging(true)
+        }
       }
+    }
+
+    if (touchDirectionRef.current === 'vertical') {
+      // Allow vertical page scroll without interference; do not lock or preventDefault
+      return
     }
 
     if (touchDirectionRef.current === 'horizontal') {
@@ -327,38 +340,47 @@ export default function WorkUI({
       if (Math.abs(dx) > 8) {
         hasDraggedCardRef.current = true
       }
+      dragOffsetRef.current = dx
       setDragOffset(dx)
     }
-  }, [isDeckDragging])
+  }, [])
 
   const handleDeckTouchEnd = useCallback((e) => {
-    e?.stopPropagation?.()
-    if (!isDeckDragging) return
-    setIsDeckDragging(false)
-
     if (touchDirectionRef.current === 'horizontal') {
+      e?.stopPropagation?.()
       const dt = Math.max(1, Date.now() - touchStartTimeRef.current)
-      const velocityX = dragOffset / dt
+      const currentOffset = dragOffsetRef.current
+      const velocityX = currentOffset / dt
       const SWIPE_DIST_THRESHOLD = 35 // px - snappy responsive threshold
       const VELOCITY_THRESHOLD = 0.18 // px/ms
 
-      if (dragOffset < -SWIPE_DIST_THRESHOLD || velocityX < -VELOCITY_THRESHOLD) {
+      if (currentOffset < -SWIPE_DIST_THRESHOLD || velocityX < -VELOCITY_THRESHOLD) {
         // Swiping LEFT moves Next card to center
         setActiveDeckIndex((prev) => (prev + 1) % PROJECTS_DATA.length)
-      } else if (dragOffset > SWIPE_DIST_THRESHOLD || velocityX > VELOCITY_THRESHOLD) {
+      } else if (currentOffset > SWIPE_DIST_THRESHOLD || velocityX > VELOCITY_THRESHOLD) {
         // Swiping RIGHT moves Previous card to center
         setActiveDeckIndex((prev) => (prev - 1 + PROJECTS_DATA.length) % PROJECTS_DATA.length)
       }
+      setTimeout(() => {
+        hasDraggedCardRef.current = false
+      }, 60)
+    } else {
+      // Vertical swipe or quick tap: DO NOT stop propagation so page scroll / section navigation proceeds
+      hasDraggedCardRef.current = false
     }
 
+    setIsDeckDragging(false)
+    dragOffsetRef.current = 0
     setDragOffset(0)
-    setTimeout(() => {
-      hasDraggedCardRef.current = false
-    }, 60)
-  }, [isDeckDragging, dragOffset])
+    touchDirectionRef.current = null
+  }, [])
 
   // Card click handler: Tapping flanking cards directly centers them; tapping center card opens preview
-  const handleCardClick = useCallback((offset, project) => {
+  const handleCardClick = useCallback((offset, project, e) => {
+    if (e) {
+      if (e.cancelable) e.preventDefault()
+      e.stopPropagation()
+    }
     if (hasDraggedCardRef.current) return
     if (offset < 0) {
       setActiveDeckIndex((prev) => (prev + offset + PROJECTS_DATA.length) % PROJECTS_DATA.length)
@@ -367,8 +389,19 @@ export default function WorkUI({
       setActiveDeckIndex((prev) => (prev + offset) % PROJECTS_DATA.length)
       setDragOffset(0)
     } else if (offset === 0) {
+      console.log("Opening project:", project.id, "(from mobile deck click)")
       setPreviewProject(project)
     }
+  }, [])
+
+  const handleClosePreview = useCallback((reason = "WorkUI handleClosePreview") => {
+    console.log("Closing modal triggered by:", reason)
+    setPreviewProject(null)
+  }, [])
+
+  const handleSelectProject = useCallback((nextP) => {
+    console.log("Opening project:", nextP.id, "(from handleSelectProject)")
+    setPreviewProject(nextP)
   }, [])
 
   return (
@@ -468,8 +501,14 @@ export default function WorkUI({
                         key={project.id}
                         className={`work-project-card ${isEven ? 'card-type-a' : 'card-type-b'}`}
                         aria-label={project.title}
-                        onClick={() => {
+                        onPointerDown={(e) => {
+                          e.stopPropagation?.()
+                        }}
+                        onClick={(e) => {
+                          e.preventDefault?.()
+                          e.stopPropagation?.()
                           if (hasDraggedGrid.current) return
+                          console.log("Opening project:", project.id, "(from desktop grid card click)")
                           setPreviewProject(project)
                         }}
                       >
@@ -527,9 +566,14 @@ export default function WorkUI({
                               className={`work-card-arrow-btn w-6 h-6 sm:w-7 sm:h-7 rounded-full flex items-center justify-center border-none cursor-pointer p-0 transition-transform hover:scale-110 shadow-sm ${
                                 isEven ? 'bg-white text-black' : 'bg-black text-white'
                               }`}
+                              onPointerDown={(e) => {
+                                e.stopPropagation?.()
+                              }}
                               onClick={(e) => {
-                                e.stopPropagation()
+                                e.preventDefault?.()
+                                e.stopPropagation?.()
                                 if (hasDraggedGrid.current) return
+                                console.log("Opening project:", project.id, "(from desktop arrow btn click)")
                                 setPreviewProject(project)
                               }}
                               aria-label={`Open preview for ${project.title || project.name}`}
@@ -596,7 +640,6 @@ export default function WorkUI({
             }}
             onPointerDown={(e) => e.stopPropagation()}
             onMouseDown={(e) => e.stopPropagation()}
-            onTouchStart={(e) => e.stopPropagation()}
           >
             <p
               className="work-mobile-subtitle font-bold select-text text-xs sm:text-sm md:text-base"
@@ -622,7 +665,6 @@ export default function WorkUI({
               }}
               onPointerDown={(e) => e.stopPropagation()}
               onMouseDown={(e) => e.stopPropagation()}
-              onTouchStart={(e) => e.stopPropagation()}
             >
               (Swipe through, yahan chai, tears, aur approved revisions ka display hai.)
             </p>
@@ -753,8 +795,10 @@ export default function WorkUI({
                     opacity: cardOpacity,
                     zIndex,
                     pointerEvents: (isCenter || isLeftFlank || isRightFlank) && !isDeckDragging ? 'auto' : 'none',
+                    touchAction: 'pan-y',
                   }}
-                  onClick={() => handleCardClick(offset, project)}
+                  onClick={(e) => handleCardClick(offset, project, e)}
+                  onPointerDown={(e) => e.stopPropagation()}
                   aria-label={`${project.title}${isCenter ? ' (Active)' : isLeftFlank ? ' (Previous)' : ' (Next)'}`}
                 >
                   <div className={`work-card-media-window has-transform-box ${project.thumbnailClass ? 'is-aspect-video' : ''}`}>
@@ -811,13 +855,16 @@ export default function WorkUI({
                         className={`work-card-arrow-btn w-6 h-6 sm:w-7 sm:h-7 rounded-full flex items-center justify-center border-none cursor-pointer p-0 transition-transform hover:scale-110 shadow-sm ${
                           isEven ? 'bg-white text-black' : 'bg-black text-white'
                         }`}
+                        onPointerDown={(e) => e.stopPropagation()}
                         onClick={(e) => {
+                          if (e.cancelable) e.preventDefault()
                           e.stopPropagation()
                           if (hasDraggedCardRef.current) return
                           if (isCenter) {
+                            console.log("Opening project:", project.id, "(from mobile center card arrow)")
                             setPreviewProject(project)
                           } else {
-                            handleCardClick(offset, project)
+                            handleCardClick(offset, project, e)
                           }
                         }}
                         aria-label={`Open preview for ${project.title || project.name}`}
@@ -893,10 +940,11 @@ export default function WorkUI({
       {/* Same-Page Cinematic Project Preview Overlay (Strictly guarded to activeSection === 'work') */}
       {isWorkActive && previewProject && (
         <ProjectPreview
+          key={previewProject.id}
           project={previewProject}
           projects={PROJECTS_DATA}
-          onClose={() => setPreviewProject(null)}
-          onSelectProject={(nextP) => setPreviewProject(nextP)}
+          onClose={handleClosePreview}
+          onSelectProject={handleSelectProject}
         />
       )}
     </>
