@@ -987,7 +987,7 @@ export default function App() {
                 fontFamily: "'Dela Gothic One', 'Fredoka', cursive, sans-serif"
               }}
             >
-              {/* LINE 1: SOLID CRISP WHITE WITH MATTE CHISELED BEVEL & DEEP #0D061A OUTLINE */}
+              {/* LINE 1: CLEAN MATTE OFF-WHITE WITH SOFT AMBIENT DEPTH */}
               <span
                 className={`${line1.length > 25 ? 'text-[17px] lg:text-[1.38rem]' : 'text-[23px] lg:text-[2.05rem]'} max-w-[90vw] text-center`}
                 style={{
@@ -996,33 +996,23 @@ export default function App() {
                   fontWeight: 900,
                   letterSpacing: '0.045em',
                   wordSpacing: '0.25em',
-                  color: '#FFFFFF',
+                  color: '#F8FAFC',
                   padding: '0 8px',
-                  /* Crisp dark purple-black backing outline */
-                  WebkitTextStroke: '1.4px #0D061A',
+                  /* Subtle rear edge protection (non-distorting) */
+                  WebkitTextStroke: '0.6px rgba(13, 6, 26, 0.55)',
                   paintOrder: 'stroke fill',
+                  /* Soft ambient drop shadow for non-jarring contrast against light & dark elements */
                   textShadow: `
-                    /* Clean Geometric Bevel & 3D Extrusion (Zero Glow Bleed, Zero Plastic Shine) */
-                    -1px 0 0 #CBD5E1,
-                    1px 0 0 #CBD5E1,
-                    0 1px 0 #CBD5E1,
-                    0 2px 0 #94A3B8,
-                    0 3px 0 #64748B,
-                    0 4px 0 #334155,
-                    0 5px 0 #0D061A,
-                    -2px 5px 0 #0D061A,
-                    2px 5px 0 #0D061A,
-                    
-                    /* Directional Ground Occlusion Shadow */
-                    0 7px 12px rgba(13, 6, 26, 0.85),
-                    0 12px 20px rgba(0, 0, 0, 0.75)
+                    0 2px 4px rgba(0, 0, 0, 0.35),
+                    0 6px 16px rgba(13, 6, 26, 0.45),
+                    0 12px 24px rgba(0, 0, 0, 0.30)
                   `
                 }}
               >
                 {line1}
               </span>
 
-              {/* LINE 2: SOLID NEON LIME GREEN (#B4F82B) WITH MATTE CHISELED BEVEL & DEEP #0D061A OUTLINE */}
+              {/* LINE 2: TONALLY BALANCED CITRON/LIME ACCENT WITH SOFT AMBIENT DEPTH */}
               <span
                 className={`${line2.length > 25 ? 'text-[20px] lg:text-[1.65rem]' : 'text-[28px] lg:text-[2.45rem]'} mt-[5px] max-w-[90vw] text-center`}
                 style={{
@@ -1031,26 +1021,16 @@ export default function App() {
                   fontWeight: 900,
                   letterSpacing: '0.045em',
                   wordSpacing: '0.25em',
-                  color: '#B4F82B', /* Crisp Solid Neon Lime Green */
+                  color: '#D4F868', /* Tonally balanced accent (no harsh neon glow or plastic shine) */
                   padding: '0 8px',
-                  /* Crisp dark purple-black backing outline */
-                  WebkitTextStroke: '1.4px #0D061A',
+                  /* Subtle rear edge protection (non-distorting) */
+                  WebkitTextStroke: '0.6px rgba(13, 6, 26, 0.55)',
                   paintOrder: 'stroke fill',
+                  /* Soft ambient drop shadow for non-jarring contrast against light & dark elements */
                   textShadow: `
-                    /* Clean Geometric Bevel & 3D Extrusion (Zero Glow Bleed, Zero Plastic Shine) */
-                    -1px 0 0 #9EE41A,
-                    1px 0 0 #9EE41A,
-                    0 1px 0 #9EE41A,
-                    0 2px 0 #85C412,
-                    0 3px 0 #6BA30A,
-                    0 4px 0 #4C7505,
-                    0 5px 0 #0D061A,
-                    -2px 5px 0 #0D061A,
-                    2px 5px 0 #0D061A,
-                    
-                    /* Directional Ground Occlusion Shadow */
-                    0 7px 12px rgba(13, 6, 26, 0.85),
-                    0 12px 20px rgba(0, 0, 0, 0.75)
+                    0 2px 4px rgba(0, 0, 0, 0.35),
+                    0 6px 16px rgba(13, 6, 26, 0.45),
+                    0 12px 24px rgba(0, 0, 0, 0.30)
                   `
                 }}
               >

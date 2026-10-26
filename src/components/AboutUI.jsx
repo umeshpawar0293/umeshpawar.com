@@ -232,8 +232,8 @@ export default function AboutUI({ scrollProgress = 0 }) {
 
           <div ref={actionRowRef} className="about-action-row" style={{ pointerEvents: 'auto', zIndex: 999 }}>
             <a
-              href="/CV/Final_Final_Approved_CV.pdf"
-              download="Final_Final_Approved_CV.pdf"
+              href="/cv.pdf"
+              download="Umesh_Pawar_CV.pdf"
               target="_blank"
               rel="noopener noreferrer"
               className="btn-pill btn-cv has-transform-box cursor-pointer select-none"
@@ -288,8 +288,8 @@ export default function AboutUI({ scrollProgress = 0 }) {
 
           <div ref={mobileActionRef} className="about-mobile-action" style={{ pointerEvents: 'auto', zIndex: 999 }}>
             <a
-              href="/CV/Final_Final_Approved_CV.pdf"
-              download="Final_Final_Approved_CV.pdf"
+              href="/cv.pdf"
+              download="Umesh_Pawar_CV.pdf"
               target="_blank"
               rel="noopener noreferrer"
               className="btn-pill btn-cv-mobile has-transform-box cursor-pointer select-none"

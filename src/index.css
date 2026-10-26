@@ -961,22 +961,14 @@ body.is-character-dragging * {
   line-height: 0.88;
   font-weight: 900;
   font-size: clamp(16px, 4.4vw, 22px);
-  color: #FFFFFF;
+  color: #F8FAFC;
   padding: 0 8px;
-  -webkit-text-stroke: 1.4px #0D061A;
+  -webkit-text-stroke: 0.6px rgba(13, 6, 26, 0.55);
   paint-order: stroke fill;
   text-shadow:
-    -1px 0 0 #CBD5E1,
-    1px 0 0 #CBD5E1,
-    0 1px 0 #CBD5E1,
-    0 2px 0 #94A3B8,
-    0 3px 0 #64748B,
-    0 4px 0 #334155,
-    0 5px 0 #0D061A,
-    -2px 5px 0 #0D061A,
-    2px 5px 0 #0D061A,
-    0 7px 12px rgba(13, 6, 26, 0.85),
-    0 12px 20px rgba(0, 0, 0, 0.75);
+    0 2px 4px rgba(0, 0, 0, 0.35),
+    0 6px 16px rgba(13, 6, 26, 0.45),
+    0 12px 24px rgba(0, 0, 0, 0.30);
   white-space: nowrap;
 }
 
@@ -989,22 +981,14 @@ body.is-character-dragging * {
   font-weight: 900;
   font-size: clamp(20px, 5.8vw, 28px);
   margin-top: 5px;
-  color: #B4F82B;
+  color: #D4F868;
   padding: 0 8px;
-  -webkit-text-stroke: 1.4px #0D061A;
+  -webkit-text-stroke: 0.6px rgba(13, 6, 26, 0.55);
   paint-order: stroke fill;
   text-shadow:
-    -1px 0 0 #9EE41A,
-    1px 0 0 #9EE41A,
-    0 1px 0 #9EE41A,
-    0 2px 0 #85C412,
-    0 3px 0 #6BA30A,
-    0 4px 0 #4C7505,
-    0 5px 0 #0D061A,
-    -2px 5px 0 #0D061A,
-    2px 5px 0 #0D061A,
-    0 7px 12px rgba(13, 6, 26, 0.85),
-    0 12px 20px rgba(0, 0, 0, 0.75);
+    0 2px 4px rgba(0, 0, 0, 0.35),
+    0 6px 16px rgba(13, 6, 26, 0.45),
+    0 12px 24px rgba(0, 0, 0, 0.30);
   white-space: nowrap;
 }
 
@@ -1089,14 +1073,58 @@ body.is-character-dragging * {
   }
 }
 
+/* Mobile Breakpoint (< 768px): Reduce 3D text size/scale by exactly 20% (multiplier: 0.8) while preserving horizontal centering */
+@media (max-width: 767px) {
+  #persistent-scroll-indicator {
+    left: 50% !important;
+    transform: translate(-50%, 0) !important;
+  }
+
+  /* Exactly 20% reduction (multiplier: 0.8):
+     - Line 1: 23px * 0.8 = 18.4px (or 17px * 0.8 = 13.6px)
+     - Line 2: 28px * 0.8 = 22.4px (or 20px * 0.8 = 16px) */
+  #persistent-scroll-indicator .text-\[23px\],
+  #persistent-scroll-indicator .text-\[25px\] {
+    font-size: calc(23px * 0.8) !important; /* 18.4px */
+  }
+
+  #persistent-scroll-indicator .text-\[17px\] {
+    font-size: calc(17px * 0.8) !important; /* 13.6px */
+  }
+
+  #persistent-scroll-indicator .text-\[28px\],
+  #persistent-scroll-indicator .text-\[30px\] {
+    font-size: calc(28px * 0.8) !important; /* 22.4px */
+  }
+
+  #persistent-scroll-indicator .text-\[20px\] {
+    font-size: calc(20px * 0.8) !important; /* 16px */
+  }
+
+  /* Narrative scroll lines if rendered (20% reduction: multiplier 0.8) */
+  .mobile-scroll-line-1 {
+    font-size: clamp(12.8px, 3.52vw, 17.6px) !important; /* Exactly 20% reduction (multiplier: 0.8) from clamp(16px, 4.4vw, 22px) */
+  }
+
+  .mobile-scroll-line-2 {
+    font-size: clamp(16px, 4.64vw, 22.4px) !important; /* Exactly 20% reduction (multiplier: 0.8) from clamp(20px, 5.8vw, 28px) */
+  }
+}
+
 @media (max-width: 480px) {
   #persistent-scroll-indicator .text-\[23px\],
   #persistent-scroll-indicator .text-\[25px\] {
-    font-size: clamp(13px, 3.8vw, 19px) !important;
+    font-size: clamp(10.4px, 3.04vw, 15.2px) !important; /* Exactly 20% reduction (multiplier: 0.8) from clamp(13px, 3.8vw, 19px) */
+  }
+  #persistent-scroll-indicator .text-\[17px\] {
+    font-size: clamp(8.8px, 2.56vw, 12.8px) !important; /* Exactly 20% reduction (multiplier: 0.8) */
   }
   #persistent-scroll-indicator .text-\[28px\],
   #persistent-scroll-indicator .text-\[30px\] {
-    font-size: clamp(17px, 4.8vw, 23px) !important;
+    font-size: clamp(13.6px, 3.84vw, 18.4px) !important; /* Exactly 20% reduction (multiplier: 0.8) from clamp(17px, 4.8vw, 23px) */
+  }
+  #persistent-scroll-indicator .text-\[20px\] {
+    font-size: clamp(11.2px, 3.2vw, 14.4px) !important; /* Exactly 20% reduction (multiplier: 0.8) */
   }
 }
 
@@ -1141,32 +1169,28 @@ body.is-character-dragging * {
     -webkit-user-select: none;
   }
 
-  /* LINE 1: SOLID CRISP WHITE (#FFFFFF) WITH CLEAN CHISELED BEVEL */
+  /* LINE 1: CLEAN MATTE OFF-WHITE WITH SOFT AMBIENT DROP SHADOW */
   .puffy-toy-purple,
   .puffy-toy-white {
     font-size: clamp(1.4rem, 1.95vw, 2.1rem);
     letter-spacing: 0.025em;
-    color: #FFFFFF;
-    -webkit-text-fill-color: #FFFFFF;
-    -webkit-text-stroke: 1.2px #0D061A;
-    filter: drop-shadow(0 2px 0px #CBD5E1)
-            drop-shadow(0 4px 0px #475569)
-            drop-shadow(0 6px 12px rgba(13, 6, 26, 0.95))
-            drop-shadow(0 12px 24px rgba(0, 0, 0, 0.75));
+    color: #F8FAFC;
+    -webkit-text-fill-color: #F8FAFC;
+    -webkit-text-stroke: 0.6px rgba(13, 6, 26, 0.55);
+    filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.35))
+            drop-shadow(0 6px 16px rgba(13, 6, 26, 0.45));
     margin-bottom: -1px;
   }
 
-  /* LINE 2: SOLID NEON LIME GREEN (#B4F82B) WITH CLEAN CHISELED BEVEL */
+  /* LINE 2: TONALLY BALANCED CITRON/LIME ACCENT WITH SOFT AMBIENT DROP SHADOW */
   .puffy-toy-green {
     font-size: clamp(1.65rem, 2.3vw, 2.5rem);
     letter-spacing: 0.03em;
-    color: #B4F82B;
-    -webkit-text-fill-color: #B4F82B;
-    -webkit-text-stroke: 1.2px #0D061A;
-    filter: drop-shadow(0 2px 0px #85C412)
-            drop-shadow(0 4px 0px #4C7505)
-            drop-shadow(0 6px 14px rgba(13, 6, 26, 0.95))
-            drop-shadow(0 14px 26px rgba(0, 0, 0, 0.85));
+    color: #D4F868;
+    -webkit-text-fill-color: #D4F868;
+    -webkit-text-stroke: 0.6px rgba(13, 6, 26, 0.55);
+    filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.35))
+            drop-shadow(0 6px 16px rgba(13, 6, 26, 0.45));
   }
 }
 

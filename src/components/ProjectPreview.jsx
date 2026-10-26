@@ -1353,7 +1353,7 @@ export default function ProjectPreview({
   const openPdfLightbox = () => {
     setActiveLightboxMedia({
       type: 'pdf',
-      src: project.pdfUrl || '/cv/Final_Final_CV_Approved.pdf',
+      src: project.pdfUrl || '/cv.pdf',
       title: `${project.title} — Verified Dossier`,
       caption: 'Full high-resolution PDF document viewer.',
     })

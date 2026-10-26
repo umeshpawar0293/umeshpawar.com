@@ -172,12 +172,8 @@ function projectFoldersPlugin() {
           }
         }
 
-        if (req.url && /^\/(cv|CV)(\/|$)/i.test(req.url)) {
-          const fileName = decodeURIComponent(req.url.split('/').pop().split('?')[0])
-          let target = path.resolve(__dirname, 'public/cv', fileName)
-          if (!fs.existsSync(target) || !fileName.endsWith('.pdf')) {
-            target = path.resolve(__dirname, 'public/cv/Final_Final_CV_Approved.pdf')
-          }
+        if (req.url && /^\/(cv|CV)(\.pdf|\/|$)/i.test(req.url)) {
+          const target = path.resolve(__dirname, 'public/cv.pdf')
           if (fs.existsSync(target)) {
             res.setHeader('Content-Type', 'application/pdf')
             return fs.createReadStream(target).pipe(res)

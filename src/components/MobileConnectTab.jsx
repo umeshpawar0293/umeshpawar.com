@@ -111,7 +111,7 @@ export default function MobileConnectTab() {
                 </a>
 
                 <a
-                  href="/CV/Final_Final_CV_Approved.pdf"
+                  href="/cv.pdf"
                   download="Umesh_Pawar_CV.pdf"
                   target="_blank"
                   rel="noopener noreferrer"

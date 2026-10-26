@@ -1,20 +1,20 @@
 import React, { useRef } from 'react'
 import { Text } from '@react-three/drei'
-import { useFrame } from '@react-three/fiber'
+import { useFrame, useThree } from '@react-three/fiber'
 
 /**
  * ScrollInstruction3D
  *
- * ADJUST 3D SCROLL TEXT SIZE, POSITION, AND COMPACT STACK TO MATCH REFERENCE (image_5.png)
+ * 3D SCROLL TEXT WITH RESPONSIVE SIZING FOR DESKTOP & MOBILE VIEWPORTS
  *
  * - Font Asset: /fonts/DelaGothicOne-Regular.ttf
- * - 3D Position: [x: 0.65, y: 1.78, z: -0.55] (shifted backward in Z and tightly above head)
- * - Base Rotation: [x: -0.015, y: 0, z: 0.055] (subtle manual pivot for perspective camera)
- * - Line 1: Rich Toy Purple (#a376f4), fontSize: 0.185, letterSpacing: 0.015, lineHeight: 0.65, position: [0, 0.08, 0]
- * - Line 2: True Puffy Green (#d0ff00), fontSize: 0.21, letterSpacing: 0.02, lineHeight: 0.65, position: [0, -0.06, 0]
- * - Tight Gap: 0.14 Y gap between lines for compact "puffy sausage tag" aesthetic
- * - Material: MeshPhysicalMaterial with wet toy-plastic sheen (roughness: 0.11, clearcoat: 1.0, reflectivity: 0.9)
- * - Desktop Viewport only (min-width: 1024px)
+ * - Desktop 3D Position: [x: 0.65, y: 1.78, z: -0.55]
+ * - Mobile 3D Position: [x: 0, y: 1.45, z: -0.55] (horizontally centered)
+ * - Desktop Line 1: fontSize: 0.185
+ * - Desktop Line 2: fontSize: 0.21
+ * - Mobile (< 768px): Exactly 20% reduction (multiplier: 0.8)
+ * - Alignment: anchorX="center", anchorY="middle" (preserved for horizontal centering)
+ * - Material: Solid crisp white (#FFFFFF) & Neon lime green (#B4F82B) with matte chiseled bevel & #0D061A outline (no glow/plastic)
  */
 export function ScrollInstruction3D({
   line1 = "TOTAL MESS RIGHT NOW.",
@@ -24,10 +24,14 @@ export function ScrollInstruction3D({
   scrollProgress,
   isDesktop = true,
 }) {
+  const { size } = useThree()
+  const isMobile = size?.width ? size.width < 768 : (typeof window !== 'undefined' ? window.innerWidth < 768 : false)
+  const mobileScaleMultiplier = isMobile ? 0.8 : 1.0
+
   const FONT_PATH = '/fonts/DelaGothicOne-Regular.ttf'
   const groupRef = useRef()
 
-  // Dynamic chapter copy or default user-provided props
+  // Dynamic chapter copy or default user-provided props (DO NOT change or revert these text contents)
   let activeLine1 = line1
   let activeLine2 = line2
 
@@ -44,11 +48,15 @@ export function ScrollInstruction3D({
     }
   }
 
+  // Active position: desktop defaults to [0.65, 1.78, -0.55], mobile horizontally centered to prevent clipping
+  const activeBasePosition = isMobile ? [0, 1.45, -0.55] : position
+  const activeRotation = isMobile ? [0, 0, 0] : rotation
+
   useFrame((state) => {
     if (!groupRef.current) return
 
-    // Hide completely on Contact section (>= 0.84) or if not on desktop
-    if (!isDesktop || (scrollProgress !== undefined && scrollProgress >= 0.84)) {
+    // Hide completely on Contact section (>= 0.84)
+    if (scrollProgress !== undefined && scrollProgress >= 0.84) {
       groupRef.current.visible = false
       return
     }
@@ -57,57 +65,62 @@ export function ScrollInstruction3D({
 
     // Subtle organic idle levitation oscillation around calibrated Y anchor
     const floatY = Math.sin(state.clock.elapsedTime * 1.5) * 0.008
-    groupRef.current.position.y = position[1] + floatY
+    groupRef.current.position.y = activeBasePosition[1] + floatY
   })
 
-  // Desktop only guard
-  if (!isDesktop) return null
+  // Desktop font sizes: 0.185 & 0.21. In mobile viewport (< 768px), reduced by exactly 20% (multiplier: 0.8).
+  const font1Size = 0.185 * mobileScaleMultiplier
+  const font2Size = 0.21 * mobileScaleMultiplier
 
   return (
-    <group ref={groupRef} position={position} rotation={rotation}>
-      {/* LINE 1: SOLID CRISP WHITE WITH MATTE CHISELED BEVEL & #0D061A OUTLINE */}
+    <group ref={groupRef} position={activeBasePosition} rotation={activeRotation} scale={[1, 1, 1]}>
+      {/* LINE 1: CLEAN MATTE OFF-WHITE WITH SUBTLE DEPTH */}
       <Text
-        position={[0, 0.08, 0]}
+        position={[0, 0.08 * mobileScaleMultiplier, 0]}
         font={FONT_PATH}
-        fontSize={0.185}
+        fontSize={font1Size}
         lineHeight={0.65}
         letterSpacing={0.015}
+        maxWidth={isMobile ? 2.6 : 3.5}
         textAlign="center"
         anchorX="center"
         anchorY="middle"
-        outlineWidth={0.012}
-        outlineColor="#0D061A"
+        outlineWidth={0.003 * mobileScaleMultiplier}
+        outlineColor="rgba(13, 6, 26, 0.55)"
+        depthOffset={-1}
       >
         {activeLine1}
         <meshStandardMaterial
-          color="#FFFFFF"
+          color="#F8FAFC"
           emissive="#000000"
           emissiveIntensity={0}
-          roughness={0.75}
-          metalness={0.0}
+          roughness={0.5}
+          metalness={0.1}
         />
       </Text>
 
-      {/* LINE 2: SOLID NEON LIME GREEN (#B4F82B) WITH MATTE CHISELED BEVEL & #0D061A OUTLINE */}
+      {/* LINE 2: TONALLY BALANCED CITRON/LIME ACCENT WITH SUBTLE DEPTH */}
       <Text
-        position={[0, -0.06, 0]}
+        position={[0, -0.06 * mobileScaleMultiplier, 0]}
         font={FONT_PATH}
-        fontSize={0.21}
+        fontSize={font2Size}
         lineHeight={0.65}
         letterSpacing={0.02}
+        maxWidth={isMobile ? 2.6 : 3.5}
         textAlign="center"
         anchorX="center"
         anchorY="middle"
-        outlineWidth={0.014}
-        outlineColor="#0D061A"
+        outlineWidth={0.003 * mobileScaleMultiplier}
+        outlineColor="rgba(13, 6, 26, 0.55)"
+        depthOffset={-1}
       >
         {activeLine2}
         <meshStandardMaterial
-          color="#B4F82B"
+          color="#D4F868"
           emissive="#000000"
           emissiveIntensity={0}
-          roughness={0.75}
-          metalness={0.0}
+          roughness={0.5}
+          metalness={0.1}
         />
       </Text>
     </group>

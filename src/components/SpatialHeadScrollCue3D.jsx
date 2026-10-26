@@ -24,90 +24,26 @@ function drawMoldedPlasticText(ctx, text, cx, y, fontSize, variant = 'white') {
     ctx.letterSpacing = '1px'
   }
 
-  // 1. Deep 3D Shadow Layering (Clean separation from background environment)
-  // Layer 3 (Deep ambient occlusion): drop-shadow(0 12px 24px rgba(0, 0, 0, 0.60))
+  // 1. Soft ambient drop shadow for non-jarring contrast against light & dark elements
   ctx.save()
-  ctx.shadowColor = 'rgba(0, 0, 0, 0.60)'
-  ctx.shadowBlur = 24
-  ctx.shadowOffsetX = 0
-  ctx.shadowOffsetY = 12
-  ctx.fillStyle = '#000000'
-  ctx.fillText(text, cx, y)
-  ctx.restore()
-
-  // Layer 2 (Contact depth shadow): drop-shadow(0 6px 12px rgba(0, 0, 0, 0.85))
-  ctx.save()
-  ctx.shadowColor = 'rgba(0, 0, 0, 0.85)'
-  ctx.shadowBlur = 12
+  ctx.shadowColor = 'rgba(0, 0, 0, 0.45)'
+  ctx.shadowBlur = 16
   ctx.shadowOffsetX = 0
   ctx.shadowOffsetY = 6
   ctx.fillStyle = '#000000'
   ctx.fillText(text, cx, y)
   ctx.restore()
 
-  // Layer 1 (Bevel lip shadow): drop-shadow(0 2px 0px rgba(0, 0, 0, 0.50))
+  // 2. Subtle rear edge stroke to guarantee clean separation without distorting letterforms
   ctx.save()
-  ctx.shadowColor = 'rgba(0, 0, 0, 0.50)'
-  ctx.shadowBlur = 0
-  ctx.shadowOffsetX = 0
-  ctx.shadowOffsetY = 2
-  ctx.fillStyle = '#000000'
-  ctx.fillText(text, cx, y)
-  ctx.restore()
-
-  // Ambient backlight glow halo
-  ctx.save()
-  if (variant === 'green') {
-    ctx.shadowColor = 'rgba(216, 255, 0, 0.45)'
-    ctx.shadowBlur = 20
-    ctx.shadowOffsetX = 0
-    ctx.shadowOffsetY = 0
-    ctx.fillStyle = '#d8ff00'
-  } else {
-    ctx.shadowColor = 'rgba(255, 255, 255, 0.22)'
-    ctx.shadowBlur = 16
-    ctx.shadowOffsetX = 0
-    ctx.shadowOffsetY = 0
-    ctx.fillStyle = '#ffffff'
-  }
-  ctx.fillText(text, cx, y)
-  ctx.restore()
-
-  // 2. Text Fill & Gloss Gradients
-  const fontHalf = fontSize * 0.52
-  const grad = ctx.createLinearGradient(0, y - fontHalf, 0, y + fontHalf)
-  if (variant === 'green') {
-    // Green Lines: linear-gradient(180deg, #FFFFFF 0%, #d8ff00 35%, #a3d700 80%, #628200 100%)
-    grad.addColorStop(0.0, '#FFFFFF')  // 0%: Top specular white highlight
-    grad.addColorStop(0.35, '#d8ff00') // 35%: Exact Signature Volt Green
-    grad.addColorStop(0.80, '#a3d700') // 80%: Glossy mid-body lime
-    grad.addColorStop(1.0, '#628200')  // 100%: Deep shaded bevel base
-  } else {
-    // White Lines: linear-gradient(180deg, #FFFFFF 0%, #E2E8F0 60%, #94A3B8 100%)
-    grad.addColorStop(0.0, '#FFFFFF')  // 0%: High-gloss Pure White
-    grad.addColorStop(0.60, '#E2E8F0') // 60%: Slate highlight / ceramic white
-    grad.addColorStop(1.0, '#94A3B8')  // 100%: Deep shaded bevel base
-  }
-
-  ctx.save()
-  ctx.fillStyle = grad
-  ctx.fillText(text, cx, y)
-  ctx.restore()
-
-  // 3. Specular Top Reflection: Hairline bright glossy stroke (1px rgba(255, 255, 255, 0.70))
-  ctx.save()
-  ctx.strokeStyle = 'rgba(255, 255, 255, 0.70)'
-  ctx.lineWidth = 1.0
+  ctx.strokeStyle = 'rgba(13, 6, 26, 0.55)'
+  ctx.lineWidth = 1.6
   ctx.strokeText(text, cx, y)
   ctx.restore()
 
-  // 4. Curved Acrylic Lacquer Top Sheen Glint
+  // 3. Flat / Matte Clean Finish (Tonally balanced palette, no hot spots or harsh glows)
   ctx.save()
-  const glossGrad = ctx.createLinearGradient(0, y - fontHalf, 0, y)
-  glossGrad.addColorStop(0.0, 'rgba(255, 255, 255, 0.65)')
-  glossGrad.addColorStop(0.5, 'rgba(255, 255, 255, 0.18)')
-  glossGrad.addColorStop(1.0, 'rgba(255, 255, 255, 0.0)')
-  ctx.fillStyle = glossGrad
+  ctx.fillStyle = variant === 'green' ? '#D4F868' : '#F8FAFC'
   ctx.fillText(text, cx, y)
   ctx.restore()
 }
@@ -306,14 +242,14 @@ export default function SpatialHeadScrollCue3D({
     groupRef.current.rotation.set(0, 0, 0)
   })
 
-  // Completely unmounted on non-desktop viewports
-  if (!isDesktop) return null
+  const isMobile = typeof window !== 'undefined' ? window.innerWidth < 768 : false
+  const mobileScale = isMobile ? 0.8 : 1.0
 
   // Sized plane: 1.05 x 0.525 Three.js units (2:1 aspect ratio matching 1024x512 texture)
   const planeGeo = <planeGeometry args={[1.05, 0.525]} />
 
   return (
-    <group ref={groupRef}>
+    <group ref={groupRef} scale={[mobileScale, mobileScale, mobileScale]}>
       {/* Act 1 Mesh */}
       <mesh ref={mesh1Ref} renderOrder={-1}>
         {planeGeo}
