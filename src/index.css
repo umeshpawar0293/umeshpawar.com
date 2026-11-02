@@ -1639,9 +1639,10 @@ body.is-character-dragging * {
     text-size-adjust: none !important;
   }
 
-  .scroll-badge-text.mt-0.5,
+  .scroll-badge-text + .scroll-badge-text,
+  .scroll-badge-text.mt-0\.5,
   .scroll-prompt-line-2 {
-    margin-top: 0.125rem !important; /* mt-0.5 */
+    margin-top: 2px !important;
   }
 }
 
