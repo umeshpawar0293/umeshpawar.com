@@ -10,28 +10,62 @@ import TransformBoundingBox from './TransformBoundingBox'
  */
 export default function HeroUI({ scrollProgress = 0 }) {
   const [mobileMenuOpen, setMobileMenuOpen] = React.useState(false)
+  const [isQuickScrolling, setIsQuickScrolling] = React.useState(false)
   const heroCopyRef = useRef(null)
+  const heroNameRef = useRef(null)
+  const heroGlassBoxRef = useRef(null)
+  const quickScrollTimerRef = useRef(null)
 
-  // Initial 3D rotational flip entrance
+  // Track quick scroll pulses for brand signature micro-feedback
   useEffect(() => {
-    if (heroCopyRef.current) {
-      const items = heroCopyRef.current.children
+    const onScrollOrWheel = () => {
+      setIsQuickScrolling(true)
+      if (quickScrollTimerRef.current) clearTimeout(quickScrollTimerRef.current)
+      quickScrollTimerRef.current = setTimeout(() => {
+        setIsQuickScrolling(false)
+      }, 250)
+    }
+    window.addEventListener('scroll', onScrollOrWheel, { passive: true })
+    window.addEventListener('wheel', onScrollOrWheel, { passive: true })
+    return () => {
+      window.removeEventListener('scroll', onScrollOrWheel)
+      window.removeEventListener('wheel', onScrollOrWheel)
+      if (quickScrollTimerRef.current) clearTimeout(quickScrollTimerRef.current)
+    }
+  }, [])
+
+  // Initial Studio-Grade Entrance: Split-character upward stagger + glass card scale reveal
+  useEffect(() => {
+    if (heroNameRef.current) {
+      const chars = heroNameRef.current.querySelectorAll('.hero-title-char')
+      if (chars.length > 0) {
+        gsap.fromTo(
+          chars,
+          { y: 35, opacity: 0 },
+          {
+            y: 0,
+            opacity: 1,
+            stagger: 0.035,
+            duration: 0.9,
+            ease: 'power3.out',
+            clearProps: 'transform,opacity',
+          }
+        )
+      }
+    }
+
+    if (heroGlassBoxRef.current) {
       gsap.fromTo(
-        items,
+        heroGlassBoxRef.current,
+        { scale: 0.96, opacity: 0.85, y: 16 },
         {
-          opacity: 0,
-          y: 40,
-          rotateX: -25,
-          transformPerspective: 800,
-        },
-        {
+          scale: 1,
           opacity: 1,
           y: 0,
-          rotateX: 0,
-          stagger: 0.08,
-          duration: 0.95,
-          ease: 'power3.out',
-          clearProps: 'rotateX,transformPerspective',
+          duration: 1.0,
+          delay: 0.15,
+          ease: 'power2.out',
+          clearProps: 'scale,transform',
         }
       )
     }
@@ -137,7 +171,7 @@ export default function HeroUI({ scrollProgress = 0 }) {
             <img
               src="/brand/Logo.svg"
               alt="Umesh Pawar Signature Logo"
-              className="hero-logo-img"
+              className={`hero-logo-img ${isQuickScrolling ? 'is-quick-scrolling' : ''}`}
               decoding="async"
             />
           </a>
@@ -295,51 +329,92 @@ export default function HeroUI({ scrollProgress = 0 }) {
           pointerEvents: 'none',
         }}
       >
-        <div ref={heroCopyRef} className="hero-copy-container" style={copyStyle}>
-          <h1 className="hero-name has-transform-box sharp-isometric-shadow neon-long-shadow">
-            UMESH PAWAR
+        <div ref={heroCopyRef} className="hero-copy-container flex flex-col items-center justify-center text-center mx-auto w-full" style={copyStyle}>
+          <h1
+            ref={heroNameRef}
+            className="hero-name has-transform-box sharp-isometric-shadow neon-long-shadow text-center mx-auto uppercase"
+            style={{
+              transform: `translateY(${-scrollProgress * 40 * 0.4}px)`,
+              willChange: 'transform',
+            }}
+          >
+            {"UMESH PAWAR".split("").map((char, idx) => (
+              <span
+                key={idx}
+                className="hero-title-char inline-block"
+                style={{ display: char === " " ? "inline" : "inline-block" }}
+              >
+                {char === " " ? "\u00A0" : char}
+              </span>
+            ))}
             <TransformBoundingBox />
           </h1>
-          <h2 className="hero-tagline font-bold">CREATIVE. SKILLED. MOTIVATED.</h2>
-          <p className="hero-aside font-medium">(Yes, even after round 11 of client feedback.)</p>
-          <p className="hero-statement font-bold max-w-[420px]">
-            <span className="whitespace-normal lg:whitespace-nowrap">
-              I specialize in agency alchemy: taking non-existent
-            </span>
-            <br className="hero-desktop-br hidden lg:inline" />
-            {' '}
-            <span className="whitespace-normal lg:whitespace-nowrap">
-              budgets, chaotic 8 PM voice notes, and &lsquo;thoda international
-            </span>
-            <br className="hero-desktop-br hidden lg:inline" />
-            {' '}
-            <span className="whitespace-normal lg:whitespace-nowrap">
-              feel chahiye&rsquo; and turning them into culture-defining work.
-            </span>
-            <br className="hero-desktop-br hidden lg:inline" />
-            {' '}
-            <span className="whitespace-normal lg:whitespace-nowrap">
-              Powered by sharp design, sharper punchlines, and a
-            </span>
-            <br className="hero-desktop-br hidden lg:inline" />
-            {' '}
-            <span className="whitespace-normal lg:whitespace-nowrap">
-              stubborn refusal to make boring campaigns.
-            </span>
-          </p>
 
-          <div className="hero-action-row">
-            <a
-              href="#work"
-              className="btn-pill btn-explore has-transform-box"
-              onClick={(e) => {
-                e.stopPropagation()
-                handleScrollWork(e)
-              }}
-            >
-              Explore My Work <span className="arrow-icon">→</span>
-              <TransformBoundingBox />
-            </a>
+          {/* ── Frosted Glass Box Container across Desktop and Mobile (Tight mt-2 sm:mt-3) ── */}
+          <div
+            ref={heroGlassBoxRef}
+            className="hero-glass-box mx-auto mt-2 sm:mt-3 md:mt-6 transform-gpu will-change-transform"
+          >
+            <h2 className="hero-tagline text-[11px] sm:text-xs md:text-sm lg:text-base font-black tracking-wider text-[#ccff00] uppercase text-center mx-auto drop-shadow-[0_0_8px_rgba(204,255,0,0.4)] md:whitespace-nowrap" style={{ marginTop: 0 }}>
+              <span className="hero-clean-text text-[11px] sm:text-xs md:text-sm lg:text-base font-black tracking-wider text-[#ccff00] uppercase text-center drop-shadow-[0_0_8px_rgba(204,255,0,0.4)] md:whitespace-nowrap">
+                CREATIVE. SKILLED. MOTIVATED.
+              </span>
+            </h2>
+            <p className="hero-aside text-[9.5px] sm:text-[10px] md:text-xs font-normal text-zinc-400 text-center mx-auto mt-0.5 mb-2">
+              <span className="hero-clean-text-sub text-[9.5px] sm:text-[10px] md:text-xs font-normal text-zinc-400">
+                (Yes, even after round 11 of client feedback.)
+              </span>
+            </p>
+            <p className="hero-statement text-[10px] sm:text-[10.5px] md:text-sm lg:text-[14px] font-bold md:font-medium text-zinc-100 md:text-zinc-200 leading-[1.4] md:leading-[1.4] tracking-tight md:tracking-normal text-center text-balance px-1 md:px-2 my-2 md:my-3 max-w-[420px] md:max-w-[500px] mx-auto font-['Archivo']" style={{ textWrap: 'balance' }}>
+              {/* Desktop 5-line distribution (preserved strictly for md: / lg:) */}
+              <span className="hidden md:inline">
+                <span className="whitespace-nowrap">I specialize in agency alchemy: taking non-existent budgets,</span>
+                <br />
+                <span className="whitespace-nowrap">chaotic 8 PM voice notes, and &lsquo;thoda international feel chahiye&rsquo;</span>
+                <br />
+                <span className="whitespace-nowrap">and turning them into culture-defining work.</span>
+                <br />
+                <span className="whitespace-nowrap">Powered by sharp design, sharper punchlines,</span>
+                <br />
+                <span className="whitespace-nowrap">and a stubborn refusal to make boring campaigns.</span>
+              </span>
+
+              {/* Mobile 4-line balanced distribution (strictly < 768px, zero orphan words) */}
+              <span className="inline md:hidden text-[10px] sm:text-[10.5px] font-bold leading-[1.4] text-zinc-100 text-center tracking-tight">
+                I specialize in agency alchemy: taking non-existent budgets,<br className="block md:hidden" />
+                chaotic 8 PM voice notes, and &lsquo;thoda international feel chahiye&rsquo;<br className="block md:hidden" />
+                and turning them into culture-defining work. Powered by<br className="block md:hidden" />
+                sharp design, sharper punchlines, and a stubborn refusal to make boring campaigns.
+              </span>
+            </p>
+
+            {/* Action buttons row: side-by-side on both desktop & mobile */}
+            <div className="hero-action-row flex flex-row items-center justify-center gap-2.5 sm:gap-3 w-full mx-auto mt-3 md:mt-4">
+              <a
+                href="#work"
+                className="btn-pill btn-explore has-transform-box no-underline h-[30px] md:h-auto w-auto flex-shrink-0 px-3.5 sm:px-4 md:px-6 text-[8.5px] sm:text-[9px] md:text-sm font-black md:font-extrabold uppercase tracking-wider text-[#0066ff] md:text-[#004af2] bg-[#ccff00] rounded-full inline-flex items-center justify-center whitespace-nowrap shadow-sm"
+                onClick={(e) => {
+                  e.stopPropagation()
+                  handleScrollWork(e)
+                }}
+                style={{ textDecoration: 'none', margin: 0 }}
+              >
+                EXPLORE MY WORK <span className="arrow-icon text-[8.5px] sm:text-[9px] md:text-sm font-black ml-1" aria-hidden="true">→</span>
+                <TransformBoundingBox />
+              </a>
+              <a
+                href="#about"
+                className="btn-pill btn-know-me has-transform-box no-underline h-[30px] md:h-auto w-auto flex-shrink-0 px-3.5 sm:px-4 md:px-6 text-[8.5px] sm:text-[9px] md:text-sm font-black md:font-extrabold uppercase tracking-wider text-[#0066ff] md:text-[#004af2] bg-[#ccff00] rounded-full inline-flex items-center justify-center whitespace-nowrap shadow-sm"
+                onClick={(e) => {
+                  e.stopPropagation()
+                  handleScrollAbout(e)
+                }}
+                style={{ textDecoration: 'none', margin: 0 }}
+              >
+                KNOW ME
+                <TransformBoundingBox />
+              </a>
+            </div>
           </div>
         </div>
       </main>

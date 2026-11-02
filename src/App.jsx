@@ -972,98 +972,9 @@ export default function App() {
         {/* Global Sticky "Let's Connect" Vertical Pill Tab & Popup (Mobile View Only) */}
         <MobileConnectTab />
 
-        {/* PERSISTENT GLOBAL SCROLL BADGE */}
-        {(() => {
-          const current = (activePage || (typeof location !== 'undefined' ? location?.pathname : '') || '').toLowerCase();
-          if (current.includes('contact')) return null;
-
-          let line1 = "TOTAL MESS RIGHT NOW.";
-          let line2 = "SCROLL TO FIX ME.";
-
-          if (current.includes('work')) {
-            line1 = "DON'T LEAVE ME HANGING";
-            line2 = "LIKE A 7 PM BRIEF.";
-          } else if (current.includes('about')) {
-            line1 = "FINALLY COLOURS ALIGNING,";
-            line2 = "KEEP SCROLLING";
-          }
-
-          return (
-            <div
-              id="persistent-scroll-indicator"
-              style={{
-                position: 'fixed',
-                top: '12.8%',
-                left: '59.5%',
-                transform: 'translate(-50%, 0)',
-                zIndex: 5,
-                display: 'flex',
-                flexDirection: 'column',
-                alignItems: 'center',
-                justifyContent: 'center',
-                pointerEvents: 'none',
-                userSelect: 'none',
-                visibility: 'visible',
-                opacity: 0.98,
-                fontFamily: "'Dela Gothic One', 'Fredoka', cursive, sans-serif"
-              }}
-            >
-              {/* LINE 1: CLEAN MATTE OFF-WHITE WITH SOFT AMBIENT DEPTH */}
-              <span
-                className={`${line1.length > 25 ? 'text-[17px] lg:text-[1.38rem]' : 'text-[23px] lg:text-[2.05rem]'} max-w-[90vw] text-center`}
-                style={{
-                  textTransform: 'uppercase',
-                  lineHeight: 0.88,
-                  fontWeight: 900,
-                  letterSpacing: '0.045em',
-                  wordSpacing: '0.25em',
-                  color: '#F8FAFC',
-                  padding: '0 8px',
-                  /* Subtle rear edge protection (non-distorting) */
-                  WebkitTextStroke: '0.6px rgba(13, 6, 26, 0.55)',
-                  paintOrder: 'stroke fill',
-                  /* Soft ambient drop shadow for non-jarring contrast against light & dark elements */
-                  textShadow: `
-                    0 2px 4px rgba(0, 0, 0, 0.35),
-                    0 6px 16px rgba(13, 6, 26, 0.45),
-                    0 12px 24px rgba(0, 0, 0, 0.30)
-                  `
-                }}
-              >
-                {line1}
-              </span>
-
-              {/* LINE 2: TONALLY BALANCED CITRON/LIME ACCENT WITH SOFT AMBIENT DEPTH */}
-              <span
-                className={`${line2.length > 25 ? 'text-[20px] lg:text-[1.65rem]' : 'text-[28px] lg:text-[2.45rem]'} mt-[5px] max-w-[90vw] text-center`}
-                style={{
-                  textTransform: 'uppercase',
-                  lineHeight: 0.88,
-                  fontWeight: 900,
-                  letterSpacing: '0.045em',
-                  wordSpacing: '0.25em',
-                  color: '#D4F868', /* Tonally balanced accent (no harsh neon glow or plastic shine) */
-                  padding: '0 8px',
-                  /* Subtle rear edge protection (non-distorting) */
-                  WebkitTextStroke: '0.6px rgba(13, 6, 26, 0.55)',
-                  paintOrder: 'stroke fill',
-                  /* Soft ambient drop shadow for non-jarring contrast against light & dark elements */
-                  textShadow: `
-                    0 2px 4px rgba(0, 0, 0, 0.35),
-                    0 6px 16px rgba(13, 6, 26, 0.45),
-                    0 12px 24px rgba(0, 0, 0, 0.30)
-                  `
-                }}
-              >
-                {line2}
-              </span>
-            </div>
-          );
-        })()}
-
-        {/* Layer 2 (3D Scene): Transparent Three.js Character Canvas (z-20 sits in front of scroll text z-5) */}
+        {/* Layer 2 (3D Scene): Transparent Three.js Character Canvas */}
         <div
-          className="canvas-layer"
+          className="canvas-layer transition-opacity duration-500 ease-out"
           style={{ zIndex: 20, pointerEvents: 'auto', touchAction: 'none' }}
           onPointerDown={handleDragDown}
         >
@@ -1110,7 +1021,7 @@ export default function App() {
         <HeroUI scrollProgress={scrollProgress} />
 
         {/* Cinematic About Me Section */}
-        <AboutUI scrollProgress={scrollProgress} />
+        <AboutUI scrollProgress={scrollProgress} activePage={activePage} />
 
         {/* Selected Work Section */}
         <WorkUI
@@ -1132,7 +1043,7 @@ export default function App() {
         />
 
         {/* Interactive Cube Narrative Cues & Scroll Indicator System */}
-        <NarrativeScrollPill scrollProgress={scrollProgress} />
+        <NarrativeScrollPill scrollProgress={scrollProgress} activePage={activePage} />
 
         {/* Global Floating Glassmorphic Docked Footer */}
         <Footer scrollProgress={scrollProgress} />

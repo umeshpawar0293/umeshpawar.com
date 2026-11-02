@@ -196,5 +196,9 @@ function projectFoldersPlugin() {
 // https://vite.dev/config/
 export default defineConfig({
   plugins: [react(), projectFoldersPlugin()],
+  server: {
+    host: true, // Listen on all local IPv4 and IPv6 addresses (0.0.0.0 & localhost)
+    port: 5173,
+  },
 })
 

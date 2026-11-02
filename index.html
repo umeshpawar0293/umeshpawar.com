@@ -16,9 +16,29 @@
       crossorigin="anonymous"
       type="model/gltf-binary"
     />
+    <link
+      rel="preload"
+      href="/brand/Logo.svg"
+      as="image"
+      type="image/svg+xml"
+    />
+    <link
+      rel="preload"
+      href="/environment/hero-environment.webm"
+      as="video"
+      type="video/webm"
+      media="(min-width: 769px)"
+    />
+    <link
+      rel="preload"
+      href="/environment/hero-environment_mobile.webm"
+      as="video"
+      type="video/webm"
+      media="(max-width: 768px)"
+    />
     <title>Umesh Pawar | Portfolio</title>
   </head>
-  <body>
+  <body style="background-color: #0a071b; margin: 0;">
     <div id="root"></div>
     <script type="module" src="/src/main.jsx"></script>
   </body>

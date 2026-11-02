@@ -62,7 +62,11 @@ export default function Environment({ scrollProgress = 0, currentScene: propScen
   }, [])
 
   return (
-    <div className="environment-container bg-video-container" aria-hidden="true">
+    <div
+      className="environment-container bg-video-container transition-opacity duration-500 ease-out"
+      style={{ backgroundColor: '#0a071b' }}
+      aria-hidden="true"
+    >
       {/* DAY VIDEO */}
       <video
         ref={dayVideoRef}
@@ -71,7 +75,7 @@ export default function Environment({ scrollProgress = 0, currentScene: propScen
         loop
         muted
         playsInline
-        preload="metadata"
+        preload="auto"
         className={`absolute inset-0 w-full h-full object-cover object-center pointer-events-none transition-opacity duration-700 ease-in-out z-0 ${
           currentScene === 'day' ? 'opacity-100' : 'opacity-0'
         }`}
@@ -95,7 +99,7 @@ export default function Environment({ scrollProgress = 0, currentScene: propScen
         loop
         muted
         playsInline
-        preload="metadata"
+        preload="auto"
         className={`absolute inset-0 w-full h-full object-cover object-center pointer-events-none transition-opacity duration-700 ease-in-out z-0 ${
           currentScene === 'night' ? 'opacity-100' : 'opacity-0'
         }`}

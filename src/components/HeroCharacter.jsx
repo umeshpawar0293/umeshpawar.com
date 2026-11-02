@@ -119,6 +119,7 @@ export default function HeroCharacter({
   const characterRef = rigRef
   const headBoneRef = useRef(null)
   const headScreenPosRef = useRef(new THREE.Vector3())
+  const propScreenPosRef = useRef(new THREE.Vector3())
   const pieceGroupsRef = useRef([])
   const animatorRef = useRef(null)
   const isInitializedRef = useRef(false)
@@ -819,8 +820,8 @@ export default function HeroCharacter({
   const BASE_CHARACTER_HEIGHT = 0.078
 
   // Mobile Viewport Character Scale Adjustment:
-  // Reduced by exactly 10% (0.88 * 0.90 = 0.792) for refined visual balance with background.
-  const MOBILE_SCALE_FACTOR = 0.792
+  // Reduced by 15% (0.792 * 0.85 = 0.6732) strictly in Mobile view (< 768px)
+  const MOBILE_SCALE_FACTOR = 0.6732
   const heroDesiredFraction = isMobile ? 0.70 : isTablet ? 0.62 : 0.69
   const CHARACTER_SCALE_TUNING = 0.93
   const heroScale =
@@ -828,11 +829,10 @@ export default function HeroCharacter({
     CHARACTER_SCALE_TUNING *
     (isMobile ? MOBILE_SCALE_FACTOR : 1.0)
 
-  // Y-Elevation: Fine-tuned vertical elevation on mobile (incremented upward by ~+0.34 Three.js units)
-  // so the character, ground shadow, and reflection sit comfortably above the lower fold & gradient
-  // while keeping the Rubik's cube head and upper floating props (Bulb, Monitor) neatly below the mobile header.
+  // Y-Elevation: Fine-tuned vertical elevation on mobile
+  // Nudged upward by +2% strictly in Mobile view (< 768px) for optimal framing
   const heroPosY = isMobile
-    ? -viewport.height / 2 + viewport.height * 0.30
+    ? -viewport.height / 2 + viewport.height * 0.365
     : -viewport.height / 2 + viewport.height * (isTablet ? 0.095 : 0.11)
 
   // Desktop Hero composition: Re-centered with ~7% to 8% leftward shift
@@ -937,14 +937,37 @@ export default function HeroCharacter({
       headQuatRef.current.setFromEuler(headEulerRef.current)
       headBoneRef.current.quaternion.multiply(headQuatRef.current)
 
-      // Project 3D head bone position to 2D viewport coordinates for DesktopScrollInstructionOverlay
-      if (!isMobile && headScreenPosRef.current) {
+      // Project 3D head bone position to 2D viewport coordinates for dynamic scroll prompt pill
+      if (headScreenPosRef.current && headBoneRef.current) {
         headBoneRef.current.getWorldPosition(headScreenPosRef.current)
         headScreenPosRef.current.project(state.camera)
         const screenX = (headScreenPosRef.current.x * 0.5 + 0.5) * window.innerWidth
         const screenY = (-headScreenPosRef.current.y * 0.5 + 0.5) * window.innerHeight
         document.documentElement.style.setProperty('--char-head-x', `${screenX.toFixed(1)}px`)
         document.documentElement.style.setProperty('--char-head-y', `${screenY.toFixed(1)}px`)
+      }
+
+      // Project 3D Video and Pen positions for the desktop scroll prompt pill placement:
+      // Vertical position: middle-aligned with the vector pen tool icon
+      // Horizontal position: left-aligned with the left edge of the video reel element
+      if (!isMobile && floatingPropsRef.current.length > 0 && propScreenPosRef.current) {
+        const videoItem = floatingPropsRef.current.find((p) => p.config.name === 'Video')
+        const penItem = floatingPropsRef.current.find((p) => p.config.name === 'Pen')
+        if (videoItem?.mesh && penItem?.mesh) {
+          // Video reel position:
+          videoItem.mesh.getWorldPosition(propScreenPosRef.current)
+          propScreenPosRef.current.project(state.camera)
+          const videoScreenX = (propScreenPosRef.current.x * 0.5 + 0.5) * window.innerWidth
+
+          // Pen tool position:
+          penItem.mesh.getWorldPosition(propScreenPosRef.current)
+          propScreenPosRef.current.project(state.camera)
+          const penScreenY = (-propScreenPosRef.current.y * 0.5 + 0.5) * window.innerHeight
+
+          // Video prop mesh width in screen space is roughly ~80px-90px, so left edge is center minus ~40px
+          document.documentElement.style.setProperty('--scroll-pill-x', `${(videoScreenX - 40).toFixed(1)}px`)
+          document.documentElement.style.setProperty('--scroll-pill-y', `${penScreenY.toFixed(1)}px`)
+        }
       }
     }
 
@@ -1264,8 +1287,14 @@ export default function HeroCharacter({
 
     // F. Apply final transformed coordinates to group & character rig
     if (groupRef.current) {
+      // Subtle vertical parallax lag on scroll down:
+      // Translates downward slightly during scroll, smoothly lerping/damping back to idle baseline
+      const parallaxLagY = isMobile
+        ? -THREE.MathUtils.clamp(smoothVelocityRef.current * 0.018, -0.025, 0.025)
+        : -THREE.MathUtils.clamp(smoothVelocityRef.current * 0.032, -0.05, 0.05)
+
       groupRef.current.position.x = currentPosX.current
-      groupRef.current.position.y = currentPosY.current
+      groupRef.current.position.y = currentPosY.current + parallaxLagY
       groupRef.current.position.z = currentPosZ.current
       groupRef.current.scale.setScalar(currentScale.current)
       groupRef.current.rotation.y = 0

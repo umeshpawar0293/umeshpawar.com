@@ -461,194 +461,203 @@ export default function WorkUI({
           className="work-composition-wrapper work-desktop-stage"
           style={{ pointerEvents: isInteractive ? 'auto' : 'none' }}
         >
-          {/* Main Content Stage: Centers the portfolio block naturally between left viewport space and 3D character */}
+          {/* Main Content Stage: Left-anchored position, clear of the 3D character on the right */}
           <div className="work-content-stage">
-            <div className="work-left-pane">
-              {/* Header Block: Left-aligned strictly with 3x3 grid below, elevated above 3D canvas for text selection */}
-              <div
-                className="work-header-block relative z-30 select-text"
+            <div className="work-left-pane flex flex-col items-center w-fit">
+              {/* WORK heading: Horizontally centered relative to the single glass box below */}
+              <h2
+                className="work-heading has-transform-box sharp-isometric-shadow neon-long-shadow select-text text-center mx-auto"
                 style={{
-                  pointerEvents: isWorkActive ? 'auto' : 'none',
+                  pointerEvents: 'auto',
                   userSelect: 'text',
                   WebkitUserSelect: 'text',
+                  marginBottom: 'clamp(1rem, 2vh, 1.75rem)',
+                }}
+                onPointerDown={(e) => e.stopPropagation()}
+              >
+                WORK
+                <TransformBoundingBox />
+              </h2>
+
+              {/* Unified Expanded Glass Box: Subtitle text on top, project grid directly beneath */}
+              <div
+                className="work-glass-container work-unified-glass-box flex flex-col items-center pt-9 md:pt-11 px-7 md:px-8 pb-7 md:pb-8 mt-8 md:mt-10 rounded-3xl w-fit mx-auto relative z-30 select-text"
+                style={{
+                  pointerEvents: isWorkActive ? 'auto' : 'none',
                 }}
                 onPointerDown={(e) => e.stopPropagation()}
                 onMouseDown={(e) => e.stopPropagation()}
-                onTouchStart={(e) => e.stopPropagation()}
               >
-                <h2
-                  className="work-heading has-transform-box sharp-isometric-shadow neon-long-shadow select-text"
+                {/* Top Text Block - Flex column with explicit top spacing and strict gap-2 separation */}
+                <div
+                  className="work-unified-text-top flex flex-col items-center gap-2 pt-6 mb-6 w-full select-text"
                   style={{
-                    pointerEvents: 'auto',
+                    pointerEvents: isWorkActive ? 'auto' : 'none',
                     userSelect: 'text',
                     WebkitUserSelect: 'text',
-                  }}
-                  onPointerDown={(e) => e.stopPropagation()}
-                >
-                  WORK
-                  <TransformBoundingBox />
-                </h2>
-                <p
-                  className="work-subtitle font-bold select-text"
-                  style={{
-                    pointerEvents: 'auto',
-                    userSelect: 'text',
-                    WebkitUserSelect: 'text',
-                    cursor: 'text',
-                  }}
-                  onPointerDown={(e) => e.stopPropagation()}
-                  onMouseDown={(e) => e.stopPropagation()}
-                >
-                  Briefs that walked in ordinary, campaigns that walked out sharp.
-                </p>
-                <p
-                  className="hidden md:block font-bold work-subtext select-text"
-                  style={{
-                    pointerEvents: 'auto',
-                    userSelect: 'text',
-                    WebkitUserSelect: 'text',
-                    cursor: 'text',
                   }}
                   onPointerDown={(e) => e.stopPropagation()}
                   onMouseDown={(e) => e.stopPropagation()}
                   onTouchStart={(e) => e.stopPropagation()}
                 >
-                  (Scroll down, yahan chai, tears, aur approved revisions ka display hai.)
-                </p>
-              </div>
-
-              {/* 2X Scaled 3x3 Grid + Linked Vertical Scroll Tracker */}
-              <div className="work-grid-tracker-wrapper">
-                {/* 3x3 Grid with Contained Smooth Vertical Scroll (No Pagination Numbers) */}
-                <div
-                  className="work-grid-3col overscroll-y-contain"
-                  ref={gridRef}
-                  role="region"
-                  aria-label="Selected Projects Grid"
-                  style={{
-                    pointerEvents: isInteractive ? 'auto' : 'none',
-                    transform: gridSkewY !== 0 ? `skewY(${gridSkewY.toFixed(2)}deg)` : undefined,
-                    transformOrigin: 'center center',
-                    transition: gridSkewY === 0 ? 'transform 0.25s ease-out' : undefined,
-                  }}
-                  onScroll={handleGridScroll}
-                  onWheel={handleGridWheel}
-                  onTouchStart={handleGridTouchStart}
-                  onTouchMove={handleGridTouchMove}
-                  onTouchEnd={handleGridTouchEnd}
-                  onPointerDown={handleGridPointerDown}
-                  onPointerMove={handleGridPointerMove}
-                  onPointerUp={handleGridPointerUp}
-                  onPointerLeave={handleGridPointerUp}
-                >
-                  {PROJECTS_DATA.map((project, i) => {
-                    const isEven = i % 2 === 0
-                    return (
-                      <article
-                        key={project.id}
-                        className={`work-project-card ${isEven ? 'card-type-a' : 'card-type-b'}`}
-                        aria-label={project.title}
-                        onPointerDown={(e) => {
-                          e.stopPropagation?.()
-                        }}
-                        onClick={(e) => {
-                          e.preventDefault?.()
-                          e.stopPropagation?.()
-                          if (hasDraggedGrid.current) return
-                          console.log("Opening project:", project.id, "(from desktop grid card click)")
-                          setPreviewProject(project)
-                        }}
-                      >
-                        {/* Inner Thumbnail / Media Window (Upper ~75%) */}
-                        <div className={`work-card-media-window has-transform-box ${project.thumbnailClass ? 'is-aspect-video' : ''}`}>
-                          {project.thumbnail ? (
-                            checkIsVideo(project.thumbnail) ? (
-                              <video
-                                src={cleanAssetUrl(project.thumbnail)}
-                                autoPlay
-                                loop
-                                muted
-                                playsInline
-                                preload="auto"
-                                className={`work-card-thumbnail ${project.thumbnailClass || ''}`}
-                                onLoadedMetadata={(e) => {
-                                  e.currentTarget.play().catch(() => {})
-                                }}
-                              />
-                            ) : (
-                              <img
-                                src={cleanAssetUrl(project.thumbnail)}
-                                alt={project.title}
-                                className={`work-card-thumbnail ${project.thumbnailClass || ''}`}
-                                loading="lazy"
-                                decoding="async"
-                                draggable={false}
-                              />
-                            )
-                          ) : (
-                            <div className="work-card-empty-media" aria-hidden="true" />
-                          )}
-                          <TransformBoundingBox />
-                        </div>
-
-                        {/* Bottom Header Bar (Lower ~25%) */}
-                        <div className="work-card-bottom-bar flex items-center justify-between w-full pt-2.5 pb-1 px-1 gap-2.5 min-h-[44px]">
-                          {/* Full Name Container - Wraps into 2 lines if needed */}
-                          <h3
-                            className="work-card-name font-['Archivo'] font-black uppercase text-sm sm:text-base lg:text-[15px] leading-[1.1] leading-tight break-words whitespace-normal flex-1 min-w-0"
-                            style={{
-                              fontSize: 'clamp(13px, 1.15vw, 15px)',
-                              lineHeight: 1.1,
-                              color: isEven ? '#d8ff00' : '#004af2',
-                            }}
-                            title={project.title || project.name}
-                          >
-                            {project.title || project.name}
-                          </h3>
-
-                          {/* Fixed Arrow Button - Stays vertically centered and pinned */}
-                          <div className="shrink-0 self-center">
-                            <button
-                              type="button"
-                              className={`work-card-arrow-btn w-6 h-6 sm:w-7 sm:h-7 rounded-full flex items-center justify-center border-none cursor-pointer p-0 transition-transform hover:scale-110 shadow-sm ${
-                                isEven ? 'bg-white text-black' : 'bg-black text-white'
-                              }`}
-                              onPointerDown={(e) => {
-                                e.stopPropagation?.()
-                              }}
-                              onClick={(e) => {
-                                e.preventDefault?.()
-                                e.stopPropagation?.()
-                                if (hasDraggedGrid.current) return
-                                console.log("Opening project:", project.id, "(from desktop arrow btn click)")
-                                setPreviewProject(project)
-                              }}
-                              aria-label={`Open preview for ${project.title || project.name}`}
-                            >
-                              <span className="text-xs sm:text-sm font-bold leading-none select-none" aria-hidden="true">→</span>
-                            </button>
-                          </div>
-                        </div>
-                      </article>
-                    )
-                  })}
+                  <p
+                    className="text-white font-bold text-sm md:text-base leading-normal text-center select-text cursor-text m-0"
+                    style={{
+                      fontFamily: "var(--font-primary, 'Archivo', sans-serif)",
+                      pointerEvents: 'auto',
+                      userSelect: 'text',
+                      WebkitUserSelect: 'text',
+                      margin: 0,
+                    }}
+                    onPointerDown={(e) => e.stopPropagation()}
+                    onMouseDown={(e) => e.stopPropagation()}
+                  >
+                    Briefs that walked in ordinary, campaigns that walked out sharp.
+                  </p>
+                  <p
+                    className="text-zinc-400 font-normal text-xs md:text-sm leading-normal text-center select-text cursor-text m-0"
+                    style={{
+                      fontFamily: "var(--font-primary, 'Archivo', sans-serif)",
+                      pointerEvents: 'auto',
+                      userSelect: 'text',
+                      WebkitUserSelect: 'text',
+                      margin: 0,
+                    }}
+                    onPointerDown={(e) => e.stopPropagation()}
+                    onMouseDown={(e) => e.stopPropagation()}
+                    onTouchStart={(e) => e.stopPropagation()}
+                  >
+                    (Scroll down, yahan chai, tears, aur approved revisions ka display hai.)
+                  </p>
                 </div>
 
-                {/* Vertical Divider Line with Real-Time Orange Scroll Progress Indicator */}
-                <div
-                  className="work-vertical-scroll-tracker"
-                  onPointerDown={handleTrackerPointerDown}
-                  role="scrollbar"
-                  aria-valuenow={Math.round(scrollProgressPct * 100)}
-                  aria-label="Project Grid Scroll Indicator"
-                >
-                  <div className="work-tracker-track" ref={trackerTrackRef}>
-                    <div
-                      className="work-tracker-pill"
-                      style={{
-                        top: `calc(${scrollProgressPct * 100}% - ${scrollProgressPct * 42}px)`,
-                      }}
-                    />
+                {/* Bottom Project Grid Wrapper with Scroll Tracker */}
+                <div className="work-grid-tracker-wrapper flex flex-row items-stretch gap-4 md:gap-5 w-fit relative flex-1 min-h-0">
+                  {/* 3-Column Project Grid */}
+                  <div
+                    className="work-grid-3col overscroll-y-contain"
+                    ref={gridRef}
+                    role="region"
+                    aria-label="Selected Projects Grid"
+                    style={{
+                      pointerEvents: isInteractive ? 'auto' : 'none',
+                      transform: gridSkewY !== 0 ? `skewY(${gridSkewY.toFixed(2)}deg)` : undefined,
+                      transformOrigin: 'center center',
+                      transition: gridSkewY === 0 ? 'transform 0.25s ease-out' : undefined,
+                    }}
+                    onScroll={handleGridScroll}
+                    onWheel={handleGridWheel}
+                    onTouchStart={handleGridTouchStart}
+                    onTouchMove={handleGridTouchMove}
+                    onTouchEnd={handleGridTouchEnd}
+                    onPointerDown={handleGridPointerDown}
+                    onPointerMove={handleGridPointerMove}
+                    onPointerUp={handleGridPointerUp}
+                    onPointerLeave={handleGridPointerUp}
+                  >
+                    {PROJECTS_DATA.map((project, i) => {
+                      return (
+                        <article
+                          key={project.id}
+                          className="work-project-card bg-white/[0.06] backdrop-blur-md border border-white/15 rounded-xl shadow-inner"
+                          aria-label={project.title}
+                          onPointerDown={(e) => {
+                            e.stopPropagation?.()
+                          }}
+                          onClick={(e) => {
+                            e.preventDefault?.()
+                            e.stopPropagation?.()
+                            if (hasDraggedGrid.current) return
+                            console.log("Opening project:", project.id, "(from desktop grid card click)")
+                            setPreviewProject(project)
+                          }}
+                        >
+                          {/* Inner Thumbnail / Media Window (Upper ~75%) */}
+                          <div className={`work-card-media-window has-transform-box ${project.thumbnailClass ? 'is-aspect-video' : ''}`}>
+                            {project.thumbnail ? (
+                              checkIsVideo(project.thumbnail) ? (
+                                <video
+                                  src={cleanAssetUrl(project.thumbnail)}
+                                  autoPlay
+                                  loop
+                                  muted
+                                  playsInline
+                                  preload="auto"
+                                  className={`work-card-thumbnail ${project.thumbnailClass || ''}`}
+                                  onLoadedMetadata={(e) => {
+                                    e.currentTarget.play().catch(() => {})
+                                  }}
+                                />
+                              ) : (
+                                <img
+                                  src={cleanAssetUrl(project.thumbnail)}
+                                  alt={project.title}
+                                  className={`work-card-thumbnail ${project.thumbnailClass || ''}`}
+                                  loading="lazy"
+                                  decoding="async"
+                                  draggable={false}
+                                />
+                              )
+                            ) : (
+                              <div className="work-card-empty-media" aria-hidden="true" />
+                            )}
+                            <TransformBoundingBox />
+                          </div>
+
+                          {/* Bottom Header Bar (Lower ~25%) */}
+                          <div className="work-card-bottom-bar flex items-center justify-between w-full pt-2 pb-1 px-1 gap-1.5 min-h-[38px]">
+                            {/* Full Name Container - 2-line clamp with uniform height */}
+                            <div className="flex-1 min-w-0 pr-1 min-h-[30px] flex items-center">
+                              <h3
+                                className="work-card-name font-['Archivo'] font-bold uppercase tracking-tight text-[11.5px] leading-[1.2] text-[#ccff00] line-clamp-2 text-wrap break-words m-0"
+                                title={project.title || project.name}
+                              >
+                                {project.title || project.name}
+                              </h3>
+                            </div>
+
+                            {/* Fixed Arrow Button - Stays vertically centered and pinned */}
+                            <div className="shrink-0 self-center">
+                              <button
+                                type="button"
+                                className="work-card-arrow-btn shrink-0 w-6 h-6 rounded-full flex items-center justify-center border-none cursor-pointer p-0 transition-transform hover:scale-110 shadow-sm bg-black text-white"
+                                onPointerDown={(e) => {
+                                  e.stopPropagation?.()
+                                }}
+                                onClick={(e) => {
+                                  e.preventDefault?.()
+                                  e.stopPropagation?.()
+                                  if (hasDraggedGrid.current) return
+                                  console.log("Opening project:", project.id, "(from desktop arrow btn click)")
+                                  setPreviewProject(project)
+                                }}
+                                aria-label={`Open preview for ${project.title || project.name}`}
+                              >
+                                <span className="text-xs font-bold leading-none select-none text-[#ccff00]" aria-hidden="true">→</span>
+                              </button>
+                            </div>
+                          </div>
+                        </article>
+                      )
+                    })}
+                  </div>
+
+                  {/* Vertical Divider Line with Real-Time Orange Scroll Progress Indicator */}
+                  <div
+                    className="work-vertical-scroll-tracker"
+                    onPointerDown={handleTrackerPointerDown}
+                    role="scrollbar"
+                    aria-valuenow={Math.round(scrollProgressPct * 100)}
+                    aria-label="Project Grid Scroll Indicator"
+                  >
+                    <div className="work-tracker-track" ref={trackerTrackRef}>
+                      <div
+                        className="work-tracker-pill"
+                        style={{
+                          top: `calc(${scrollProgressPct * 100}% - ${scrollProgressPct * 42}px)`,
+                        }}
+                      />
+                    </div>
                   </div>
                 </div>
               </div>
@@ -678,24 +687,38 @@ export default function WorkUI({
           }}
         >
 
+          {/* Clean Mobile Work Intro: without glass background box, pure white, shifted upward */}
           <div
-            className="work-mobile-header-block text-center px-4 mb-2 relative z-30 select-text"
+            className="work-mobile-header-block bg-transparent border-0 shadow-none backdrop-blur-none pt-1 sm:pt-1.5 pb-0 px-0 mb-3 -translate-y-1 sm:-translate-y-2 relative z-30 select-text text-center w-full max-w-full mx-auto h-auto overflow-visible"
             style={{
               pointerEvents: isWorkVisible ? 'auto' : 'none',
               userSelect: 'text',
               WebkitUserSelect: 'text',
+              background: 'transparent',
+              border: 'none',
+              boxShadow: 'none',
+              backdropFilter: 'none',
+              WebkitBackdropFilter: 'none',
+              padding: '4px 0 0 0',
+              height: 'auto',
+              overflow: 'visible',
             }}
             onPointerDown={(e) => e.stopPropagation()}
             onMouseDown={(e) => e.stopPropagation()}
           >
             <p
-              className="work-mobile-subtitle font-bold select-text text-xs sm:text-sm md:text-base"
+              className="work-mobile-subtitle text-[10px] sm:text-[10.5px] font-bold text-white text-center tracking-tight whitespace-nowrap block w-full select-text m-0 pt-0.5 sm:pt-1 leading-[1.4] overflow-visible"
               style={{
                 pointerEvents: 'auto',
                 userSelect: 'text',
                 WebkitUserSelect: 'text',
                 cursor: 'text',
-                margin: '0 0 2px 0',
+                margin: '0 auto',
+                whiteSpace: 'nowrap',
+                color: '#ffffff',
+                lineHeight: '1.4',
+                paddingTop: '2px',
+                overflow: 'visible',
               }}
               onPointerDown={(e) => e.stopPropagation()}
               onMouseDown={(e) => e.stopPropagation()}
@@ -703,17 +726,20 @@ export default function WorkUI({
               Briefs that walked in ordinary, campaigns that walked out sharp.
             </p>
             <p
-              className="work-mobile-subtext font-bold select-text text-[11px] sm:text-xs block md:hidden"
+              className="work-mobile-subtext text-[8px] sm:text-[8.5px] font-medium text-white/90 text-center tracking-tight whitespace-nowrap block w-full mt-0.5 select-text"
               style={{
                 pointerEvents: 'auto',
                 userSelect: 'text',
                 WebkitUserSelect: 'text',
                 cursor: 'text',
+                margin: '2px auto 0',
+                whiteSpace: 'nowrap',
+                color: 'rgba(255, 255, 255, 0.9)',
               }}
               onPointerDown={(e) => e.stopPropagation()}
               onMouseDown={(e) => e.stopPropagation()}
             >
-              (Swipe through, yahan chai, tears, aur approved revisions ka display hai.)
+              (Scroll down, yahan chai, tears, aur approved revisions ka display hai.)
             </p>
           </div>
 
@@ -813,12 +839,12 @@ export default function WorkUI({
                   cardOpacity = 1
                   zIndex = 30
                 } else if (isLeftFlank) {
-                  cardTransform = 'translateX(-48%) scale(0.82) rotateY(12deg) translateZ(-40px)'
-                  cardOpacity = 0.6
+                  cardTransform = 'translateX(-48%) scale(0.92) rotateY(12deg) translateZ(-40px)'
+                  cardOpacity = 0.45
                   zIndex = 20
                 } else if (isRightFlank) {
-                  cardTransform = 'translateX(48%) scale(0.82) rotateY(-12deg) translateZ(-40px)'
-                  cardOpacity = 0.6
+                  cardTransform = 'translateX(48%) scale(0.92) rotateY(-12deg) translateZ(-40px)'
+                  cardOpacity = 0.45
                   zIndex = 20
                 } else if (isFarLeft) {
                   cardTransform = 'translateX(-95%) scale(0.65) rotateY(20deg) translateZ(-80px)'
@@ -831,10 +857,18 @@ export default function WorkUI({
                 }
               }
 
+              const imageParallaxX = isCenter
+                ? (isDeckDragging ? -dragOffset * 0.05 : 0)
+                : isLeftFlank
+                ? 8
+                : isRightFlank
+                ? -8
+                : 0
+
               return (
                 <article
                   key={`coverflow-${project.id}`}
-                  className={`work-coverflow-card ${
+                  className={`work-coverflow-card rounded-2xl bg-white/[0.05] border border-white/10 backdrop-blur-md p-2.5 sm:p-3 shadow-lg transform-gpu will-change-transform ${
                     isCenter ? 'is-center' : isLeftFlank || isRightFlank ? 'is-flank' : 'is-buffer'
                   } ${isDeckDragging ? 'is-dragging' : ''} ${isEven ? 'card-type-a' : 'card-type-b'}`}
                   style={{
@@ -848,7 +882,10 @@ export default function WorkUI({
                   onPointerDown={(e) => e.stopPropagation()}
                   aria-label={`${project.title}${isCenter ? ' (Active)' : isLeftFlank ? ' (Previous)' : ' (Next)'}`}
                 >
-                  <div className={`work-card-media-window has-transform-box ${project.thumbnailClass ? 'is-aspect-video' : ''}`}>
+                  <div
+                    className={`work-card-media-window has-transform-box ${project.thumbnailClass ? 'is-aspect-video' : ''}`}
+                    style={{ overflow: 'hidden' }}
+                  >
                     {project.thumbnail ? (
                       checkIsVideo(project.thumbnail) ? (
                         <video
@@ -859,6 +896,10 @@ export default function WorkUI({
                           playsInline
                           preload="auto"
                           className={`work-card-thumbnail ${project.thumbnailClass || ''}`}
+                          style={{
+                            transform: `scale(1.08) translateX(${imageParallaxX}%)`,
+                            transition: isDeckDragging ? 'none' : 'transform 0.4s cubic-bezier(0.16, 1, 0.3, 1)',
+                          }}
                           onLoadedMetadata={(e) => {
                             e.currentTarget.play().catch(() => {})
                           }}
@@ -868,6 +909,10 @@ export default function WorkUI({
                           src={cleanAssetUrl(project.thumbnail)}
                           alt={project.title}
                           className={`work-card-thumbnail ${project.thumbnailClass || ''}`}
+                          style={{
+                            transform: `scale(1.08) translateX(${imageParallaxX}%)`,
+                            transition: isDeckDragging ? 'none' : 'transform 0.4s cubic-bezier(0.16, 1, 0.3, 1)',
+                          }}
                           loading="eager"
                           decoding="async"
                           draggable={false}
@@ -881,25 +926,22 @@ export default function WorkUI({
                   </div>
 
                   {/* Bottom Header Bar (Lower ~25%) */}
-                  <div className="work-card-bottom-bar flex items-center justify-between w-full pt-2.5 pb-1 px-1 gap-2.5 min-h-[44px]">
-                    {/* Full Name Container - Wraps into 2 lines if needed */}
-                    <h3
-                      className="work-card-name font-['Archivo'] font-black uppercase text-sm sm:text-base leading-[1.1] leading-tight break-words whitespace-normal flex-1 min-w-0"
-                      style={{
-                        fontSize: 'clamp(12px, 3.2vw, 14px)',
-                        lineHeight: 1.1,
-                        color: isEven ? '#d8ff00' : '#004af2',
-                      }}
-                      title={project.title || project.name}
-                    >
-                      {project.title || project.name}
-                    </h3>
+                  <div className="work-card-bottom-bar flex items-center justify-between w-full pt-2 pb-1 px-1 gap-1.5 min-h-[38px]">
+                    {/* Full Name Container - 2-line clamp with uniform height */}
+                    <div className="flex-1 min-w-0 pr-1 min-h-[30px] flex items-center">
+                      <h3
+                        className="work-card-name font-['Archivo'] font-bold uppercase tracking-tight text-[11.5px] leading-[1.2] text-[#ccff00] line-clamp-2 text-wrap break-words m-0"
+                        title={project.title || project.name}
+                      >
+                        {project.title || project.name}
+                      </h3>
+                    </div>
 
                     {/* Fixed Arrow Button - Stays vertically centered and pinned */}
                     <div className="shrink-0 self-center">
                       <button
                         type="button"
-                        className={`work-card-arrow-btn w-6 h-6 sm:w-7 sm:h-7 rounded-full flex items-center justify-center border-none cursor-pointer p-0 transition-transform hover:scale-110 shadow-sm ${
+                        className={`work-card-arrow-btn shrink-0 w-6 h-6 rounded-full flex items-center justify-center border-none cursor-pointer p-0 transition-transform hover:scale-110 shadow-sm ${
                           isEven ? 'bg-white text-black' : 'bg-black text-white'
                         }`}
                         onPointerDown={(e) => e.stopPropagation()}
@@ -925,9 +967,9 @@ export default function WorkUI({
             })}
           </div>
 
-          {/* Minimal Bottom Bar: Prev Button + Counter & Dots + Swipe Hint + Next Button */}
+          {/* Minimal Bottom Bar: Prev Button + Counter & Dots + Swipe Hint + Next Button (Shifted downward for breathing room) */}
           <div
-            className="work-mobile-deck-bar"
+            className="work-mobile-deck-bar mt-3 translate-y-1.5 sm:translate-y-2"
             style={{ pointerEvents: isInteractive ? 'auto' : 'none' }}
           >
             <button
@@ -941,7 +983,7 @@ export default function WorkUI({
 
             <div className="work-deck-pagination-group">
               <span
-                className="work-mobile-counter font-mono"
+                className="work-mobile-counter font-mono green-glass-pill inline-flex items-center justify-center px-3 py-1 rounded-full bg-[#ccff00]/10 backdrop-blur-md border border-[#ccff00]/25 shadow-[0_0_12px_rgba(204,255,0,0.08)]"
                 aria-label={`Project ${activeDeckIndex + 1} of ${PROJECTS_DATA.length}`}
               >
                 <span className="work-counter-current">

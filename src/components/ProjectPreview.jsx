@@ -3186,24 +3186,6 @@ export default function ProjectPreview({
                 </div>
               )
             })()}
-
-            {/* Lightbox Caption Bar */}
-            <div className="lightbox-caption-bar">
-              <h3 className="lightbox-caption-title">
-                {(modalItems && modalItems[currentImageIndex]?.title) || project.title}
-                {(modalItems?.length || activeAssets.length) > 1 && (
-                  <span
-                    className="lightbox-caption-counter"
-                    style={{ opacity: 0.65, fontSize: '0.82em', marginLeft: '0.5rem', fontWeight: 500 }}
-                  >
-                    ({currentImageIndex + 1} / {modalItems ? modalItems.length : activeAssets.length})
-                  </span>
-                )}
-              </h3>
-              <p className="lightbox-caption-desc">
-                {(modalItems && modalItems[currentImageIndex]?.caption) || project.description || project.summary}
-              </p>
-            </div>
           </div>
         </div>
       ) : null}

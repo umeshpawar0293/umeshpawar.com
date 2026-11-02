@@ -66,7 +66,9 @@ export default function MobileConnectTab() {
             onClick={(e) => e.stopPropagation()}
           >
             <div className="mobile-connect-popup-header">
-              <span className="mobile-connect-pill-badge">GET IN TOUCH</span>
+              <span className="mobile-connect-pill-badge green-glass-pill inline-flex items-center justify-center px-3 py-1 rounded-full bg-[#ccff00]/10 backdrop-blur-md border border-[#ccff00]/25 shadow-[0_0_12px_rgba(204,255,0,0.08)]">
+                GET IN TOUCH
+              </span>
               <button
                 type="button"
                 className="mobile-connect-close-btn"

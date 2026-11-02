@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 
 /**
  * Floating Glassmorphic Docked Footer
@@ -25,6 +25,9 @@ export default function Footer({ scrollProgress = 0 }) {
   }
 
   const [mumbaiTime, setMumbaiTime] = useState(getMumbaiTime)
+  const [isRapidScrollDown, setIsRapidScrollDown] = useState(false)
+  const lastScrollYRef = useRef(0)
+  const scrollTimeoutRef = useRef(null)
 
   useEffect(() => {
     setMumbaiTime(getMumbaiTime())
@@ -32,6 +35,44 @@ export default function Footer({ scrollProgress = 0 }) {
       setMumbaiTime(getMumbaiTime())
     }, 10000)
     return () => clearInterval(interval)
+  }, [])
+
+  useEffect(() => {
+    const handleScroll = () => {
+      const currentY = window.scrollY
+      const deltaY = currentY - lastScrollYRef.current
+      lastScrollYRef.current = currentY
+
+      if (deltaY > 8) {
+        setIsRapidScrollDown(true)
+        if (scrollTimeoutRef.current) clearTimeout(scrollTimeoutRef.current)
+        scrollTimeoutRef.current = setTimeout(() => {
+          setIsRapidScrollDown(false)
+        }, 300)
+      } else if (deltaY < -4) {
+        setIsRapidScrollDown(false)
+      }
+    }
+
+    const handleWheel = (e) => {
+      if (e.deltaY > 25) {
+        setIsRapidScrollDown(true)
+        if (scrollTimeoutRef.current) clearTimeout(scrollTimeoutRef.current)
+        scrollTimeoutRef.current = setTimeout(() => {
+          setIsRapidScrollDown(false)
+        }, 350)
+      } else if (e.deltaY < -15) {
+        setIsRapidScrollDown(false)
+      }
+    }
+
+    window.addEventListener('scroll', handleScroll, { passive: true })
+    window.addEventListener('wheel', handleWheel, { passive: true })
+    return () => {
+      window.removeEventListener('scroll', handleScroll)
+      window.removeEventListener('wheel', handleWheel)
+      if (scrollTimeoutRef.current) clearTimeout(scrollTimeoutRef.current)
+    }
   }, [])
 
   const handleScrollToTop = (e) => {
@@ -50,7 +91,7 @@ export default function Footer({ scrollProgress = 0 }) {
 
   return (
     <footer
-      className={`docked-footer ${isContactActive ? 'mobile-contact-visible' : ''}`}
+      className={`docked-footer ${isContactActive ? 'mobile-contact-visible' : ''} ${isRapidScrollDown ? 'is-rapid-scrolling' : ''} -translate-y-3 sm:-translate-y-3.5 md:translate-y-0 z-30`}
       role="contentinfo"
       aria-label="Portfolio Footer"
     >
@@ -72,7 +113,7 @@ export default function Footer({ scrollProgress = 0 }) {
 
       {/* SEGMENT 2: Status Capsule & Time (Center) */}
       <div className="footer-center-section flex items-center justify-center shrink-0">
-        <div className="footer-pill-capsule rounded-full border border-white/10 bg-white/[0.04] px-1.5 py-0.5 flex items-center gap-1 shrink-0">
+        <div className="footer-pill-capsule green-glass-pill rounded-full border border-[#ccff00]/25 bg-[#ccff00]/10 backdrop-blur-md shadow-[0_0_12px_rgba(204,255,0,0.08)] px-1.5 py-0.5 flex items-center gap-1 shrink-0">
           <div className="footer-status-badge flex items-center gap-1 shrink-0">
             <span className="footer-status-dot w-1.5 h-1.5 rounded-full bg-[#a3e635] shadow-[0_0_4px_#a3e635] shrink-0" aria-hidden="true" />
             <span className="footer-status-text text-[7.5px] xs:text-[8px] text-[#a3e635] whitespace-nowrap shrink-0">
@@ -97,11 +138,11 @@ export default function Footer({ scrollProgress = 0 }) {
             href="https://www.linkedin.com/in/umeshpawar93"
             target="_blank"
             rel="noopener noreferrer"
-            className="footer-social-btn w-5 h-5 xs:w-6 xs:h-6 rounded-full border border-white/10 bg-white/[0.04] flex items-center justify-center shrink-0"
+            className="footer-social-btn p-1 rounded-full border border-white/10 bg-white/[0.04] flex items-center justify-center shrink-0"
             aria-label="LinkedIn profile"
           >
             <svg 
-              className="footer-social-svg w-2.5 h-2.5 xs:w-3 xs:h-3 fill-white text-white" 
+              className="footer-social-svg w-3.5 h-3.5 fill-white text-white flex-shrink-0" 
               viewBox="0 0 24 24" 
               aria-label="LinkedIn"
             >
@@ -114,11 +155,11 @@ export default function Footer({ scrollProgress = 0 }) {
             href="https://www.behance.net/umesh_pawar"
             target="_blank"
             rel="noopener noreferrer"
-            className="footer-social-btn w-5 h-5 xs:w-6 xs:h-6 rounded-full border border-white/10 bg-white/[0.04] flex items-center justify-center shrink-0"
+            className="footer-social-btn p-1 rounded-full border border-white/10 bg-white/[0.04] flex items-center justify-center shrink-0"
             aria-label="Behance portfolio"
           >
             <svg 
-              className="footer-social-svg w-2.5 h-2.5 xs:w-3 xs:h-3 fill-white text-white" 
+              className="footer-social-svg w-3.5 h-3.5 fill-white text-white flex-shrink-0" 
               viewBox="0 0 24 24" 
               aria-label="Behance" 
               aria-hidden="true"
@@ -132,11 +173,11 @@ export default function Footer({ scrollProgress = 0 }) {
             href="https://www.instagram.com/umesh_pawar_/"
             target="_blank"
             rel="noopener noreferrer"
-            className="footer-social-btn w-5 h-5 xs:w-6 xs:h-6 rounded-full border border-white/10 bg-white/[0.04] flex items-center justify-center shrink-0"
+            className="footer-social-btn p-1 rounded-full border border-white/10 bg-white/[0.04] flex items-center justify-center shrink-0"
             aria-label="Instagram profile"
           >
             <svg
-              className="footer-social-svg w-2.5 h-2.5 xs:w-3 xs:h-3 fill-white text-white"
+              className="footer-social-svg w-3.5 h-3.5 fill-white text-white flex-shrink-0"
               viewBox="0 0 24 24"
               fill="none"
               stroke="#ffffff"
@@ -156,11 +197,11 @@ export default function Footer({ scrollProgress = 0 }) {
         <button
           type="button"
           onClick={handleScrollToTop}
-          className="footer-scroll-top-btn w-5 h-5 xs:w-6 xs:h-6 rounded-full border border-[#a3e635] flex items-center justify-center text-[#a3e635] shrink-0"
+          className="footer-scroll-top-btn p-1 rounded-full border border-[#a3e635] flex items-center justify-center text-[#a3e635] shrink-0"
           aria-label="Scroll to top of portfolio"
         >
           <svg
-            className="footer-scroll-arrow-svg w-2.5 h-2.5 xs:w-3 xs:h-3"
+            className="footer-scroll-arrow-svg w-3.5 h-3.5 flex-shrink-0"
             viewBox="0 0 24 24"
             fill="none"
             stroke="currentColor"
