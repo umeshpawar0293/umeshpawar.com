@@ -293,6 +293,11 @@ export default function App() {
   const cooldownTimerRef = useRef(null)
 
   useEffect(() => {
+    // Detect Android devices for device-specific tailoring
+    if (typeof navigator !== 'undefined' && /android/i.test(navigator.userAgent)) {
+      document.documentElement.setAttribute('data-device-android', 'true')
+    }
+
     // 1. Initial Hash & Pathname Detection
     const hash = (window.location.hash || '').toLowerCase()
     const path = (window.location.pathname || '').toLowerCase()
@@ -443,20 +448,53 @@ export default function App() {
         e.target?.closest?.('.ppt-scroll-viewport') ||
         e.target?.closest?.('.media-fullscreen-lightbox') ||
         e.target?.closest?.('.project-preview-backdrop') ||
-        document.body.dataset.modalOpen === 'true'
+        e.target?.closest?.('.mobile-nav-backdrop') ||
+        document.body.dataset.modalOpen === 'true' ||
+        document.body.dataset.mobileMenuOpen === 'true'
       ) {
         return // DO NOT call e.preventDefault()! Let native vertical scroll happen!
       }
 
-      // Allow internal scrolling inside the 3x3 Work grid if it has room to scroll
-      const gridEl = e.target.closest('.work-grid-3col')
-      if (gridEl) {
+      // Helper to find nearest scrollable ancestor or active container
+      const findScrollableElement = (target) => {
+        if (!target || typeof target.closest !== 'function') return null
+
+        // Check explicit known scrollable containers first
+        const explicit = target.closest(
+          '.work-grid-3col, .mobile-section-container, .about-mobile-stage, .neon-glass-box, .about-mobile-copy-container, .contact-mobile-stage, .contact-cards-wrapper, .contact-mobile-bento-container, .work-mobile-stage'
+        )
+        if (explicit && explicit.scrollHeight > explicit.clientHeight + 2) {
+          return explicit
+        }
+
+        // Check DOM hierarchy upwards for any element with auto/scroll overflow
+        let curr = target
+        while (curr && curr !== document.body && curr !== document.documentElement) {
+          if (curr instanceof HTMLElement) {
+            const style = window.getComputedStyle(curr)
+            const overflowY = style.overflowY
+            if (
+              (overflowY === 'auto' || overflowY === 'scroll') &&
+              curr.scrollHeight > curr.clientHeight + 2
+            ) {
+              return curr
+            }
+          }
+          curr = curr.parentElement
+        }
+
+        return null
+      }
+
+      // Allow internal scrolling inside scrollable containers if room remains
+      const scrollEl = findScrollableElement(e.target)
+      if (scrollEl) {
         const isDown = e.deltaY > 0
         const canScrollDown =
-          gridEl.scrollTop + gridEl.clientHeight < gridEl.scrollHeight - 5
-        const canScrollUp = gridEl.scrollTop > 5
+          scrollEl.scrollTop + scrollEl.clientHeight < scrollEl.scrollHeight - 5
+        const canScrollUp = scrollEl.scrollTop > 5
         if ((isDown && canScrollDown) || (!isDown && canScrollUp)) {
-          return // Allow internal grid scroll
+          return // Allow internal scroll without switching section
         }
       }
 
@@ -513,7 +551,7 @@ export default function App() {
     // Touch handling for mobile
     let touchStartY = 0
     let touchStartX = 0
-    let touchStartGridEl = null
+    let touchStartScrollEl = null
 
     const handleTouchStart = (e) => {
       if (
@@ -524,12 +562,14 @@ export default function App() {
         e.target?.closest?.('.ppt-scroll-viewport') ||
         e.target?.closest?.('.media-fullscreen-lightbox') ||
         e.target?.closest?.('.project-preview-backdrop') ||
-        document.body.dataset.modalOpen === 'true'
+        e.target?.closest?.('.mobile-nav-backdrop') ||
+        document.body.dataset.modalOpen === 'true' ||
+        document.body.dataset.mobileMenuOpen === 'true'
       ) {
         return
       }
-      if (e.target?.closest?.('a, button, input, textarea, select, [role="button"], .interactive-card, .contact-card, .footer-social-btn, .footer-scroll-top-btn, .mobile-menu-toggle')) return
-      touchStartGridEl = e.target?.closest?.('.work-grid-3col') || null
+      if (e.target?.closest?.('input, textarea, select')) return
+      touchStartScrollEl = findScrollableElement(e.target)
       if (e.touches && e.touches.length > 0) {
         touchStartY = e.touches[0].clientY
         touchStartX = e.touches[0].clientX
@@ -545,12 +585,20 @@ export default function App() {
         e.target?.closest?.('.ppt-scroll-viewport') ||
         e.target?.closest?.('.media-fullscreen-lightbox') ||
         e.target?.closest?.('.project-preview-backdrop') ||
-        document.body.dataset.modalOpen === 'true'
+        e.target?.closest?.('.mobile-nav-backdrop') ||
+        document.body.dataset.modalOpen === 'true' ||
+        document.body.dataset.mobileMenuOpen === 'true'
       ) {
         return // DO NOT call e.preventDefault()! Let native vertical scroll happen!
       }
-      if (e.target?.closest?.('a, button, [role="button"], input, textarea, select')) return
-      if (e.target.closest('.work-grid-3col') || touchStartGridEl) return
+      if (e.target?.closest?.('input, textarea, select')) return
+
+      const scrollEl = findScrollableElement(e.target) || touchStartScrollEl
+      if (scrollEl) {
+        // Native momentum scroll should proceed unimpeded
+        return
+      }
+
       if (isTransitioningRef.current) {
         e.preventDefault()
       }
@@ -565,27 +613,30 @@ export default function App() {
         e.target?.closest?.('.ppt-scroll-viewport') ||
         e.target?.closest?.('.media-fullscreen-lightbox') ||
         e.target?.closest?.('.project-preview-backdrop') ||
-        document.body.dataset.modalOpen === 'true'
+        e.target?.closest?.('.mobile-nav-backdrop') ||
+        document.body.dataset.modalOpen === 'true' ||
+        document.body.dataset.mobileMenuOpen === 'true'
       ) {
         return
       }
       if (isTransitioningRef.current) return
       if (!e.changedTouches || e.changedTouches.length === 0) return
-      if (e.target?.closest?.('a, button, input, textarea, select, [role="button"], .interactive-card, .contact-card, .footer-social-btn, .footer-scroll-top-btn, .mobile-menu-toggle')) return
+      if (e.target?.closest?.('a, button, input, textarea, select, [role="button"], .footer-social-btn, .footer-scroll-top-btn, .mobile-menu-toggle')) return
 
       const deltaY = touchStartY - e.changedTouches[0].clientY
       const deltaX = touchStartX - e.changedTouches[0].clientX
 
-      // If touch originated or ended inside the 3x3 Work grid, only trigger section change when scrolling past boundaries
-      const gridEl = e.target?.closest?.('.work-grid-3col') || touchStartGridEl
-      touchStartGridEl = null
-      if (gridEl) {
+      // Check if touch originated or ended inside a scrollable container
+      const scrollEl = findScrollableElement(e.target) || touchStartScrollEl
+      touchStartScrollEl = null
+
+      if (scrollEl) {
         const isDown = deltaY > 0
         const canScrollDown =
-          gridEl.scrollTop + gridEl.clientHeight < gridEl.scrollHeight - 5
-        const canScrollUp = gridEl.scrollTop > 5
+          scrollEl.scrollTop + scrollEl.clientHeight < scrollEl.scrollHeight - 5
+        const canScrollUp = scrollEl.scrollTop > 5
         if ((isDown && canScrollDown) || (!isDown && canScrollUp)) {
-          return // Allow internal grid scroll without switching section
+          return // Allow internal content scroll without switching section
         }
       }
 
@@ -743,8 +794,8 @@ export default function App() {
 
   // High-performance pointer drag controller with window-level release handling & inertia glide
   const handleDragDown = (e) => {
-    // Disable character drag when preview modal or lightbox is open
-    if (isModalOpen || document.body.dataset.modalOpen === 'true') return
+    // Disable character drag when preview modal, lightbox, or mobile navigation is open
+    if (isModalOpen || document.body.dataset.modalOpen === 'true' || document.body.dataset.mobileMenuOpen === 'true') return
     // Only primary mouse button (left click) or touch/pen
     if (e.button !== undefined && e.button !== 0) return
     // Ensure underlying links/buttons and selectable text blocks outside the canvas remain interactive

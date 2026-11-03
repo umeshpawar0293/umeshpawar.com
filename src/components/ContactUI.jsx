@@ -267,7 +267,7 @@ export default function ContactUI({
   return (
     <section
       id="contact"
-      className="contact-foreground-overlay min-h-[100dvh] h-[100dvh] pb-[env(safe-area-inset-bottom,16px)] pb-6 sm:pb-8 md:pb-0 md:min-h-full md:h-full"
+      className="contact-foreground-overlay min-h-[100dvh] h-[100dvh] pb-[env(safe-area-inset-bottom,16px)] pb-6 sm:pb-8 md:pb-0 md:min-h-full md:h-full mobile-page-wrapper"
       style={containerStyle}
       aria-label="Contact Umesh Pawar"
     >
@@ -399,7 +399,7 @@ export default function ContactUI({
                       window.location.href = 'mailto:umeshpawar93@gmail.com?subject=Project%20Inquiry'
                     }}
                   >
-                    START A CONVERSATION <span className="arrow-btn">→</span>
+                    GET IN TOUCH <span className="arrow-btn">→</span>
                     <TransformBoundingBox />
                   </a>
                   <a
@@ -452,7 +452,7 @@ export default function ContactUI({
 
       {/* Mobile Stage: 2-Column Bento Layout (Direct Lines + Connect next to Direct Collaboration) */}
       <div
-        className="contact-mobile-stage min-h-[100dvh] h-[100dvh] pb-[env(safe-area-inset-bottom,16px)] pb-6 sm:pb-8"
+        className="contact-mobile-stage mobile-section-container min-h-[100dvh] h-[100dvh] pb-[env(safe-area-inset-bottom,16px)] pb-6 sm:pb-8"
         style={{
           pointerEvents: 'none',
           display: isContactVisible ? 'block' : 'none',
@@ -463,16 +463,14 @@ export default function ContactUI({
         {/* COMBINED 2-COLUMN BENTO CONTAINER */}
         <div
           ref={mobileBentoRef}
-          className="contact-cards-wrapper contact-mobile-bento-container grid grid-cols-2 items-stretch gap-2 w-[90vw] max-w-[340px] mx-auto -translate-y-[7.5%] md:translate-y-0 transform-gpu will-change-transform"
+          data-contact-cards="true"
+          className="contact-cards-wrapper contact-mobile-bento-container contact-cards-container grid grid-cols-2 items-stretch gap-2 w-[90vw] max-w-[340px] mx-auto -translate-y-[7.5%] md:translate-y-0 transform-gpu will-change-transform"
           style={{
             pointerEvents: 'auto',
             zIndex: 999,
             bottom: 'calc(74px + env(safe-area-inset-bottom, 16px))',
           }}
           onPointerDown={(e) => e.stopPropagation()}
-          onTouchStart={(e) => e.stopPropagation()}
-          onTouchMove={(e) => e.stopPropagation()}
-          onTouchEnd={(e) => e.stopPropagation()}
         >
           {/* LEFT COLUMN ON MOBILE: DIRECT LINES (TOP) + CONNECT (BOTTOM) */}
           <div className="contact-mobile-col-left flex flex-col justify-between h-full gap-2 min-w-0 w-full" style={{ pointerEvents: 'auto', zIndex: 999 }}>
@@ -633,7 +631,7 @@ export default function ContactUI({
                   }}
                 >
                   <span className="whitespace-nowrap flex items-center justify-center gap-1 text-[8.5px] sm:text-[9px] font-black uppercase tracking-wider text-center text-[#0066ff] leading-none" style={{ color: '#0066ff', textDecoration: 'none' }}>
-                    START A CONVERSATION <span className="arrow-btn text-[8.5px] font-bold flex items-center justify-center flex-shrink-0" style={{ color: '#0066ff', textDecoration: 'none' }} aria-hidden="true">→</span>
+                    GET IN TOUCH <span className="arrow-btn text-[8.5px] font-bold flex items-center justify-center flex-shrink-0" style={{ color: '#0066ff', textDecoration: 'none' }} aria-hidden="true">→</span>
                   </span>
                   <TransformBoundingBox />
                 </a>

@@ -1316,6 +1316,328 @@ export const LightboxVideoPlayer = forwardRef(function LightboxVideoPlayer(
 })
 
 /**
+ * ZoomableLightboxImage
+ * Isolated touch pinch-to-zoom, pan, and double-tap zoom for mobile fullscreen preview images.
+ * - Strictly isolated to mobile viewports (< 768px). Desktop uses native click/geometry.
+ * - Bounded within an overflow: hidden container with strict pan clamping.
+ * - Locks horizontal slide swipe transitions when scale > 1.
+ * - Automatically resets scale to 1 and pan to (0, 0) on image switch or unmount.
+ */
+function ZoomableLightboxImage({
+  src,
+  alt = '',
+  className = '',
+  onNext,
+  onPrev,
+  ...props
+}) {
+  const containerRef = useRef(null)
+  const imgRef = useRef(null)
+
+  const [scale, setScale] = useState(1)
+  const [pan, setPan] = useState({ x: 0, y: 0 })
+  const [isTransitioning, setIsTransitioning] = useState(false)
+
+  // Mutable refs for touch tracking to guarantee zero lag and zero closure staleness
+  const stateRef = useRef({ scale: 1, pan: { x: 0, y: 0 } })
+  stateRef.current = { scale, pan }
+
+  const isPinchingRef = useRef(false)
+  const pinchStartDistRef = useRef(0)
+  const pinchStartScaleRef = useRef(1)
+  const pinchStartMidpointRef = useRef({ x: 0, y: 0 })
+  const touchStartPosRef = useRef({ x: 0, y: 0 })
+  const panStartRef = useRef({ x: 0, y: 0 })
+  const swipeDeltaRef = useRef({ dx: 0, dy: 0 })
+  const lastTapRef = useRef({ time: 0, x: 0, y: 0 })
+
+  // Instantly reset scale and pan whenever image src changes or unmounts
+  useEffect(() => {
+    setScale(1)
+    setPan({ x: 0, y: 0 })
+    stateRef.current = { scale: 1, pan: { x: 0, y: 0 } }
+  }, [src])
+
+  // Native non-passive touch listeners on container to prevent mobile page bounce & pull-to-refresh
+  useEffect(() => {
+    const el = containerRef.current
+    if (!el) return
+
+    // Desktop protection: bypass touch listeners entirely if desktop screen or no touch
+    const isDesktop = () => window.innerWidth >= 768
+
+    const clampPan = (targetX, targetY, targetScale) => {
+      if (targetScale <= 1.01) return { x: 0, y: 0 }
+      const container = el.getBoundingClientRect()
+      const w = container.width || window.innerWidth
+      const h = container.height || window.innerHeight
+      // Clamp boundaries based on scaled dimensions
+      const maxPanX = Math.max(0, (w * (targetScale - 1)) / 2)
+      const maxPanY = Math.max(0, (h * (targetScale - 1)) / 2)
+      return {
+        x: Math.min(maxPanX, Math.max(-maxPanX, targetX)),
+        y: Math.min(maxPanY, Math.max(-maxPanY, targetY)),
+      }
+    }
+
+    const handleTouchStart = (e) => {
+      if (isDesktop()) return
+
+      const { scale: curScale, pan: curPan } = stateRef.current
+
+      if (e.touches.length === 1) {
+        const touch = e.touches[0]
+        const now = Date.now()
+        const last = lastTapRef.current
+
+        // Check for double-tap (within 300ms and 25px radius)
+        if (
+          now - last.time < 300 &&
+          Math.hypot(touch.clientX - last.x, touch.clientY - last.y) < 25
+        ) {
+          if (e.cancelable) e.preventDefault()
+          e.stopPropagation()
+
+          setIsTransitioning(true)
+          if (curScale > 1.05) {
+            setScale(1)
+            setPan({ x: 0, y: 0 })
+            stateRef.current = { scale: 1, pan: { x: 0, y: 0 } }
+          } else {
+            const newScale = 2.5
+            setScale(newScale)
+            setPan({ x: 0, y: 0 })
+            stateRef.current = { scale: newScale, pan: { x: 0, y: 0 } }
+          }
+          setTimeout(() => setIsTransitioning(false), 260)
+          lastTapRef.current = { time: 0, x: 0, y: 0 }
+          return
+        }
+
+        lastTapRef.current = { time: now, x: touch.clientX, y: touch.clientY }
+        touchStartPosRef.current = { x: touch.clientX, y: touch.clientY }
+        panStartRef.current = { ...curPan }
+        swipeDeltaRef.current = { dx: 0, dy: 0 }
+        isPinchingRef.current = false
+      } else if (e.touches.length === 2) {
+        if (e.cancelable) e.preventDefault()
+        isPinchingRef.current = true
+        setIsTransitioning(false)
+
+        const t1 = e.touches[0]
+        const t2 = e.touches[1]
+        pinchStartDistRef.current = Math.hypot(t2.clientX - t1.clientX, t2.clientY - t1.clientY)
+        pinchStartScaleRef.current = curScale
+        pinchStartMidpointRef.current = {
+          x: (t1.clientX + t2.clientX) / 2,
+          y: (t1.clientY + t2.clientY) / 2,
+        }
+        panStartRef.current = { ...curPan }
+      }
+    }
+
+    const handleTouchMove = (e) => {
+      if (isDesktop()) return
+
+      const { scale: curScale } = stateRef.current
+
+      // Prevent pull-to-refresh or page dragging while interacting with image
+      if (e.cancelable && (e.touches.length > 1 || curScale > 1)) {
+        e.preventDefault()
+      }
+
+      if (e.touches.length === 2 && isPinchingRef.current) {
+        if (e.cancelable) e.preventDefault()
+        const t1 = e.touches[0]
+        const t2 = e.touches[1]
+        const dist = Math.hypot(t2.clientX - t1.clientX, t2.clientY - t1.clientY)
+
+        if (pinchStartDistRef.current > 0) {
+          const ratio = dist / pinchStartDistRef.current
+          const targetScale = Math.min(Math.max(pinchStartScaleRef.current * ratio, 0.9), 4)
+
+          const currentMid = {
+            x: (t1.clientX + t2.clientX) / 2,
+            y: (t1.clientY + t2.clientY) / 2,
+          }
+          const midDx = currentMid.x - pinchStartMidpointRef.current.x
+          const midDy = currentMid.y - pinchStartMidpointRef.current.y
+
+          const clamped = clampPan(
+            panStartRef.current.x + midDx,
+            panStartRef.current.y + midDy,
+            targetScale
+          )
+
+          setScale(targetScale)
+          setPan(clamped)
+          stateRef.current = { scale: targetScale, pan: clamped }
+        }
+      } else if (e.touches.length === 1 && !isPinchingRef.current) {
+        const touch = e.touches[0]
+        const dx = touch.clientX - touchStartPosRef.current.x
+        const dy = touch.clientY - touchStartPosRef.current.y
+
+        if (curScale > 1.05) {
+          // Panning zoomed image: strictly lock slide swipe and pan image with bounds clamping
+          if (e.cancelable) e.preventDefault()
+          const targetX = panStartRef.current.x + dx
+          const targetY = panStartRef.current.y + dy
+          const clamped = clampPan(targetX, targetY, curScale)
+
+          setPan(clamped)
+          stateRef.current = { scale: curScale, pan: clamped }
+        } else {
+          // Scale is 1: track swipe gestures to transition between project slides
+          swipeDeltaRef.current = { dx, dy }
+        }
+      }
+    }
+
+    const handleTouchEnd = (e) => {
+      if (isDesktop()) return
+
+      const { scale: curScale, pan: curPan } = stateRef.current
+
+      if (e.touches.length < 2) {
+        isPinchingRef.current = false
+      }
+
+      if (e.touches.length === 0) {
+        // If scale ended below or very close to 1, snap cleanly back to 1x
+        if (curScale <= 1.05) {
+          setIsTransitioning(true)
+          setScale(1)
+          setPan({ x: 0, y: 0 })
+          stateRef.current = { scale: 1, pan: { x: 0, y: 0 } }
+          setTimeout(() => setIsTransitioning(false), 200)
+
+          // Swipe detection ONLY when scale === 1
+          const { dx, dy } = swipeDeltaRef.current
+          if (Math.abs(dx) > 45 && Math.abs(dx) > Math.abs(dy) * 1.5) {
+            if (dx < 0) {
+              onNext?.()
+            } else {
+              onPrev?.()
+            }
+          }
+        } else {
+          // Re-clamp in case bounds shifted
+          const clamped = clampPan(curPan.x, curPan.y, curScale)
+          if (clamped.x !== curPan.x || clamped.y !== curPan.y) {
+            setIsTransitioning(true)
+            setPan(clamped)
+            stateRef.current = { scale: curScale, pan: clamped }
+            setTimeout(() => setIsTransitioning(false), 200)
+          }
+        }
+        swipeDeltaRef.current = { dx: 0, dy: 0 }
+      }
+    }
+
+    el.addEventListener('touchstart', handleTouchStart, { passive: false })
+    el.addEventListener('touchmove', handleTouchMove, { passive: false })
+    el.addEventListener('touchend', handleTouchEnd, { passive: true })
+    el.addEventListener('touchcancel', handleTouchEnd, { passive: true })
+
+    const handleResize = () => {
+      if (isDesktop()) {
+        setScale(1)
+        setPan({ x: 0, y: 0 })
+        stateRef.current = { scale: 1, pan: { x: 0, y: 0 } }
+      }
+    }
+    window.addEventListener('resize', handleResize)
+
+    return () => {
+      el.removeEventListener('touchstart', handleTouchStart)
+      el.removeEventListener('touchmove', handleTouchMove)
+      el.removeEventListener('touchend', handleTouchEnd)
+      el.removeEventListener('touchcancel', handleTouchEnd)
+      window.removeEventListener('resize', handleResize)
+    }
+  }, [onNext, onPrev, src])
+
+  return (
+    <div
+      ref={containerRef}
+      className="lightbox-zoom-viewport"
+      style={{
+        position: 'relative',
+        width: '100%',
+        height: '100%',
+        maxWidth: '100%',
+        maxHeight: '100%',
+        overflow: 'hidden',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        touchAction: 'none',
+        userSelect: 'none',
+        WebkitUserSelect: 'none',
+      }}
+    >
+      <img
+        ref={imgRef}
+        src={src}
+        alt={alt}
+        loading="lazy"
+        decoding="async"
+        className={className}
+        style={{
+          transform: `translate3d(${pan.x}px, ${pan.y}px, 0px) scale(${scale})`,
+          transformOrigin: 'center center',
+          transition: isTransitioning ? 'transform 0.25s cubic-bezier(0.16, 1, 0.3, 1)' : 'none',
+          willChange: scale > 1 ? 'transform' : 'auto',
+          touchAction: 'none',
+          userSelect: 'none',
+          WebkitUserSelect: 'none',
+          pointerEvents: 'auto',
+        }}
+        {...props}
+      />
+      {/* Subtle Mobile Zoom Reset Hint Badge when scale > 1 */}
+      {scale > 1.15 && (
+        <button
+          type="button"
+          onClick={(e) => {
+            e.stopPropagation()
+            setIsTransitioning(true)
+            setScale(1)
+            setPan({ x: 0, y: 0 })
+            stateRef.current = { scale: 1, pan: { x: 0, y: 0 } }
+            setTimeout(() => setIsTransitioning(false), 200)
+          }}
+          style={{
+            position: 'absolute',
+            bottom: '12px',
+            right: '12px',
+            zIndex: 40,
+            background: 'rgba(20, 20, 28, 0.85)',
+            border: '1px solid rgba(255, 255, 255, 0.25)',
+            backdropFilter: 'blur(8px)',
+            WebkitBackdropFilter: 'blur(8px)',
+            color: '#d0ff00',
+            fontSize: '10px',
+            fontWeight: 800,
+            fontFamily: 'monospace',
+            letterSpacing: '0.05em',
+            padding: '4px 10px',
+            borderRadius: '9999px',
+            cursor: 'pointer',
+            boxShadow: '0 4px 16px rgba(0,0,0,0.6)',
+            pointerEvents: 'auto',
+          }}
+          aria-label="Reset zoom"
+        >
+          {`${scale.toFixed(1)}x • RESET`}
+        </button>
+      )}
+    </div>
+  )
+}
+
+/**
  * ProjectPreview Modal / Panel Component (Behance-Style Adaptive Grid & Lightbox)
  */
 export default function ProjectPreview({
@@ -3166,12 +3488,12 @@ export default function ProjectPreview({
               }
               if (currentAssetUrl) {
                 return (
-                  <img
+                  <ZoomableLightboxImage
                     key={currentAssetUrl}
                     src={cleanAssetUrl(currentAssetUrl)}
                     alt={`${project.title} - ${currentImageIndex + 1}`}
-                    loading="lazy"
-                    decoding="async"
+                    onNext={handleNextItem}
+                    onPrev={handlePrevItem}
                     className="lightbox-media-img"
                   />
                 )

@@ -278,13 +278,13 @@ export default function AboutUI({ scrollProgress = 0, activePage = 'hero' }) {
       <div className="about-desktop-stage">
         {/* Unified Content Column: Left-aligned to balance with the 3D character on the right */}
         <div
-          className="about-content-column w-full max-w-[520px] mx-0"
+          className="about-content-column w-full max-w-[460px] lg:max-w-[520px] mx-0"
           style={{ pointerEvents: isInteractive ? 'auto' : 'none' }}
         >
           {/* ── Unified Luminous Glass Box Container (Shifted closer to ABOUT ME heading) ── */}
           <div
-            className="about-glass-box neon-glass-box flex flex-col items-center min-h-fit h-auto p-8 md:p-10 rounded-3xl w-full max-w-[520px] mt-2 md:mt-3 mx-0 relative z-30 select-text"
-            style={{ pointerEvents: 'auto', width: '100%', maxWidth: '520px', height: 'auto' }}
+            className="about-glass-box neon-glass-box flex flex-col items-center min-h-fit h-auto p-6 md:p-8 lg:p-10 rounded-3xl w-full max-w-[460px] lg:max-w-[520px] mt-2 md:mt-3 mx-0 relative z-30 select-text"
+            style={{ pointerEvents: 'auto', width: '100%', height: 'auto' }}
           >
             {/* Hero Stat: 12+ YEARS (Neon green & 56px scale) */}
             <h3 className="about-hero-stat text-4xl md:text-5xl lg:text-[56px] font-black text-[#ccff00] tracking-tight leading-none text-center font-['Archivo'] m-0">
@@ -391,7 +391,7 @@ export default function AboutUI({ scrollProgress = 0, activePage = 'hero' }) {
 
       {/* Mobile Stage: Positioned in exact same vertical zone below waistline over soft gradient tint */}
       <div
-        className="about-mobile-stage"
+        className="about-mobile-stage mobile-section-container"
         style={{
           pointerEvents: 'none',
           display: isAboutVisible ? 'flex' : 'none',

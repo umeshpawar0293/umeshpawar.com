@@ -1,4 +1,5 @@
 import React, { useEffect, useRef } from 'react'
+import { createPortal } from 'react-dom'
 import gsap from 'gsap'
 import TransformBoundingBox from './TransformBoundingBox'
 
@@ -149,16 +150,21 @@ export default function HeroUI({ scrollProgress = 0 }) {
   // Prevent background scroll when mobile drawer is open
   React.useEffect(() => {
     if (mobileMenuOpen) {
-      const orig = document.body.style.overflow
+      const origBodyOverflow = document.body.style.overflow
+      const origHtmlOverflow = document.documentElement.style.overflow
       document.body.style.overflow = 'hidden'
+      document.documentElement.style.overflow = 'hidden'
+      document.body.dataset.mobileMenuOpen = 'true'
       return () => {
-        document.body.style.overflow = orig
+        document.body.style.overflow = origBodyOverflow
+        document.documentElement.style.overflow = origHtmlOverflow
+        delete document.body.dataset.mobileMenuOpen
       }
     }
   }, [mobileMenuOpen])
 
   return (
-    <div className="hero-ui-overlay">
+    <div className="hero-ui-overlay mobile-page-wrapper">
       {/* Top Persistent Navigation Bar */}
       <header className="hero-header">
         <div className="hero-logo-box">
@@ -224,105 +230,107 @@ export default function HeroUI({ scrollProgress = 0 }) {
         </div>
       </header>
 
-      {/* Modern Mobile Slide-in Drawer with Glassmorphic Backdrop */}
-      {mobileMenuOpen && (
-        <div
-          className="mobile-nav-backdrop"
-          onClick={() => setMobileMenuOpen(false)}
-          role="dialog"
-          aria-modal="true"
-          aria-label="Mobile Navigation"
-        >
+      {/* Modern Mobile Slide-in Drawer with Glassmorphic Solid Backdrop via Portal */}
+      {mobileMenuOpen && typeof document !== 'undefined' &&
+        createPortal(
           <div
-            className="mobile-nav-drawer"
-            onClick={(e) => e.stopPropagation()}
+            className="mobile-nav-backdrop fixed inset-0 z-[999] w-full h-full bg-black/95 backdrop-blur-xl"
+            onClick={() => setMobileMenuOpen(false)}
+            role="dialog"
+            aria-modal="true"
+            aria-label="Mobile Navigation"
           >
-            <div className="mobile-drawer-header">
-              <img
-                src="/brand/Logo.svg"
-                alt="Umesh Pawar Signature Logo"
-                className="mobile-drawer-logo"
-                decoding="async"
-              />
-              <button
-                type="button"
-                className="mobile-drawer-close-btn"
-                onClick={() => setMobileMenuOpen(false)}
-                aria-label="Close navigation menu"
-              >
-                ✕
-              </button>
-            </div>
+            <div
+              className="mobile-nav-drawer z-[1000] bg-[#0a0c12]"
+              onClick={(e) => e.stopPropagation()}
+            >
+              <div className="mobile-drawer-header">
+                <img
+                  src="/brand/Logo.svg"
+                  alt="Umesh Pawar Signature Logo"
+                  className="mobile-drawer-logo"
+                  decoding="async"
+                />
+                <button
+                  type="button"
+                  className="mobile-drawer-close-btn"
+                  onClick={() => setMobileMenuOpen(false)}
+                  aria-label="Close navigation menu"
+                >
+                  ✕
+                </button>
+              </div>
 
-            <nav className="mobile-drawer-links" aria-label="Mobile Section Navigation">
-              <a
-                href="#home"
-                className={`mobile-nav-link ${activeSection === 'HOME' ? 'active' : ''}`}
-                onClick={handleNavClick(handleScrollHome)}
-              >
-                <span className="mobile-nav-num">01</span>
-                <span className="mobile-nav-text">HOME</span>
-                {activeSection === 'HOME' && <span className="mobile-active-pill">CURRENT</span>}
-              </a>
-              <a
-                href="#about"
-                className={`mobile-nav-link ${activeSection === 'ABOUT' ? 'active' : ''}`}
-                onClick={handleNavClick(handleScrollAbout)}
-              >
-                <span className="mobile-nav-num">02</span>
-                <span className="mobile-nav-text">ABOUT</span>
-                {activeSection === 'ABOUT' && <span className="mobile-active-pill">CURRENT</span>}
-              </a>
-              <a
-                href="#work"
-                className={`mobile-nav-link ${activeSection === 'WORK' ? 'active' : ''}`}
-                onClick={handleNavClick(handleScrollWork)}
-              >
-                <span className="mobile-nav-num">03</span>
-                <span className="mobile-nav-text">WORK</span>
-                {activeSection === 'WORK' && <span className="mobile-active-pill">CURRENT</span>}
-              </a>
-              <a
-                href="#contact"
-                className={`mobile-nav-link ${activeSection === 'CONTACT' ? 'active' : ''}`}
-                onClick={handleNavClick(handleScrollContact)}
-              >
-                <span className="mobile-nav-num">04</span>
-                <span className="mobile-nav-text">CONTACT</span>
-                {activeSection === 'CONTACT' && <span className="mobile-active-pill">CURRENT</span>}
-              </a>
-            </nav>
-
-            <div className="mobile-drawer-footer">
-              <a
-                href="#contact"
-                className="btn-pill btn-mobile-connect has-transform-box"
-                onClick={handleNavClick(handleScrollContact)}
-              >
-                LET'S CONNECT <span className="arrow-icon">→</span>
-                <TransformBoundingBox />
-              </a>
-              <div className="mobile-drawer-direct">
-                <a href="mailto:umeshpawar93@gmail.com" className="mobile-direct-link">
-                  umeshpawar93@gmail.com
+              <nav className="mobile-drawer-links" aria-label="Mobile Section Navigation">
+                <a
+                  href="#home"
+                  className={`mobile-nav-link ${activeSection === 'HOME' ? 'active' : ''}`}
+                  onClick={handleNavClick(handleScrollHome)}
+                >
+                  <span className="mobile-nav-num">01</span>
+                  <span className="mobile-nav-text">HOME</span>
+                  {activeSection === 'HOME' && <span className="mobile-active-pill">CURRENT</span>}
                 </a>
                 <a
-                  href="https://wa.me/919664359422"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="mobile-direct-link"
+                  href="#about"
+                  className={`mobile-nav-link ${activeSection === 'ABOUT' ? 'active' : ''}`}
+                  onClick={handleNavClick(handleScrollAbout)}
                 >
-                  WhatsApp: +91 96643 59422
+                  <span className="mobile-nav-num">02</span>
+                  <span className="mobile-nav-text">ABOUT</span>
+                  {activeSection === 'ABOUT' && <span className="mobile-active-pill">CURRENT</span>}
                 </a>
+                <a
+                  href="#work"
+                  className={`mobile-nav-link ${activeSection === 'WORK' ? 'active' : ''}`}
+                  onClick={handleNavClick(handleScrollWork)}
+                >
+                  <span className="mobile-nav-num">03</span>
+                  <span className="mobile-nav-text">WORK</span>
+                  {activeSection === 'WORK' && <span className="mobile-active-pill">CURRENT</span>}
+                </a>
+                <a
+                  href="#contact"
+                  className={`mobile-nav-link ${activeSection === 'CONTACT' ? 'active' : ''}`}
+                  onClick={handleNavClick(handleScrollContact)}
+                >
+                  <span className="mobile-nav-num">04</span>
+                  <span className="mobile-nav-text">CONTACT</span>
+                  {activeSection === 'CONTACT' && <span className="mobile-active-pill">CURRENT</span>}
+                </a>
+              </nav>
+
+              <div className="mobile-drawer-footer">
+                <a
+                  href="#contact"
+                  className="btn-pill btn-mobile-connect has-transform-box"
+                  onClick={handleNavClick(handleScrollContact)}
+                >
+                  LET'S CONNECT <span className="arrow-icon">→</span>
+                  <TransformBoundingBox />
+                </a>
+                <div className="mobile-drawer-direct">
+                  <a href="mailto:umeshpawar93@gmail.com" className="mobile-direct-link">
+                    umeshpawar93@gmail.com
+                  </a>
+                  <a
+                    href="https://wa.me/919664359422"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="mobile-direct-link"
+                  >
+                    WhatsApp: +91 96643 59422
+                  </a>
+                </div>
               </div>
             </div>
-          </div>
-        </div>
-      )}
+          </div>,
+          document.body
+        )}
 
       {/* Main Hero Copy - Left Aligned with smooth scroll exit */}
       <main
-        className="hero-body"
+        className="hero-body mobile-section-container"
         style={{
           display: isHeroVisible ? 'flex' : 'none',
           visibility: isHeroVisible ? 'visible' : 'hidden',

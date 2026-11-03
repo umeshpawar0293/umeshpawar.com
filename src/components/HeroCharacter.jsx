@@ -816,23 +816,37 @@ export default function HeroCharacter({
   }, [scene])
 
   // Responsive breakpoints
-  const isTablet = !isMobile && size.width < 1024
+  const isTablet = !isMobile && size.width <= 1180
+  const isIPadProPortrait =
+    !isMobile &&
+    ((typeof window !== 'undefined' &&
+      window.matchMedia?.('(min-width: 1024px) and (max-width: 1030px) and (orientation: portrait)').matches) ||
+      (size.width >= 1024 && size.width <= 1030 && size.height > size.width))
   const BASE_CHARACTER_HEIGHT = 0.078
 
   // Mobile Viewport Character Scale Adjustment:
   // Reduced by 15% (0.792 * 0.85 = 0.6732) strictly in Mobile view (< 768px)
   const MOBILE_SCALE_FACTOR = 0.6732
-  const heroDesiredFraction = isMobile ? 0.70 : isTablet ? 0.62 : 0.69
+  // iPad Pro 13" Portrait: Increase character's size by 10% (0.62 * 1.10 = 0.682)
+  const heroDesiredFraction = isMobile
+    ? 0.70
+    : isIPadProPortrait
+    ? 0.682
+    : isTablet
+    ? 0.62
+    : 0.69
   const CHARACTER_SCALE_TUNING = 0.93
   const heroScale =
     ((viewport.height * heroDesiredFraction) / BASE_CHARACTER_HEIGHT) *
     CHARACTER_SCALE_TUNING *
     (isMobile ? MOBILE_SCALE_FACTOR : 1.0)
 
-  // Y-Elevation: Fine-tuned vertical elevation on mobile
-  // Nudged upward by +2% strictly in Mobile view (< 768px) for optimal framing
+  // Y-Elevation: Fine-tuned vertical elevation
+  // iPad Pro 13" Portrait: Shift character upward by 5% of viewport height (0.095 + 0.05 = 0.145)
   const heroPosY = isMobile
     ? -viewport.height / 2 + viewport.height * 0.365
+    : isIPadProPortrait
+    ? -viewport.height / 2 + viewport.height * 0.145
     : -viewport.height / 2 + viewport.height * (isTablet ? 0.095 : 0.11)
 
   // Desktop Hero composition: Re-centered with ~7% to 8% leftward shift
@@ -846,10 +860,11 @@ export default function HeroCharacter({
   // Responsive composition:
   // Desktop (min-width: 1024px): Balanced midpoint centering with left text block
   // Mobile (max-width: 768px): position.x = 0 strictly centers combined ensemble horizontally
+  // Tablet / iPad Pro 13 (768px - 1180px): Shifted slightly right to clear left glass cards
   const heroPosX = isMobile
     ? 0
     : isTablet
-    ? viewport.width * 0.20
+    ? viewport.width * 0.25
     : desktopHeroPosX
 
   // Desktop Contact composition: Character stays on the RIGHT side of the card stack,
@@ -859,7 +874,7 @@ export default function HeroCharacter({
   const contactPosX = isMobile
     ? 0
     : isTablet
-    ? viewport.width * 0.18
+    ? viewport.width * 0.24
     : desktopContactPosX
 
   // 3. Per-frame loop: Baked Animation + Head Follow + Real Cube Solve + Drag Rotation + Scene Transitions

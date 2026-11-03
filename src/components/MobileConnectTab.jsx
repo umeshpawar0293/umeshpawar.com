@@ -95,7 +95,7 @@ export default function MobileConnectTab() {
                     setTimeout(() => setIsOpen(false), 200)
                   }}
                 >
-                  START A CONVERSATION <span className="btn-arrow" aria-hidden="true">→</span>
+                  GET IN TOUCH <span className="btn-arrow" aria-hidden="true">→</span>
                   <TransformBoundingBox />
                 </a>
 

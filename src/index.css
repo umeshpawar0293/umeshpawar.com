@@ -1857,10 +1857,10 @@ body.is-character-dragging * {
     inset: 0;
     width: 100vw;
     height: 100vh;
-    background: rgba(0, 0, 0, 0.75);
-    backdrop-filter: blur(18px);
-    -webkit-backdrop-filter: blur(18px);
-    z-index: 99999;
+    background: rgba(0, 0, 0, 0.95) !important;
+    backdrop-filter: blur(24px) !important;
+    -webkit-backdrop-filter: blur(24px) !important;
+    z-index: 999999 !important;
     animation: mobileFadeIn 0.22s ease-out forwards;
     pointer-events: auto;
   }
@@ -1881,16 +1881,17 @@ body.is-character-dragging * {
     right: 0;
     width: min(84vw, 340px);
     height: 100%;
-    background: #0a0c12;
+    background: #0a0c12 !important;
     border-left: 1px solid rgba(255, 255, 255, 0.12);
     padding: 1.25rem 1.25rem 2rem;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    box-shadow: -15px 0 50px rgba(0, 0, 0, 0.85);
+    box-shadow: -15px 0 50px rgba(0, 0, 0, 0.95);
     animation: mobileSlideLeft 0.28s cubic-bezier(0.16, 1, 0.3, 1) forwards;
     box-sizing: border-box;
     overflow-y: auto;
+    z-index: 1000000 !important;
   }
 
   @keyframes mobileSlideLeft {
@@ -4612,6 +4613,22 @@ body.is-character-dragging * {
   aspect-ratio: 16 / 9;
 }
 
+/* Isolated Touch Pinch-to-Zoom Viewport for Fullscreen Lightbox Images */
+.lightbox-zoom-viewport {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  max-width: 100%;
+  max-height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  touch-action: none;
+  -webkit-user-select: none;
+  user-select: none;
+}
+
 .lightbox-media-img {
   max-width: 90vw;
   max-height: 78vh;
@@ -5421,7 +5438,7 @@ body.is-character-dragging * {
 
   .contact-backdrop-heading {
     font-family: var(--font-display);
-    font-size: clamp(5.46rem, 22.1vw, 8.32rem);
+    font-size: clamp(4.2rem, 17vw, 6.4rem);
     font-weight: 400;
     letter-spacing: 0.035em;
     line-height: 0.90;
@@ -6288,6 +6305,10 @@ body.is-character-dragging * {
     max-height: 84vh;
   }
 
+  .lightbox-zoom-viewport {
+    touch-action: none !important;
+  }
+
   .lightbox-media-img,
   .lightbox-media-video,
   .lightbox-video-player-wrapper {
@@ -6974,6 +6995,360 @@ body.is-character-dragging * {
     grid-auto-rows: calc(var(--work-card-w) * 4.3 / 4) !important;
     overscroll-behavior-y: contain !important;
     -webkit-overflow-scrolling: touch;
+  }
+}
+
+/* ==========================================================================
+   IPAD PRO 13 & TABLET VIEWPORT OPTIMIZATIONS (768px - 1180px)
+   Constrains Work and About glass cards to the left column (max 460px),
+   scales 3-column project thumbnails and gaps down gracefully,
+   and clears negative space for the 3D character and floating badges.
+   Strictly scoped: Mobile (< 768px) and Desktop (>= 1280px) remain 100% untouched.
+   ========================================================================== */
+@media screen and (min-width: 768px) and (max-width: 1180px) {
+  /* 1. Global Left Anchor for Tablet */
+  :root {
+    --shared-grid-left: clamp(1.5rem, 3.5vw, 2.5rem);
+    --work-grid-left: clamp(1.5rem, 3.5vw, 2.5rem);
+    --about-left-anchor: clamp(1.5rem, 3.5vw, 2.5rem);
+  }
+
+  /* 2. About Me Page: Glass Card Container */
+  .about-content-column {
+    left: clamp(1.5rem, 3.5vw, 2.5rem) !important;
+    max-width: min(44vw, 460px) !important;
+    width: 100% !important;
+  }
+
+  .about-glass-box,
+  .about-content-column .neon-glass-box {
+    max-width: min(44vw, 460px) !important;
+    width: 100% !important;
+    padding: 1.5rem 1.75rem !important;
+    box-sizing: border-box !important;
+  }
+
+  .about-copy-block {
+    max-width: 100% !important;
+  }
+
+  /* 3. Work Page: Project Thumbnails Glass Box */
+  .work-content-stage {
+    left: clamp(1.5rem, 3.5vw, 2.5rem) !important;
+    max-width: min(44vw, 470px) !important;
+  }
+
+  .work-left-pane {
+    --work-card-w: clamp(112px, 11.5vw, 126px) !important;
+    --work-card-gap: 10px !important;
+    max-width: min(44vw, 470px) !important;
+    width: fit-content !important;
+  }
+
+  .work-glass-container,
+  .work-unified-glass-box {
+    max-width: min(44vw, 470px) !important;
+    width: fit-content !important;
+    padding: 1.25rem 1.25rem !important;
+    box-sizing: border-box !important;
+    margin-top: 1.5rem !important;
+  }
+
+  .work-unified-text-top {
+    padding-top: 0.5rem !important;
+    margin-bottom: 0.75rem !important;
+    gap: 0.35rem !important;
+  }
+
+  .work-grid-tracker-wrapper {
+    gap: 0.625rem !important;
+    padding: 0 !important;
+  }
+
+  .work-grid-3col {
+    gap: 10px !important;
+    grid-template-columns: repeat(3, var(--work-card-w)) !important;
+    grid-template-rows: repeat(3, calc(var(--work-card-w) * 4.3 / 4)) !important;
+    grid-auto-rows: calc(var(--work-card-w) * 4.3 / 4) !important;
+    width: calc(3 * var(--work-card-w) + 20px) !important;
+  }
+
+  .work-project-card {
+    border-radius: 0.65rem !important;
+  }
+
+  /* 4. Floating Scroll Prompt Pill Clearance */
+  .scroll-prompt-pill,
+  #persistent-scroll-indicator,
+  .scroll-badge-wrapper,
+  [data-scroll-badge="pill"] {
+    left: max(var(--scroll-pill-x, 500px), 490px) !important;
+    z-index: 50 !important;
+  }
+}
+
+/* ==========================================================================
+   IPAD PRO 13" PORTRAIT SPECIFIC TARGETING (1024px × 1366px)
+   Re-positions the glass box closer to "ABOUT ME" heading to match Contact page spacing,
+   and harmonizes the CV download button size with the Landing page CTA button.
+   Strictly scoped: iPad Pro Landscape, standard Desktop (>= 1280px), & Mobile (< 768px)
+   remain 100% untouched.
+   ========================================================================== */
+@media screen and (min-width: 1024px) and (max-width: 1030px) and (orientation: portrait) {
+  /* 1. Re-position glass box closer to "ABOUT ME" heading to match Contact page spacing */
+  .about-content-column {
+    top: calc(var(--display-heading-top) + clamp(120px, 12.5vw, 135px)) !important;
+  }
+
+  .about-glass-box,
+  .about-content-column .neon-glass-box {
+    margin-top: 0.25rem !important;
+  }
+
+  /* 2. Harmonize CV button size with Landing page CTA button */
+  .btn-about-cv,
+  .btn-cv {
+    padding: 0.55rem 1.25rem !important;
+    font-size: 0.75rem !important;
+    font-weight: 800 !important;
+    letter-spacing: 0.05em !important;
+    gap: 0.35rem !important;
+    height: auto !important;
+  }
+
+  .btn-about-cv span,
+  .btn-cv .download-icon {
+    font-size: 0.8125rem !important;
+    margin-left: 0.25rem !important;
+  }
+
+  /* 3. Work Page: Reduce gap between "WORK" and glass box */
+  .work-heading {
+    margin-bottom: 0.35rem !important;
+  }
+
+  .work-glass-container,
+  .work-unified-glass-box {
+    margin-top: 0.25rem !important;
+    height: auto !important;
+    max-height: none !important;
+  }
+
+  /* 4. Format brief subtitle onto a single line */
+  .work-unified-text-top p:first-child {
+    white-space: nowrap !important;
+    font-size: clamp(11px, 1.2vw, 13px) !important;
+    letter-spacing: -0.01em !important;
+  }
+
+  /* 5. Show only 2 rows (6 cards) visibly in grid with internal scroll for the rest */
+  .work-grid-tracker-wrapper {
+    height: auto !important;
+    flex: none !important;
+  }
+
+  .work-grid-3col {
+    height: calc(2 * (var(--work-card-w) * 4.3 / 4) + 10px) !important;
+    max-height: calc(2 * (var(--work-card-w) * 4.3 / 4) + 10px) !important;
+    overflow-y: auto !important;
+    overflow-x: hidden !important;
+    overscroll-behavior-y: contain !important;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  /* 6. Contact Page: Shift "LET'S TALK" heading and contact cards rightward closer to character */
+  .contact-backdrop-layer,
+  .contact-left-block {
+    left: clamp(6.5rem, 11vw, 8.5rem) !important;
+  }
+
+  .contact-left-block {
+    width: clamp(340px, 34vw, 380px) !important;
+  }
+
+  /* 7. 3D Character: +10% scale and +5% upward shift handled natively via WebGL in HeroCharacter */
+  .canvas-layer {
+    pointer-events: auto !important;
+  }
+}
+
+/* ==========================================================================
+   IPAD PRO 13" LANDSCAPE & 4:3 COMPACT DESKTOP VIEWPORTS (1200px - 1399px)
+   Specifically targeting iPad Pro 13" Landscape (1366px × 1024px, 4:3 aspect).
+   Calibrates top offsets, card max-widths, and bottom margins to render
+   identically to clean widescreen desktop with zero card squishing or footer overlap.
+   Mobile (< 768px) and Widescreen Desktop (>= 1440px) remain 100% untouched.
+   ========================================================================== */
+@media screen and (min-width: 1200px) and (max-width: 1399px) and (orientation: landscape) {
+  :root {
+    --display-heading-top: clamp(140px, 18vh, 190px);
+    --display-heading-clearance: clamp(110px, 9.5vw, 140px);
+    --about-left-anchor: clamp(2.5rem, 5vw, 4rem);
+    --work-grid-left: clamp(2.5rem, 5vw, 4rem);
+    --shared-grid-left: clamp(2.5rem, 5vw, 4rem);
+  }
+
+  /* ── 1. HOME / HERO PAGE ── */
+  .hero-body {
+    transform: translate(-6%, -3%) !important;
+  }
+
+  .hero-copy-container {
+    top: var(--display-heading-top) !important;
+    left: calc(var(--shared-grid-left) + 1.5rem) !important;
+    max-width: min(44vw, 540px) !important;
+  }
+
+  .hero-name {
+    font-size: clamp(4.8rem, 8vw, 7.5rem) !important;
+  }
+
+  .hero-glass-box {
+    margin-top: 1rem !important;
+    padding: 1.25rem 1.75rem !important;
+  }
+
+  /* ── 2. ABOUT ME PAGE ── */
+  .about-backdrop-layer {
+    top: var(--display-heading-top) !important;
+    left: var(--about-left-anchor) !important;
+    max-width: 500px !important;
+  }
+
+  .about-backdrop-heading {
+    font-size: clamp(5.2rem, 9.2vw, 8.5rem) !important;
+  }
+
+  .about-content-column {
+    top: calc(var(--display-heading-top) + var(--display-heading-clearance)) !important;
+    left: var(--about-left-anchor) !important;
+    max-width: 480px !important;
+    width: 100% !important;
+  }
+
+  .about-glass-box {
+    max-width: 480px !important;
+    width: 100% !important;
+    padding: 1.6rem 2rem !important;
+    margin-top: 0.5rem !important;
+  }
+
+  .about-hero-stat {
+    font-size: 3.25rem !important;
+  }
+
+  .about-hero-subtitle {
+    font-size: 1.15rem !important;
+    margin-top: 0.25rem !important;
+    margin-bottom: 1rem !important;
+  }
+
+  .about-body-paragraph {
+    font-size: 13.5px !important;
+    line-height: 1.6 !important;
+    margin-bottom: 1rem !important;
+  }
+
+  .skills-progress-grid {
+    gap: 1rem 1.5rem !important;
+    margin-top: 1.25rem !important;
+  }
+
+  /* ── 3. WORK PAGE ── */
+  .work-content-stage {
+    top: var(--display-heading-top) !important;
+    left: var(--work-grid-left) !important;
+    height: calc(100vh - var(--display-heading-top) - 85px) !important;
+    transform: none !important;
+  }
+
+  .work-left-pane {
+    --work-card-w: clamp(140px, 11vw, 156px) !important;
+    --work-card-gap: 12px !important;
+    max-width: 540px !important;
+    width: fit-content !important;
+    height: 100% !important;
+  }
+
+  .work-glass-container,
+  .work-unified-glass-box {
+    max-width: 540px !important;
+    padding: 1.5rem 1.6rem !important;
+    height: 100% !important;
+    display: flex !important;
+    flex-direction: column !important;
+    justify-content: flex-start !important;
+  }
+
+  .work-unified-text-top {
+    padding-top: 0.25rem !important;
+    margin-bottom: 1rem !important;
+    gap: 0.35rem !important;
+  }
+
+  /* Work Subtitle: single continuous line, eliminate orphan word "sharp." wrapping */
+  .work-unified-text-top p:first-child {
+    white-space: nowrap !important;
+    text-wrap: nowrap !important;
+    font-size: clamp(12.5px, 1.05vw, 14.5px) !important;
+    letter-spacing: -0.015em !important;
+  }
+
+  .work-grid-tracker-wrapper {
+    flex: 1 !important;
+    min-height: 0 !important;
+    height: 100% !important;
+  }
+
+  .work-grid-3col {
+    gap: 12px !important;
+    grid-template-columns: repeat(3, var(--work-card-w)) !important;
+    grid-template-rows: repeat(3, calc(var(--work-card-w) * 4.3 / 4)) !important;
+    grid-auto-rows: calc(var(--work-card-w) * 4.3 / 4) !important;
+    width: calc(3 * var(--work-card-w) + 24px) !important;
+    padding: 4px !important;
+  }
+
+  .work-project-card {
+    padding: 10px !important;
+  }
+
+  /* ── 4. CONTACT PAGE ── */
+  .contact-composition-wrapper {
+    padding-bottom: 85px !important;
+    box-sizing: border-box !important;
+  }
+
+  .contact-backdrop-layer {
+    top: var(--display-heading-top) !important;
+    left: var(--shared-grid-left) !important;
+  }
+
+  .contact-backdrop-heading {
+    font-size: clamp(5.2rem, 9.2vw, 8.5rem) !important;
+  }
+
+  .contact-left-block {
+    top: calc(var(--display-heading-top) + var(--display-heading-clearance)) !important;
+    left: var(--shared-grid-left) !important;
+    width: clamp(340px, 28vw, 420px) !important;
+    max-height: calc(100vh - var(--display-heading-top) - var(--display-heading-clearance) - 95px) !important;
+    margin-bottom: 75px !important;
+  }
+
+  .contact-cards-stack {
+    gap: 0.65rem !important;
+  }
+
+  .contact-card {
+    padding: 0.85rem 1.15rem !important;
+  }
+
+  /* ── 5. FLOATING DOCKED FOOTER ── */
+  .docked-footer {
+    display: flex !important;
+    bottom: 1.25rem !important;
+    height: 48px !important;
   }
 }
 
@@ -9327,4 +9702,218 @@ body.is-character-dragging * {
 .work-heading {
   transform: none !important;
   margin-bottom: clamp(1rem, 2vh, 1.75rem) !important;
+}
+
+/* ==========================================================================
+   UNIVERSAL MOBILE VIEWPORT & SAFE-AREA INSET ADAPTATION (< 768px ONLY)
+   Adapts for iOS Safari dynamic address/tab bars, Chrome Mobile, Android
+   gesture bars, dynamic islands, notches, and rounded screen corners.
+   Strictly scoped to max-width: 767px (Desktop & Tablet >= 768px 100% untouched).
+   ========================================================================== */
+@media (max-width: 767px) {
+  .mobile-page-wrapper {
+    min-height: 100vh;
+    min-height: -webkit-fill-available;
+    min-height: 100dvh;
+    padding-top: max(env(safe-area-inset-top), 1rem);
+    padding-bottom: calc(env(safe-area-inset-bottom, 20px) + 3.5rem) !important;
+    padding-left: max(env(safe-area-inset-left), 1rem);
+    padding-right: max(env(safe-area-inset-right), 1rem);
+    box-sizing: border-box;
+  }
+
+  /* Universal Mobile Viewport Container Adaptation & Safe-Area Padding */
+  .mobile-section-container {
+    min-height: 100vh;
+    min-height: -webkit-fill-available;
+    min-height: 100dvh;
+    padding-bottom: calc(env(safe-area-inset-bottom, 20px) + 3.5rem) !important;
+    box-sizing: border-box;
+    overscroll-behavior-y: contain;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .app-container {
+    height: 100vh;
+    height: 100dvh;
+    min-height: 100dvh;
+  }
+
+  /* Hero UI overlay safe area */
+  .hero-ui-overlay {
+    min-height: 100dvh;
+    padding-top: max(env(safe-area-inset-top), 1rem) !important;
+    padding-bottom: calc(env(safe-area-inset-bottom, 20px) + 3.5rem) !important;
+    padding-left: max(env(safe-area-inset-left), 1rem) !important;
+    padding-right: max(env(safe-area-inset-right), 1rem) !important;
+    box-sizing: border-box !important;
+  }
+
+  .hero-header {
+    padding-top: max(env(safe-area-inset-top, 0px), 0px);
+    padding-left: max(env(safe-area-inset-left, 0px), 0px);
+    padding-right: max(env(safe-area-inset-right, 0px), 0px);
+  }
+
+  .hero-body {
+    padding-bottom: max(calc(env(safe-area-inset-bottom, 20px) + 2rem), 2.5rem) !important;
+    bottom: max(2.5rem, calc(2rem + env(safe-area-inset-bottom, 0px))) !important;
+    box-sizing: border-box !important;
+    overscroll-behavior-y: contain;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .about-mobile-stage {
+    padding-bottom: calc(env(safe-area-inset-bottom, 20px) + 3.5rem) !important;
+    bottom: max(2.5rem, calc(2rem + env(safe-area-inset-bottom, 0px))) !important;
+    box-sizing: border-box !important;
+    overscroll-behavior-y: contain;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .work-mobile-stage {
+    padding-bottom: calc(env(safe-area-inset-bottom, 20px) + 3.5rem) !important;
+    bottom: max(3rem, calc(2.5rem + env(safe-area-inset-bottom, 0px))) !important;
+    box-sizing: border-box !important;
+    overscroll-behavior-y: contain;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .contact-mobile-stage {
+    min-height: 100vh !important;
+    min-height: -webkit-fill-available !important;
+    min-height: 100dvh !important;
+    height: 100dvh !important;
+    padding-top: max(env(safe-area-inset-top), 1rem) !important;
+    padding-bottom: calc(env(safe-area-inset-bottom, 20px) + 3.5rem) !important;
+    padding-left: max(env(safe-area-inset-left), 1rem) !important;
+    padding-right: max(env(safe-area-inset-right), 1rem) !important;
+    box-sizing: border-box !important;
+    overscroll-behavior-y: contain;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  /* Inner Mobile Native Scroll Containers */
+  .neon-glass-box,
+  .about-mobile-copy-container,
+  .about-mobile-copy-block,
+  .contact-cards-wrapper,
+  .contact-mobile-bento-container {
+    overscroll-behavior-y: contain;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .about-mobile-copy-container .neon-glass-box {
+    max-height: calc(60vh - env(safe-area-inset-bottom, 0px));
+    overflow-y: auto;
+  }
+
+  /* Full Screen Overlays, Drawers & Lightboxes */
+  .mobile-nav-backdrop {
+    height: 100vh;
+    height: 100dvh;
+    min-height: 100dvh;
+  }
+
+  .mobile-nav-drawer {
+    height: 100%;
+    height: 100dvh;
+    min-height: 100dvh;
+    padding-top: max(env(safe-area-inset-top), 1.25rem) !important;
+    padding-bottom: max(env(safe-area-inset-bottom), 1.5rem) !important;
+    padding-left: max(env(safe-area-inset-left), 1.25rem) !important;
+    padding-right: max(env(safe-area-inset-right), 1.25rem) !important;
+    box-sizing: border-box !important;
+  }
+
+  .mobile-connect-backdrop {
+    height: 100vh;
+    height: 100dvh;
+    min-height: 100dvh;
+    padding-top: max(env(safe-area-inset-top), 1.25rem) !important;
+    padding-bottom: max(env(safe-area-inset-bottom), 1.25rem) !important;
+    padding-left: max(env(safe-area-inset-left), 1.25rem) !important;
+    padding-right: max(env(safe-area-inset-right), 1.25rem) !important;
+    box-sizing: border-box !important;
+  }
+
+  .project-preview-modal-root {
+    min-height: 100dvh !important;
+    height: 100dvh !important;
+    padding-top: max(env(safe-area-inset-top), 12px) !important;
+    padding-bottom: max(env(safe-area-inset-bottom), 12px) !important;
+    padding-left: max(env(safe-area-inset-left), 12px) !important;
+    padding-right: max(env(safe-area-inset-right), 12px) !important;
+    box-sizing: border-box !important;
+  }
+
+  .media-fullscreen-lightbox,
+  .media-fullscreen-lightbox.is-ppt-mode {
+    min-height: 100dvh !important;
+    height: 100dvh !important;
+    padding-top: max(env(safe-area-inset-top), 0.75rem) !important;
+    padding-bottom: max(env(safe-area-inset-bottom), 0.75rem) !important;
+    padding-left: max(env(safe-area-inset-left), 0.75rem) !important;
+    padding-right: max(env(safe-area-inset-right), 0.75rem) !important;
+    box-sizing: border-box !important;
+  }
+
+  #ppt-fullscreen-scroller,
+  .ppt-scroll-container {
+    height: 100dvh !important;
+    min-height: 100dvh !important;
+    padding-top: max(env(safe-area-inset-top), 20px) !important;
+    padding-bottom: max(env(safe-area-inset-bottom), 60px) !important;
+    padding-left: max(env(safe-area-inset-left), 16px) !important;
+    padding-right: max(env(safe-area-inset-right), 16px) !important;
+    box-sizing: border-box !important;
+  }
+
+  .lightbox-close-btn {
+    top: max(env(safe-area-inset-top), 14px) !important;
+    right: max(env(safe-area-inset-right), 14px) !important;
+  }
+
+  .fullscreen-image-counter {
+    bottom: max(env(safe-area-inset-bottom), 24px) !important;
+  }
+
+  /* Sticky Bottom Navigation & Action Elements */
+  .docked-footer.mobile-contact-visible {
+    bottom: max(1.25rem, calc(1.25rem + env(safe-area-inset-bottom, 16px))) !important;
+  }
+
+  .contact-cards-wrapper,
+  .contact-mobile-bento-container {
+    bottom: calc(74px + env(safe-area-inset-bottom, 16px)) !important;
+  }
+
+  .scroll-prompt-pill,
+  #persistent-scroll-indicator,
+  .scroll-badge-wrapper,
+  [data-scroll-badge="pill"] {
+    left: max(env(safe-area-inset-left), 1.25rem) !important;
+  }
+}
+
+/* ==========================================================================
+   TALL MODERN ANDROID / SAMSUNG ULTRA VIEWPORTS TARGETING (< 600px & >= 850px)
+   Shifts Contact page cards 10% closer to the 3D character on tall aspect ratios
+   (e.g., Samsung Galaxy S21/S22/S23/S24 Ultra, Pixel Pro), eliminating vertical
+   void without overlapping character baseline or shoes.
+   Desktop, tablets, and compact iOS (< 850px) remain 100% untouched.
+   ========================================================================== */
+@media screen and (max-width: 600px) and (min-height: 850px) {
+  .contact-cards-wrapper,
+  .contact-mobile-bento-container,
+  .contact-cards-container,
+  [data-contact-cards],
+  html[data-device-android="true"] .contact-cards-wrapper,
+  html[data-device-android="true"] .contact-mobile-bento-container,
+  html[data-device-android="true"] .contact-cards-container,
+  html[data-device-android="true"] [data-contact-cards] {
+    transform: translate(-50%, -17.5%) !important;
+    margin-top: -2.5rem !important;
+    margin-bottom: 2rem !important;
+  }
 }
