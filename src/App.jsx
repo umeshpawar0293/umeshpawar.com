@@ -20,7 +20,7 @@ import Footer from './components/Footer'
  * and subtle camera dolly warp using GSAP (power3.inOut, duration 1.1s).
  */
 function ResponsiveCamera() {
-  const { camera, size } = useThree()
+  const { camera, size, gl } = useThree()
   const cameraTimelineRef = useRef(null)
 
   const isIPadPro13Portrait =
@@ -33,6 +33,16 @@ function ResponsiveCamera() {
   const isMobile = size.width <= 768
   const baseFov = 42
   const baseZ = isMobile ? 3.35 : isIPadPro13Portrait ? 3.2 : 3.0
+
+  useEffect(() => {
+    if (typeof window !== 'undefined' && gl) {
+      const isMobileOrTablet =
+        window.innerWidth <= 1400 ||
+        (navigator.maxTouchPoints && navigator.maxTouchPoints > 1)
+      const maxDpr = isMobileOrTablet ? 1.5 : 2
+      gl.setPixelRatio(Math.min(window.devicePixelRatio || 1, maxDpr))
+    }
+  }, [gl, size.width])
 
   useEffect(() => {
     if (!cameraTimelineRef.current?.isActive()) {
@@ -1007,8 +1017,7 @@ export default function App() {
         {/* Layer 2 (3D Scene): Transparent Three.js Character Canvas */}
         <div
           className="canvas-layer transition-opacity duration-500 ease-out"
-          style={{ zIndex: 20, pointerEvents: 'auto', touchAction: 'none' }}
-          onPointerDown={handleDragDown}
+          style={{ zIndex: 20, pointerEvents: 'none', touchAction: 'none' }}
         >
           <Canvas
             camera={{
@@ -1033,7 +1042,14 @@ export default function App() {
               toneMapping: THREE.ACESFilmicToneMapping,
               toneMappingExposure: 1.1,
             }}
-            dpr={typeof window !== 'undefined' && window.innerWidth < 768 ? [1, 1.5] : [1, 2]}
+            dpr={
+              typeof window !== 'undefined' &&
+              (window.innerWidth <= 1400 ||
+                (navigator.maxTouchPoints && navigator.maxTouchPoints > 1))
+                ? [1, 1.5]
+                : [1, 2]
+            }
+            style={{ pointerEvents: 'none' }}
           >
             <ResponsiveCamera />
             <CinematicLighting scrollProgress={scrollProgress} currentScene={currentScene} />

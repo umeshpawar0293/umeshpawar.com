@@ -855,9 +855,10 @@ select,
 html,
 body {
   width: 100%;
-  min-height: 100%;
+  height: 100%;
   overflow-x: hidden;
-  overflow-y: auto;
+  overflow-y: hidden;
+  overscroll-behavior-y: none;
   scroll-behavior: smooth;
   background-color: #0a071b;
   font-family: var(--font-primary);
@@ -874,6 +875,9 @@ body {
 @media (max-width: 767px) {
   html,
   body {
+    height: 100%;
+    overflow-x: hidden;
+    overflow-y: hidden;
     -webkit-overflow-scrolling: touch;
     touch-action: pan-y;
     overscroll-behavior-y: none; /* Prevents ugly rubber-band bounce breaking the dark canvas background */
@@ -883,6 +887,10 @@ body {
   #root,
   .portfolio-root,
   .app-container {
+    height: 100%;
+    height: 100dvh;
+    max-height: 100dvh;
+    overflow: hidden;
     touch-action: pan-y;
     -webkit-overflow-scrolling: touch;
   }
@@ -897,7 +905,10 @@ body {
 
 #root {
   width: 100%;
-  min-height: 100%;
+  height: 100%;
+  height: 100dvh;
+  max-height: 100dvh;
+  overflow: hidden;
 }
 
 /* Subtle scrollbar */
@@ -922,12 +933,16 @@ body {
 .portfolio-root {
   position: relative;
   width: 100%;
-  min-height: 100%;
+  height: 100%;
+  height: 100dvh;
+  max-height: 100dvh;
+  overflow: hidden;
 }
 
 .hero-scroll-track {
-  width: 100%;
-  height: calc(100vh + 720px);
+  display: none !important;
+  width: 0 !important;
+  height: 0 !important;
   pointer-events: none;
 }
 
@@ -936,7 +951,9 @@ body {
   position: fixed;
   inset: 0;
   width: 100vw;
-  height: 100vh;
+  height: 100%;
+  height: 100dvh;
+  max-height: 100dvh;
   overflow: hidden;
   background: radial-gradient(circle at 50% 45%, #181135 0%, #0a071b 70%, #05030e 100%);
   background-color: #0a071b;
@@ -1024,7 +1041,7 @@ canvas {
   width: 100%;
   height: 100%;
   z-index: 20 !important;
-  pointer-events: auto;
+  pointer-events: none !important;
   touch-action: none !important;
 }
 
@@ -3113,6 +3130,7 @@ body.is-character-dragging * {
   overscroll-behavior: contain;
   overscroll-behavior-y: contain !important;
   -webkit-overflow-scrolling: touch;
+  touch-action: pan-y !important;
   box-sizing: border-box;
   padding: 4px;
   user-select: none;
@@ -6946,7 +6964,7 @@ body.is-character-dragging * {
   }
 
   .canvas-layer {
-    pointer-events: auto;
+    pointer-events: none !important;
   }
 
   .character-drag-zone {
@@ -7381,6 +7399,7 @@ body.is-character-dragging * {
     overflow-x: hidden !important;
     overscroll-behavior-y: contain !important;
     -webkit-overflow-scrolling: touch !important;
+    touch-action: pan-y !important;
     padding: 2px !important;
     box-sizing: border-box !important;
     scrollbar-width: none !important;
@@ -7397,6 +7416,7 @@ body.is-character-dragging * {
   .work-project-card {
     padding: 6px !important;
     border-radius: 10px !important;
+    touch-action: pan-y !important;
   }
 
   .work-card-bottom-bar {
@@ -7417,7 +7437,10 @@ body.is-character-dragging * {
 
   /* ── 3. CONTACT PAGE ── */
   .contact-composition-wrapper {
-    padding-bottom: 85px !important;
+    height: 100% !important;
+    max-height: 100dvh !important;
+    padding-bottom: 0 !important;
+    overflow: hidden !important;
     box-sizing: border-box !important;
   }
 
@@ -7441,8 +7464,8 @@ body.is-character-dragging * {
     left: var(--shared-grid-left) !important;
     width: clamp(360px, 36vw, 440px) !important;
     max-width: 440px !important;
-    max-height: calc(100vh - var(--section-heading-top) - var(--section-heading-clearance) - 80px) !important;
-    margin-bottom: 75px !important;
+    max-height: calc(100dvh - var(--section-heading-top) - var(--section-heading-clearance) - 60px) !important;
+    margin-bottom: 0 !important;
     display: flex !important;
     flex-direction: column !important;
     align-items: center !important;
@@ -7468,7 +7491,7 @@ body.is-character-dragging * {
 
   /* ── 5. 3D Character canvas layer interactivity ── */
   .canvas-layer {
-    pointer-events: auto !important;
+    pointer-events: none !important;
   }
 }
 
@@ -7736,6 +7759,7 @@ body.is-character-dragging * {
     overflow-x: hidden !important;
     overscroll-behavior-y: contain !important;
     -webkit-overflow-scrolling: touch !important;
+    touch-action: pan-y !important;
     padding: 2px !important;
     box-sizing: border-box !important;
     scrollbar-width: none !important;
@@ -7752,6 +7776,7 @@ body.is-character-dragging * {
   .work-project-card {
     padding: 5px !important;
     border-radius: 9px !important;
+    touch-action: pan-y !important;
   }
 
   .work-card-bottom-bar {
@@ -7772,7 +7797,10 @@ body.is-character-dragging * {
 
   /* ── 4. CONTACT PAGE ── */
   .contact-composition-wrapper {
-    padding-bottom: 60px !important;
+    height: 100% !important;
+    max-height: 100dvh !important;
+    padding-bottom: 0 !important;
+    overflow: hidden !important;
     box-sizing: border-box !important;
   }
 
@@ -7788,8 +7816,8 @@ body.is-character-dragging * {
     left: var(--shared-grid-left) !important;
     width: clamp(340px, 28vw, 420px) !important;
     max-width: 420px !important;
-    max-height: calc(100vh - var(--section-heading-top) - var(--section-heading-clearance) - 60px) !important;
-    margin-bottom: 50px !important;
+    max-height: calc(100dvh - var(--section-heading-top) - var(--section-heading-clearance) - 60px) !important;
+    margin-bottom: 0 !important;
   }
 
   .contact-cards-stack {
@@ -7807,6 +7835,11 @@ body.is-character-dragging * {
     display: flex !important;
     bottom: 1rem !important;
     height: 46px !important;
+  }
+
+  /* ── 6. 3D Character canvas layer interactivity ── */
+  .canvas-layer {
+    pointer-events: none !important;
   }
 }
 
@@ -9831,14 +9864,17 @@ body.is-character-dragging * {
 }
 
 /* ==========================================================================
-   MOBILE STATIC BACKDROP BLUR & GPU HARDWARE ACCELERATION LOCK (< 768px ONLY)
-   Eliminates blur transition delays, lag, or flicker during scrolling.
-   Locks backdrop-filter statically from initial paint and promotes GPU layer.
+   IPAD & MOBILE BACKDROP FILTER OPTIMIZATION (<= 1400px)
+   Reduces heavy blur to blur(8px) on iPad M4 and Mobile Retina displays
+   to eliminate GPU fill-rate chokepoints and dropped frames during transitions.
+   Standard desktop (>= 1440px) visual quality remains 100% untouched.
    ========================================================================== */
-@media (max-width: 767px) {
+@media screen and (max-width: 1400px) {
   .hero-glass-box,
   .neon-glass-box,
   .about-glass-box,
+  .work-unified-glass-box,
+  .work-glass-container,
   .work-coverflow-card,
   .work-deck-card,
   .work-project-card,
@@ -9849,11 +9885,11 @@ body.is-character-dragging * {
   .connect-card,
   .collab-card,
   .docked-footer.mobile-contact-visible,
+  .docked-footer,
   .scroll-prompt-capsule,
   .green-glass-pill {
-    /* Permanent static backdrop blur from initial paint - zero transition delay */
-    backdrop-filter: blur(14px) saturate(160%) !important;
-    -webkit-backdrop-filter: blur(14px) saturate(160%) !important;
+    backdrop-filter: blur(8px) saturate(140%) !important;
+    -webkit-backdrop-filter: blur(8px) saturate(140%) !important;
 
     /* Strictly lock transitions to transform and opacity only (exclude blur/all) */
     transition-property: transform, opacity !important;
@@ -9863,25 +9899,6 @@ body.is-character-dragging * {
     backface-visibility: hidden !important;
     will-change: transform !important;
     isolation: isolate !important;
-  }
-
-  /* Refined blur density matching card specs */
-  .hero-glass-box,
-  .neon-glass-box,
-  .contact-card,
-  .contact-mobile-card,
-  .direct-lines-card,
-  .connect-card,
-  .collab-card {
-    backdrop-filter: blur(20px) saturate(180%) !important;
-    -webkit-backdrop-filter: blur(20px) saturate(180%) !important;
-  }
-
-  .work-coverflow-card,
-  .work-deck-card {
-    backdrop-filter: blur(14px) saturate(160%) !important;
-    -webkit-backdrop-filter: blur(14px) saturate(160%) !important;
-    transition: transform 0.22s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.2s ease-out, z-index 0.22s step-end !important;
   }
 }
 

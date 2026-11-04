@@ -219,49 +219,6 @@ export default function WorkUI({
     e.stopPropagation()
   }
 
-  // Tablet / iPad Touch Handlers: Isolate grid scrolling & stop bubbling if actively scrollable
-  const handleGridTouchStart = (e) => {
-    if (!gridRef.current || !e.touches || e.touches.length === 0) return
-    gridTouchStartY.current = e.touches[0].clientY
-    const el = gridRef.current
-    const isScrollable = el.scrollHeight > el.clientHeight + 2
-    if (isScrollable) {
-      e.stopPropagation()
-    }
-  }
-
-  const handleGridTouchMove = (e) => {
-    if (!gridRef.current || !e.touches || e.touches.length === 0) return
-    const currentY = e.touches[0].clientY
-    const deltaY = gridTouchStartY.current - currentY // > 0: swiping up (scrolling down), < 0: swiping down (scrolling up)
-    const el = gridRef.current
-    const isScrollable = el.scrollHeight > el.clientHeight + 2
-    if (!isScrollable) return
-
-    const canScrollDown = el.scrollTop + el.clientHeight < el.scrollHeight - 5
-    const canScrollUp = el.scrollTop > 5
-
-    if ((deltaY > 0 && canScrollDown) || (deltaY < 0 && canScrollUp)) {
-      e.stopPropagation()
-    }
-  }
-
-  const handleGridTouchEnd = (e) => {
-    if (!gridRef.current || !e.changedTouches || e.changedTouches.length === 0) return
-    const currentY = e.changedTouches[0].clientY
-    const deltaY = gridTouchStartY.current - currentY
-    const el = gridRef.current
-    const isScrollable = el.scrollHeight > el.clientHeight + 2
-    if (!isScrollable) return
-
-    const canScrollDown = el.scrollTop + el.clientHeight < el.scrollHeight - 5
-    const canScrollUp = el.scrollTop > 5
-
-    if ((deltaY > 0 && canScrollDown) || (deltaY < 0 && canScrollUp)) {
-      e.stopPropagation()
-    }
-  }
-
   // Interactive scrubber: updates grid scroll and indicator pill in real time
   const updateScrollFromTrackerY = useCallback((clientY) => {
     if (!gridRef.current || !trackerTrackRef.current) return
@@ -541,15 +498,13 @@ export default function WorkUI({
                     aria-label="Selected Projects Grid"
                     style={{
                       pointerEvents: isInteractive ? 'auto' : 'none',
+                      touchAction: 'pan-y',
                       transform: gridSkewY !== 0 ? `skewY(${gridSkewY.toFixed(2)}deg)` : undefined,
                       transformOrigin: 'center center',
                       transition: gridSkewY === 0 ? 'transform 0.25s ease-out' : undefined,
                     }}
                     onScroll={handleGridScroll}
                     onWheel={handleGridWheel}
-                    onTouchStart={handleGridTouchStart}
-                    onTouchMove={handleGridTouchMove}
-                    onTouchEnd={handleGridTouchEnd}
                     onPointerDown={handleGridPointerDown}
                     onPointerMove={handleGridPointerMove}
                     onPointerUp={handleGridPointerUp}
