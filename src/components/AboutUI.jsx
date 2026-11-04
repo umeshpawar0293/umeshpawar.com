@@ -337,19 +337,19 @@ export default function AboutUI({ scrollProgress = 0, activePage = 'hero' }) {
               ? {
                   position: 'absolute',
                   top: '50%',
-                  left: 'clamp(2.5rem, 4.5vw, 4rem)',
+                  left: '13.5vw',
                   transform: 'translateY(-50%) scale(0.82)',
                   transformOrigin: 'left center',
                   margin: 0,
                   padding: 0,
                   display: 'flex',
                   flexDirection: 'column',
-                  alignItems: 'flex-start',
+                  alignItems: 'center',
                   justifyContent: 'center',
                   zIndex: 20,
                   maxWidth: 'min(46vw, 540px)',
                   width: 'fit-content',
-                  textAlign: 'left',
+                  textAlign: 'center',
                 }
               : {}),
           }}
@@ -363,12 +363,13 @@ export default function AboutUI({ scrollProgress = 0, activePage = 'hero' }) {
                 top: 'auto',
                 left: 'auto',
                 transform: 'none',
-                margin: '0 0 0.5rem 0',
-                fontSize: '3.4rem',
-                lineHeight: 1,
-                textAlign: 'left',
+                margin: '0 auto 0.5rem auto',
+                width: '100%',
+                fontSize: '4.4rem',
+                lineHeight: 0.95,
+                textAlign: 'center',
+                whiteSpace: 'nowrap',
                 letterSpacing: '0.04em',
-                alignSelf: 'flex-start',
               }}
             >
               ABOUT ME

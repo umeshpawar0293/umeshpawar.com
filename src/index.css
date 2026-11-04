@@ -8119,23 +8119,40 @@ html[data-ipad-landscape="true"] .hero-body {
 
 html[data-ipad-landscape="true"] .hero-copy-container,
 html[data-ipad-landscape="true"] .about-content-column,
-html[data-ipad-landscape="true"] .work-left-pane,
 html[data-ipad-landscape="true"] .contact-left-block {
   position: absolute !important;
   top: 50% !important;
-  left: clamp(2.5rem, 4.5vw, 4rem) !important;
+  left: 13.5vw !important;
   transform: translateY(-50%) scale(0.82) !important;
   transform-origin: left center !important;
   margin: 0 !important;
   padding: 0 !important;
   display: flex !important;
   flex-direction: column !important;
-  align-items: flex-start !important;
+  align-items: center !important;
   justify-content: center !important;
   z-index: 20 !important;
   width: fit-content !important;
   max-width: min(46vw, 540px) !important;
-  text-align: left !important;
+  text-align: center !important;
+}
+
+html[data-ipad-landscape="true"] .work-left-pane {
+  position: absolute !important;
+  top: 50% !important;
+  left: 13.5vw !important;
+  transform: translateY(-50%) scale(0.85) !important;
+  transform-origin: left center !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: center !important;
+  justify-content: center !important;
+  z-index: 20 !important;
+  width: 505px !important;
+  max-width: 505px !important;
+  text-align: center !important;
 }
 
 html[data-ipad-landscape="true"] .hero-name,
@@ -8146,22 +8163,34 @@ html[data-ipad-landscape="true"] .contact-backdrop-heading {
   top: auto !important;
   left: auto !important;
   transform: none !important;
-  margin: 0 0 0.5rem 0 !important;
-  font-size: 3.4rem !important;
-  line-height: 1 !important;
-  text-align: left !important;
-  align-self: flex-start !important;
+  margin: 0 auto 0.5rem auto !important;
+  font-size: 4.4rem !important;
+  line-height: 0.95 !important;
+  text-align: center !important;
+  align-self: center !important;
+  width: 100% !important;
+  white-space: nowrap !important;
 }
 
 html[data-ipad-landscape="true"] .hero-glass-box,
 html[data-ipad-landscape="true"] .about-glass-box,
-html[data-ipad-landscape="true"] .work-glass-container,
 html[data-ipad-landscape="true"] .contact-cards-stack {
   position: relative !important;
   top: auto !important;
   left: auto !important;
   transform: none !important;
   margin: 0 !important;
+}
+
+html[data-ipad-landscape="true"] .work-glass-container {
+  position: relative !important;
+  top: auto !important;
+  left: auto !important;
+  transform: none !important;
+  margin: 0 !important;
+  width: 505px !important;
+  max-width: 505px !important;
+  padding: 0.85rem 1.15rem !important;
 }
 
 html[data-ipad-landscape="true"] .work-content-stage {
@@ -8188,8 +8217,8 @@ html[data-ipad-landscape="true"] .work-project-card {
   backdrop-filter: none !important;
   -webkit-backdrop-filter: none !important;
   background: rgba(20, 20, 24, 0.85) !important;
-  height: 105px !important;
-  max-height: 105px !important;
+  height: 120px !important;
+  max-height: 120px !important;
   aspect-ratio: auto !important;
   padding: 5px !important;
 }
@@ -8201,19 +8230,20 @@ html[data-ipad-landscape="true"] .work-grid-3col {
   gap: 8px !important;
   row-gap: 8px !important;
   column-gap: 8px !important;
-  grid-template-columns: repeat(3, 105px) !important;
-  grid-template-rows: repeat(3, 105px) !important;
-  grid-auto-rows: 105px !important;
-  width: calc(3 * 105px + 16px + 4px) !important;
-  height: calc(3 * 105px + 16px + 4px) !important;
-  max-height: calc(3 * 105px + 16px + 4px) !important;
+  grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+  grid-auto-rows: 120px !important;
+  width: 100% !important;
+  height: 388px !important;
+  max-height: 388px !important;
   min-height: 0 !important;
+  overflow-y: auto !important;
 }
 
 html[data-ipad-landscape="true"] .work-grid-tracker-wrapper {
   flex: none !important;
-  height: calc(3 * 105px + 16px + 4px) !important;
-  max-height: calc(3 * 105px + 16px + 4px) !important;
+  width: 100% !important;
+  height: 388px !important;
+  max-height: 388px !important;
   min-height: 0 !important;
 }
 
