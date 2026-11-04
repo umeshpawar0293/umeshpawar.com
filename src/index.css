@@ -1828,6 +1828,9 @@ body.is-character-dragging * {
 
 @media (max-width: 768px) {
   .hero-ui-overlay {
+    height: 100dvh;
+    max-height: 100dvh;
+    overflow: hidden;
     padding: 1rem 1.25rem 1.5rem;
     pointer-events: none;
   }
@@ -2129,11 +2132,12 @@ body.is-character-dragging * {
      Lifted comfortably above lower screen bezel & home navigation bar */
   .hero-body {
     position: absolute;
-    bottom: clamp(2.5rem, 6.5vh, 4rem);
+    bottom: calc(0.5rem + env(safe-area-inset-bottom, 0px)) !important;
     left: 0;
     width: 100%;
     height: auto;
-    padding: 0 1rem max(1rem, env(safe-area-inset-bottom, 1rem)) 1rem;
+    max-height: calc(100dvh - 70px) !important;
+    padding: 0 1rem 0 1rem !important;
     display: flex;
     flex-direction: column;
     justify-content: flex-end;
@@ -2607,6 +2611,9 @@ body.is-character-dragging * {
     inset: 0;
     width: 100%;
     height: 100%;
+    min-height: 100dvh;
+    height: 100dvh;
+    max-height: 100dvh;
     padding: 0;
     overflow: hidden;
     pointer-events: none;
@@ -2620,11 +2627,12 @@ body.is-character-dragging * {
   .about-mobile-stage {
     display: flex !important;
     position: absolute;
-    bottom: clamp(2.5rem, 6.5vh, 4rem);
+    bottom: calc(0.5rem + env(safe-area-inset-bottom, 0px)) !important;
     left: 0;
     width: 100%;
     height: auto;
-    padding: 0 1.25rem max(1rem, env(safe-area-inset-bottom, 1rem)) 1.25rem;
+    max-height: calc(100dvh - 70px) !important;
+    padding: 0 1rem 0 1rem !important;
     flex-direction: column;
     justify-content: flex-end;
     align-items: center;
@@ -5756,6 +5764,9 @@ body.is-character-dragging * {
     inset: 0;
     width: 100%;
     height: 100%;
+    min-height: 100dvh;
+    height: 100dvh;
+    max-height: 100dvh;
     padding: 0;
     overflow: hidden;
     pointer-events: none;
@@ -5770,15 +5781,15 @@ body.is-character-dragging * {
   .work-mobile-stage {
     display: flex !important;
     position: absolute;
-    bottom: max(3rem, calc(2.5rem + env(safe-area-inset-bottom, 0px))) !important;
+    bottom: calc(0.5rem + env(safe-area-inset-bottom, 0px)) !important;
     transform: none !important;
     left: 0;
     width: 100%;
     height: auto;
-    max-height: 62vh;
+    max-height: 56dvh !important;
     flex-direction: column;
     justify-content: flex-end;
-    padding: 0 0 max(1.5rem, env(safe-area-inset-bottom, 1.5rem)) 0;
+    padding: 0 1rem 0 1rem !important;
     z-index: 30;
     box-sizing: border-box;
     overflow-x: hidden;
@@ -6466,6 +6477,9 @@ body.is-character-dragging * {
     inset: 0;
     width: 100%;
     height: 100%;
+    min-height: 100dvh;
+    height: 100dvh;
+    max-height: 100dvh;
     padding: 0;
     overflow: hidden;
     pointer-events: none;
@@ -6484,7 +6498,7 @@ body.is-character-dragging * {
     height: 100% !important;
     min-height: 100dvh !important;
     height: 100dvh !important;
-    padding-bottom: max(1.5rem, calc(1.5rem + env(safe-area-inset-bottom, 16px))) !important;
+    padding: 0 !important;
     z-index: 999 !important;
     box-sizing: border-box !important;
     pointer-events: none !important;
@@ -6494,10 +6508,10 @@ body.is-character-dragging * {
   .contact-cards-wrapper,
   .contact-mobile-bento-container {
     position: fixed !important;
-    bottom: calc(74px + env(safe-area-inset-bottom, 16px)) !important;
-    /* Clean 14px snug clearance directly above the elevated docked footer (60px top) */
+    bottom: calc(48px + env(safe-area-inset-bottom, 0px)) !important;
+    /* Clean snug clearance directly above the docked footer */
     left: 50% !important;
-    transform: translate(-50%, -7.5%) !important;
+    transform: translateX(-50%) !important;
     width: min(90vw, 340px) !important;
     /* 10% more compact footprint */
     max-width: 340px !important;
@@ -6515,7 +6529,8 @@ body.is-character-dragging * {
   @media (min-width: 640px) and (max-width: 767px) {
     .contact-cards-wrapper,
     .contact-mobile-bento-container {
-      bottom: calc(82px + env(safe-area-inset-bottom, 16px)) !important;
+      bottom: calc(48px + env(safe-area-inset-bottom, 0px)) !important;
+      transform: translateX(-50%) !important;
     }
   }
 
@@ -8346,18 +8361,18 @@ body.is-character-dragging * {
 
   @media (max-width: 767px) {
     .docked-footer.mobile-contact-visible {
-      bottom: max(1.25rem, calc(1.25rem + env(safe-area-inset-bottom, 16px))) !important;
+      bottom: calc(0.5rem + env(safe-area-inset-bottom, 0px)) !important;
       z-index: 1000 !important;
       width: min(90vw, 340px) !important;
       max-width: 340px !important;
-      height: 40px !important;
+      height: 38px !important;
     }
   }
 
   @media (min-width: 640px) and (max-width: 767px) {
     .docked-footer.mobile-contact-visible {
-      bottom: max(1.5rem, calc(1.5rem + env(safe-area-inset-bottom, 16px))) !important;
-      height: 44px !important;
+      bottom: calc(0.5rem + env(safe-area-inset-bottom, 0px)) !important;
+      height: 38px !important;
     }
   }
 
@@ -10295,10 +10310,10 @@ body.is-character-dragging * {
     transform: translateY(6px) !important; /* shifted slightly downward */
   }
 
-  /* Shift combined 3-card contact group upward by 7.5% on mobile (< 768px ONLY) */
+  /* Maintain clean centered bottom-anchoring on mobile (< 768px ONLY) */
   .contact-cards-wrapper,
   .contact-mobile-bento-container {
-    transform: translate(-50%, -7.5%) !important;
+    transform: translateX(-50%) !important;
   }
 }
 
@@ -10626,16 +10641,12 @@ body.is-character-dragging * {
    Desktop, tablets, and compact iOS (< 850px) remain 100% untouched.
    ========================================================================== */
 @media screen and (max-width: 600px) and (min-height: 850px) {
-  .contact-cards-wrapper,
-  .contact-mobile-bento-container,
-  .contact-cards-container,
-  [data-contact-cards],
   html[data-device-android="true"] .contact-cards-wrapper,
   html[data-device-android="true"] .contact-mobile-bento-container,
   html[data-device-android="true"] .contact-cards-container,
   html[data-device-android="true"] [data-contact-cards] {
-    transform: translate(-50%, -17.5%) !important;
-    margin-top: -2.5rem !important;
-    margin-bottom: 2rem !important;
+    transform: translateX(-50%) !important;
+    margin-top: 0 !important;
+    margin-bottom: 0 !important;
   }
 }
