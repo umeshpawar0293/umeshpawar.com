@@ -649,16 +649,35 @@ export default function WorkUI({
                   style={
                     applyCompactLandscape || applyCompactPortrait
                       ? {
-                          height: '330px',
-                          maxHeight: '330px',
+                          height: 'auto',
+                          maxHeight: '380px',
                           overflowY: 'auto',
                           overflowX: 'hidden',
-                          display: 'block', // Do NOT use flex/grid here, use block so child grid doesn't stretch!
-                          paddingRight: '0.5rem',
+                          display: 'block',
+                          paddingRight: '2px', // Eliminates right-side gap
+                          // Custom scrollbar styling (WebKit & modern browsers):
+                          scrollbarWidth: 'thin',
+                          scrollbarColor: '#ccff00 rgba(255, 255, 255, 0.05)',
+                          overscrollBehavior: 'contain',
+                          overscrollBehaviorY: 'contain',
+                          WebkitOverflowScrolling: 'touch',
+                          touchAction: 'pan-y',
                           width: '100%',
                         }
                       : undefined
                   }
+                  onWheel={(e) => {
+                    e.stopPropagation()
+                  }}
+                  onTouchStart={(e) => {
+                    e.stopPropagation()
+                  }}
+                  onTouchMove={(e) => {
+                    e.stopPropagation()
+                  }}
+                  onTouchEnd={(e) => {
+                    e.stopPropagation()
+                  }}
                 >
                   {/* 3-Column Project Grid */}
                   <div
@@ -808,6 +827,11 @@ export default function WorkUI({
                     role="scrollbar"
                     aria-valuenow={Math.round(scrollProgressPct * 100)}
                     aria-label="Project Grid Scroll Indicator"
+                    style={
+                      applyCompactLandscape || applyCompactPortrait
+                        ? { display: 'none' }
+                        : undefined
+                    }
                   >
                     <div className="work-tracker-track" ref={trackerTrackRef}>
                       <div
