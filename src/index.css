@@ -7181,10 +7181,10 @@ body.is-character-dragging * {
    ========================================================================== */
 @media screen and (min-width: 1200px) and (max-width: 1399px) and (orientation: landscape) {
   :root {
-    --display-heading-top: clamp(140px, 18vh, 190px);
-    --display-heading-clearance: clamp(110px, 9.5vw, 140px);
-    --about-left-anchor: clamp(2.5rem, 5vw, 4rem);
-    --work-grid-left: clamp(2.5rem, 5vw, 4rem);
+    --display-heading-top: clamp(110px, 13vh, 135px);
+    --display-heading-clearance: clamp(75px, 6.8vw, 95px);
+    --about-left-anchor: clamp(5.5rem, 7.5vw, 7.5rem);
+    --work-grid-left: clamp(5.5rem, 7.5vw, 7.5rem);
     --shared-grid-left: clamp(2.5rem, 5vw, 4rem);
   }
 
@@ -7212,85 +7212,109 @@ body.is-character-dragging * {
   .about-backdrop-layer {
     top: var(--display-heading-top) !important;
     left: var(--about-left-anchor) !important;
-    max-width: 500px !important;
+    max-width: 460px !important;
   }
 
   .about-backdrop-heading {
-    font-size: clamp(5.2rem, 9.2vw, 8.5rem) !important;
+    font-size: clamp(4.5rem, 6.8vw, 6.2rem) !important;
   }
 
   .about-content-column {
     top: calc(var(--display-heading-top) + var(--display-heading-clearance)) !important;
     left: var(--about-left-anchor) !important;
-    max-width: 480px !important;
+    max-width: 460px !important;
     width: 100% !important;
+    margin-bottom: 75px !important;
   }
 
   .about-glass-box {
-    max-width: 480px !important;
+    max-width: 460px !important;
     width: 100% !important;
-    padding: 1.6rem 2rem !important;
-    margin-top: 0.5rem !important;
+    padding: 1.15rem 1.45rem !important;
+    margin-top: 0.25rem !important;
+    box-sizing: border-box !important;
   }
 
   .about-hero-stat {
-    font-size: 3.25rem !important;
+    font-size: 2.65rem !important;
+    line-height: 1 !important;
   }
 
   .about-hero-subtitle {
-    font-size: 1.15rem !important;
+    font-size: 0.95rem !important;
     margin-top: 0.25rem !important;
-    margin-bottom: 1rem !important;
+    margin-bottom: 0.65rem !important;
   }
 
   .about-body-paragraph {
-    font-size: 13.5px !important;
-    line-height: 1.6 !important;
-    margin-bottom: 1rem !important;
+    font-size: 12.5px !important;
+    line-height: 1.5 !important;
+    margin-bottom: 0.65rem !important;
   }
 
   .skills-progress-grid {
-    gap: 1rem 1.5rem !important;
-    margin-top: 1.25rem !important;
+    gap: 0.55rem 1.15rem !important;
+    margin-top: 0.75rem !important;
+    margin-bottom: 0.25rem !important;
+  }
+
+  .skills-progress-grid .skill-progress-track {
+    height: 10px !important;
   }
 
   /* ── 3. WORK PAGE ── */
   .work-content-stage {
     top: var(--display-heading-top) !important;
     left: var(--work-grid-left) !important;
-    height: calc(100vh - var(--display-heading-top) - 85px) !important;
+    height: calc(100vh - var(--display-heading-top) - 80px) !important;
+    max-height: calc(100vh - var(--display-heading-top) - 80px) !important;
     transform: none !important;
+    box-sizing: border-box !important;
   }
 
   .work-left-pane {
-    --work-card-w: clamp(140px, 11vw, 156px) !important;
-    --work-card-gap: 12px !important;
-    max-width: 540px !important;
+    --work-card-w: clamp(118px, 9.2vw, 128px) !important;
+    --work-card-gap: 8px !important;
+    max-width: 460px !important;
     width: fit-content !important;
-    height: 100% !important;
-  }
-
-  .work-glass-container,
-  .work-unified-glass-box {
-    max-width: 540px !important;
-    padding: 1.5rem 1.6rem !important;
     height: 100% !important;
     display: flex !important;
     flex-direction: column !important;
     justify-content: flex-start !important;
   }
 
+  .work-heading {
+    font-size: clamp(4.5rem, 6.8vw, 6.2rem) !important;
+    margin-bottom: 0.35rem !important;
+    line-height: 0.9 !important;
+    flex-shrink: 0 !important;
+  }
+
+  .work-glass-container,
+  .work-unified-glass-box {
+    max-width: 460px !important;
+    padding: 0.95rem 1.15rem !important;
+    flex: 1 !important;
+    min-height: 0 !important;
+    height: auto !important;
+    display: flex !important;
+    flex-direction: column !important;
+    justify-content: flex-start !important;
+    box-sizing: border-box !important;
+  }
+
   .work-unified-text-top {
-    padding-top: 0.25rem !important;
-    margin-bottom: 1rem !important;
-    gap: 0.35rem !important;
+    padding-top: 0 !important;
+    margin-bottom: 0.5rem !important;
+    gap: 0.25rem !important;
+    flex-shrink: 0 !important;
   }
 
   /* Work Subtitle: single continuous line, eliminate orphan word "sharp." wrapping */
   .work-unified-text-top p:first-child {
     white-space: nowrap !important;
     text-wrap: nowrap !important;
-    font-size: clamp(12.5px, 1.05vw, 14.5px) !important;
+    font-size: clamp(11.5px, 0.95vw, 13.5px) !important;
     letter-spacing: -0.015em !important;
   }
 
@@ -7298,19 +7322,20 @@ body.is-character-dragging * {
     flex: 1 !important;
     min-height: 0 !important;
     height: 100% !important;
+    overflow: hidden !important;
   }
 
   .work-grid-3col {
-    gap: 12px !important;
+    gap: 8px !important;
     grid-template-columns: repeat(3, var(--work-card-w)) !important;
     grid-template-rows: repeat(3, calc(var(--work-card-w) * 4.3 / 4)) !important;
     grid-auto-rows: calc(var(--work-card-w) * 4.3 / 4) !important;
-    width: calc(3 * var(--work-card-w) + 24px) !important;
-    padding: 4px !important;
+    width: calc(3 * var(--work-card-w) + 16px) !important;
+    padding: 2px !important;
   }
 
   .work-project-card {
-    padding: 10px !important;
+    padding: 8px !important;
   }
 
   /* ── 4. CONTACT PAGE ── */
