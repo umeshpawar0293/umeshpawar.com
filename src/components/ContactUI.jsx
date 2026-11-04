@@ -267,7 +267,7 @@ export default function ContactUI({
   return (
     <section
       id="contact"
-      className="contact-foreground-overlay min-h-[100dvh] h-[100dvh] pb-[env(safe-area-inset-bottom,16px)] pb-6 sm:pb-8 md:pb-0 md:min-h-full md:h-full mobile-page-wrapper"
+      className="contact-foreground-overlay min-h-[100dvh] h-[100dvh] pb-[env(safe-area-inset-bottom,16px)] pb-6 sm:pb-8 md:pb-0 md:min-h-full md:h-full"
       style={containerStyle}
       aria-label="Contact Umesh Pawar"
     >
@@ -452,7 +452,7 @@ export default function ContactUI({
 
       {/* Mobile Stage: 2-Column Bento Layout (Direct Lines + Connect next to Direct Collaboration) */}
       <div
-        className="contact-mobile-stage mobile-section-container min-h-[100dvh] h-auto pb-[env(safe-area-inset-bottom,16px)] pb-6 sm:pb-8"
+        className="contact-mobile-stage min-h-[100dvh] h-[100dvh] pb-[env(safe-area-inset-bottom,16px)] pb-6 sm:pb-8"
         style={{
           pointerEvents: 'none',
           display: isContactVisible ? 'block' : 'none',

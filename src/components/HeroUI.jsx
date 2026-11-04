@@ -170,7 +170,7 @@ export default function HeroUI({ scrollProgress = 0 }) {
   }, [mobileMenuOpen])
 
   return (
-    <div className="hero-ui-overlay mobile-page-wrapper">
+    <div className="hero-ui-overlay">
       {/* Top Persistent Navigation Bar */}
       <header className="hero-header">
         <div className="hero-logo-box">
@@ -336,7 +336,7 @@ export default function HeroUI({ scrollProgress = 0 }) {
 
       {/* Main Hero Copy - Left Aligned with smooth scroll exit */}
       <main
-        className="hero-body mobile-section-container"
+        className="hero-body"
         style={{
           display: isHeroVisible ? 'flex' : 'none',
           visibility: isHeroVisible ? 'visible' : 'hidden',

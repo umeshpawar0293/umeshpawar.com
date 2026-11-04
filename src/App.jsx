@@ -330,11 +330,9 @@ export default function App() {
      * Deterministic Section Transition Engine:
      * - Animates camera, environment, and character smoothly over ~0.95s (cinematic power3.inOut).
      * - Blocks ALL incoming wheel/scroll/touch events during transition.
-     * - Enforces cooldown buffer upon arrival to completely discard trailing trackpad inertia.
+     * - Enforces 400ms cooldown buffer upon arrival to completely discard trailing trackpad inertia.
      */
-    const transitionToSection = (targetIndex, duration) => {
-      const isMobile = typeof window !== 'undefined' && window.innerWidth < 768
-      const animDuration = duration !== undefined ? duration : (isMobile ? 600 : 1100)
+    const transitionToSection = (targetIndex, duration = 1100) => {
       const clampedIndex = Math.max(0, Math.min(3, targetIndex))
       if (
         clampedIndex === currentSectionRef.current &&
@@ -349,7 +347,7 @@ export default function App() {
           detail: {
             targetIndex: clampedIndex,
             fromIndex: currentSectionRef.current,
-            duration: isMobile ? 0.6 : 1.1,
+            duration: 1.1,
           },
         })
       )
@@ -396,7 +394,7 @@ export default function App() {
 
       const step = (now) => {
         const elapsed = now - startTime
-        const t = Math.min(elapsed / animDuration, 1)
+        const t = Math.min(elapsed / duration, 1)
         const easedT = easePower3InOut(t)
         const currentP = startP + deltaP * easedT
 
@@ -423,13 +421,12 @@ export default function App() {
             window.history.replaceState(null, '', hashNames[clampedIndex])
           }
 
-          // 4. Intentional cooldown buffer to discard trailing trackpad momentum/coasting
-          const cooldownDuration = isMobile ? 120 : 400
+          // 4. Intentional cooldown buffer (400ms) to discard trailing trackpad momentum/coasting
           cooldownTimerRef.current = setTimeout(() => {
             isTransitioningRef.current = false
             accumulatedDeltaYRef.current = 0
             cooldownTimerRef.current = null
-          }, cooldownDuration)
+          }, 400)
         }
       }
 
@@ -451,72 +448,22 @@ export default function App() {
         e.target?.closest?.('.ppt-scroll-viewport') ||
         e.target?.closest?.('.media-fullscreen-lightbox') ||
         e.target?.closest?.('.project-preview-backdrop') ||
-        e.target?.closest?.('.mobile-nav-backdrop') ||
-        document.body.dataset.modalOpen === 'true' ||
-        document.body.dataset.mobileMenuOpen === 'true'
+        document.body.dataset.modalOpen === 'true'
       ) {
         return // DO NOT call e.preventDefault()! Let native vertical scroll happen!
       }
 
-      // Helper to find nearest genuinely scrollable internal container
-      const findScrollableElement = (target) => {
-        if (!target || typeof target.closest !== 'function') return null
-
-        // Explicit internal scrollable container ONLY (e.g. desktop 3-col work grid)
-        const explicit = target.closest('.work-grid-3col')
-        if (explicit && explicit.scrollHeight > explicit.clientHeight + 4) {
-          return explicit
-        }
-
-        // Check DOM hierarchy upwards for any internal element with auto/scroll overflow
-        // Never treat page section wrappers or root stages as internal scrollable elements!
-        let curr = target
-        while (curr && curr !== document.body && curr !== document.documentElement) {
-          if (curr instanceof HTMLElement) {
-            // Ignore top-level sections and wrappers
-            if (
-              curr.classList.contains('mobile-section-container') ||
-              curr.classList.contains('mobile-page-wrapper') ||
-              curr.classList.contains('app-container') ||
-              curr.classList.contains('portfolio-root') ||
-              curr.classList.contains('hero-body') ||
-              curr.classList.contains('about-mobile-stage') ||
-              curr.classList.contains('work-mobile-stage') ||
-              curr.classList.contains('contact-mobile-stage') ||
-              curr.classList.contains('hero-ui-overlay')
-            ) {
-              break
-            }
-
-            const style = window.getComputedStyle(curr)
-            const overflowY = style.overflowY
-            if (
-              (overflowY === 'auto' || overflowY === 'scroll') &&
-              curr.scrollHeight > curr.clientHeight + 8
-            ) {
-              return curr
-            }
-          }
-          curr = curr.parentElement
-        }
-
-        return null
-      }
-
-      // Allow internal scrolling inside scrollable containers if room remains
-      const scrollEl = findScrollableElement(e.target)
-      if (scrollEl) {
+      // Allow internal scrolling inside the 3x3 Work grid if it has room to scroll
+      const gridEl = e.target.closest('.work-grid-3col')
+      if (gridEl) {
         const isDown = e.deltaY > 0
         const canScrollDown =
-          scrollEl.scrollTop + scrollEl.clientHeight < scrollEl.scrollHeight - 5
-        const canScrollUp = scrollEl.scrollTop > 5
+          gridEl.scrollTop + gridEl.clientHeight < gridEl.scrollHeight - 5
+        const canScrollUp = gridEl.scrollTop > 5
         if ((isDown && canScrollDown) || (!isDown && canScrollUp)) {
-          return // Allow internal scroll without switching section
+          return // Allow internal grid scroll
         }
       }
-
-      // On mobile viewports, never hijack or prevent wheel
-      if (typeof window !== 'undefined' && window.innerWidth < 768) return
 
       // Prevent native window scroll jumping
       e.preventDefault()
@@ -571,7 +518,7 @@ export default function App() {
     // Touch handling for mobile
     let touchStartY = 0
     let touchStartX = 0
-    let touchStartScrollEl = null
+    let touchStartGridEl = null
 
     const handleTouchStart = (e) => {
       if (
@@ -582,14 +529,12 @@ export default function App() {
         e.target?.closest?.('.ppt-scroll-viewport') ||
         e.target?.closest?.('.media-fullscreen-lightbox') ||
         e.target?.closest?.('.project-preview-backdrop') ||
-        e.target?.closest?.('.mobile-nav-backdrop') ||
-        document.body.dataset.modalOpen === 'true' ||
-        document.body.dataset.mobileMenuOpen === 'true'
+        document.body.dataset.modalOpen === 'true'
       ) {
         return
       }
-      if (e.target?.closest?.('input, textarea, select')) return
-      touchStartScrollEl = findScrollableElement(e.target)
+      if (e.target?.closest?.('a, button, input, textarea, select, [role="button"], .interactive-card, .contact-card, .footer-social-btn, .footer-scroll-top-btn, .mobile-menu-toggle')) return
+      touchStartGridEl = e.target?.closest?.('.work-grid-3col') || null
       if (e.touches && e.touches.length > 0) {
         touchStartY = e.touches[0].clientY
         touchStartX = e.touches[0].clientX
@@ -605,21 +550,12 @@ export default function App() {
         e.target?.closest?.('.ppt-scroll-viewport') ||
         e.target?.closest?.('.media-fullscreen-lightbox') ||
         e.target?.closest?.('.project-preview-backdrop') ||
-        e.target?.closest?.('.mobile-nav-backdrop') ||
-        document.body.dataset.modalOpen === 'true' ||
-        document.body.dataset.mobileMenuOpen === 'true'
+        document.body.dataset.modalOpen === 'true'
       ) {
         return // DO NOT call e.preventDefault()! Let native vertical scroll happen!
       }
-      if (e.target?.closest?.('input, textarea, select')) return
-
-      const scrollEl = findScrollableElement(e.target) || touchStartScrollEl
-      if (scrollEl) {
-        // Native momentum scroll should proceed unimpeded
-        return
-      }
-
-      // DO NOT call e.preventDefault()! Allow natural, unrestricted touch scrolling
+      if (e.target?.closest?.('a, button, [role="button"], input, textarea, select')) return
+      if (e.target.closest('.work-grid-3col') || touchStartGridEl) return
     }
 
     const handleTouchEnd = (e) => {
@@ -631,36 +567,32 @@ export default function App() {
         e.target?.closest?.('.ppt-scroll-viewport') ||
         e.target?.closest?.('.media-fullscreen-lightbox') ||
         e.target?.closest?.('.project-preview-backdrop') ||
-        e.target?.closest?.('.mobile-nav-backdrop') ||
-        document.body.dataset.modalOpen === 'true' ||
-        document.body.dataset.mobileMenuOpen === 'true'
+        document.body.dataset.modalOpen === 'true'
       ) {
         return
       }
       if (isTransitioningRef.current) return
       if (!e || !e.changedTouches || e.changedTouches.length === 0) return
-      if (e.target?.closest?.('a, button, input, textarea, select, [role="button"], .footer-social-btn, .footer-scroll-top-btn, .mobile-menu-toggle')) return
+      if (e.target?.closest?.('a, button, input, textarea, select, [role="button"], .interactive-card, .contact-card, .footer-social-btn, .footer-scroll-top-btn, .mobile-menu-toggle')) return
 
       const deltaY = touchStartY - e.changedTouches[0].clientY
       const deltaX = touchStartX - e.changedTouches[0].clientX
 
-      // Check if touch originated or ended inside a genuinely scrollable internal container
-      const scrollEl = findScrollableElement(e.target) || touchStartScrollEl
-      touchStartScrollEl = null
-
-      if (scrollEl) {
+      // If touch originated or ended inside the 3x3 Work grid, only trigger section change when scrolling past boundaries
+      const gridEl = e.target?.closest?.('.work-grid-3col') || touchStartGridEl
+      touchStartGridEl = null
+      if (gridEl) {
         const isDown = deltaY > 0
         const canScrollDown =
-          scrollEl.scrollTop + scrollEl.clientHeight < scrollEl.scrollHeight - 6
-        const canScrollUp = scrollEl.scrollTop > 6
+          gridEl.scrollTop + gridEl.clientHeight < gridEl.scrollHeight - 5
+        const canScrollUp = gridEl.scrollTop > 5
         if ((isDown && canScrollDown) || (!isDown && canScrollUp)) {
-          return // Allow internal content scroll without switching section
+          return // Allow internal grid scroll without switching section
         }
       }
 
-      // Dominant vertical swipe over horizontal (threshold: 32px on mobile, 48px on desktop)
-      const threshold = typeof window !== 'undefined' && window.innerWidth < 768 ? 32 : 48
-      if (Math.abs(deltaY) > threshold && Math.abs(deltaY) > Math.abs(deltaX) * 1.1) {
+      // Dominant vertical swipe over horizontal
+      if (Math.abs(deltaY) > 40 && Math.abs(deltaY) > Math.abs(deltaX) * 1.1) {
         const direction = deltaY > 0 ? 1 : -1
         const nextSection = Math.max(
           0,
@@ -970,9 +902,8 @@ export default function App() {
     state.touchDirection = null
   }
 
-  // Bind touch listeners on dragZoneRef with passive: true (Desktop / tablet landscape only)
+  // Bind touch listeners on dragZoneRef with passive: true
   useEffect(() => {
-    if (typeof window !== 'undefined' && window.innerWidth < 768) return
     const el = dragZoneRef.current
     if (!el) return
 
@@ -1046,12 +977,8 @@ export default function App() {
         {/* Layer 2 (3D Scene): Transparent Three.js Character Canvas */}
         <div
           className="canvas-layer transition-opacity duration-500 ease-out"
-          style={{
-            zIndex: 20,
-            pointerEvents: typeof window !== 'undefined' && window.innerWidth < 768 ? 'none' : 'auto',
-            touchAction: typeof window !== 'undefined' && window.innerWidth < 768 ? 'pan-y' : 'none',
-          }}
-          onPointerDown={typeof window !== 'undefined' && window.innerWidth < 768 ? undefined : handleDragDown}
+          style={{ zIndex: 20, pointerEvents: 'auto', touchAction: 'none' }}
+          onPointerDown={handleDragDown}
         >
           <Canvas
             camera={{ position: [0, 0, 3], fov: 42 }}
@@ -1084,13 +1011,9 @@ export default function App() {
         <div
           ref={dragZoneRef}
           className="character-drag-zone"
-          style={{
-            zIndex: 21,
-            pointerEvents: typeof window !== 'undefined' && window.innerWidth < 768 ? 'none' : (isModalOpen ? 'none' : 'auto'),
-            touchAction: typeof window !== 'undefined' && window.innerWidth < 768 ? 'pan-y' : 'none',
-          }}
+          style={{ zIndex: 21, pointerEvents: isModalOpen ? 'none' : 'auto' }}
           aria-label="Drag horizontally to rotate character"
-          onPointerDown={typeof window !== 'undefined' && window.innerWidth < 768 ? undefined : handleDragDown}
+          onPointerDown={handleDragDown}
         />
 
         {/* Loading Screen Overlay while GLB streams */}

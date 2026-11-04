@@ -442,11 +442,9 @@ export default function HeroCharacter({
   }, [])
 
   // Mobile & canvas touch-drag rotation controls bound directly to gl.domElement
-  // Uses passive listeners for smooth responsiveness on desktop
+  // Mobile & canvas touch-drag rotation controls bound directly to gl.domElement
+  // Uses passive listeners for smooth mobile responsiveness
   useEffect(() => {
-    // On mobile (< 768px), canvas container has pointer-events: none to let native touch flow to HTML
-    if (typeof window !== 'undefined' && window.innerWidth < 768) return
-
     const dom = gl?.domElement
     if (!dom || !characterDragRef) return
 

@@ -679,7 +679,7 @@ export default function WorkUI({
 
         {/* Mobile View: 3D Swipeable Card Stack Deck */}
         <div
-          className="work-mobile-stage mobile-section-container"
+          className="work-mobile-stage"
           style={{
             pointerEvents: 'none',
             display: isWorkVisible ? 'flex' : 'none',

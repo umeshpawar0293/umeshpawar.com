@@ -391,7 +391,7 @@ export default function AboutUI({ scrollProgress = 0, activePage = 'hero' }) {
 
       {/* Mobile Stage: Positioned in exact same vertical zone below waistline over soft gradient tint */}
       <div
-        className="about-mobile-stage mobile-section-container"
+        className="about-mobile-stage"
         style={{
           pointerEvents: 'none',
           display: isAboutVisible ? 'flex' : 'none',
