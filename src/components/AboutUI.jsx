@@ -12,6 +12,7 @@ import { useIPadLandscape } from '../hooks/useIPadLandscape'
 export function AboutBackdropHeading({ scrollProgress = 0 }) {
   const isIPadLandscape = useIPadLandscape()
   const applyCompactLandscape = isIPadLandscape
+  if (applyCompactLandscape) return null
   // Enters around 0.14, full during About [0.26, 0.40], fades out cleanly [0.40, 0.54]
   let aboutT = 0
   if (scrollProgress >= 0.14 && scrollProgress <= 0.54) {
@@ -334,24 +335,47 @@ export default function AboutUI({ scrollProgress = 0, activePage = 'hero' }) {
             pointerEvents: isInteractive ? 'auto' : 'none',
             ...(applyCompactLandscape
               ? {
-                  transform: 'translate(4.5rem, 1.5rem) scale(0.82)',
+                  position: 'absolute',
+                  top: '50%',
+                  left: 'clamp(2.5rem, 4.5vw, 4rem)',
+                  transform: 'translateY(-50%) scale(0.82)',
                   transformOrigin: 'left center',
-                  marginTop: 'auto',
-                  marginBottom: 'auto',
+                  margin: 0,
+                  padding: 0,
                   display: 'flex',
                   flexDirection: 'column',
+                  alignItems: 'flex-start',
                   justifyContent: 'center',
                   zIndex: 20,
-                  position: 'relative',
-                  left: 0,
-                  top: 0,
-                  maxWidth: '520px',
-                  width: '100%',
-                  paddingTop: 0,
+                  maxWidth: 'min(46vw, 540px)',
+                  width: 'fit-content',
+                  textAlign: 'left',
                 }
               : {}),
           }}
         >
+          {/* Inner Heading (ABOUT ME) when applyCompactLandscape is true */}
+          {applyCompactLandscape && (
+            <h2
+              className="about-backdrop-heading has-transform-box sharp-isometric-shadow neon-long-shadow"
+              style={{
+                position: 'relative',
+                top: 'auto',
+                left: 'auto',
+                transform: 'none',
+                margin: '0 0 0.5rem 0',
+                fontSize: '3.4rem',
+                lineHeight: 1,
+                textAlign: 'left',
+                letterSpacing: '0.04em',
+                alignSelf: 'flex-start',
+              }}
+            >
+              ABOUT ME
+              <TransformBoundingBox />
+            </h2>
+          )}
+
           {/* ── Unified Luminous Glass Box Container (Shifted closer to ABOUT ME heading) ── */}
           <div
             className="about-glass-box neon-glass-box flex flex-col items-center min-h-fit h-auto p-5 md:p-6 lg:p-7 rounded-3xl w-full max-w-[460px] lg:max-w-[520px] mt-2 mx-0 relative z-30 select-text"
@@ -359,13 +383,17 @@ export default function AboutUI({ scrollProgress = 0, activePage = 'hero' }) {
               pointerEvents: 'auto',
               width: '100%',
               height: 'auto',
-              ...(isIPadLandscape
+              ...(applyCompactLandscape
                 ? {
-                    maxWidth: '430px',
+                    position: 'relative',
+                    top: 'auto',
+                    left: 'auto',
+                    transform: 'none',
+                    margin: 0,
+                    maxWidth: '500px',
                     height: 'fit-content',
                     minHeight: 0,
-                    padding: '0.85rem 1.25rem',
-                    marginTop: '0.15rem',
+                    padding: '0.95rem 1.35rem',
                     boxSizing: 'border-box',
                   }
                 : {}),

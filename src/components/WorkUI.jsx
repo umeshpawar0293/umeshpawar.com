@@ -35,6 +35,7 @@ import { useIPadLandscape } from '../hooks/useIPadLandscape'
 export function WorkBackdropHeading({ scrollProgress = 0 }) {
   const isIPadLandscape = useIPadLandscape()
   const applyCompactLandscape = isIPadLandscape
+  if (applyCompactLandscape) return null
   // Enters around 0.46, fully visible during Work [0.58, 0.74], fades out cleanly [0.74, 0.88]
   let workT = 0
   if (scrollProgress >= 0.46 && scrollProgress <= 0.88) {
@@ -472,19 +473,20 @@ export default function WorkUI({
               style={
                 applyCompactLandscape
                   ? {
-                      transform: 'translate(4.5rem, 1.5rem) scale(0.82)',
+                      position: 'absolute',
+                      top: '50%',
+                      left: 'clamp(2.5rem, 4.5vw, 4rem)',
+                      transform: 'translateY(-50%) scale(0.82)',
                       transformOrigin: 'left center',
-                      marginTop: 'auto',
-                      marginBottom: 'auto',
+                      margin: 0,
+                      padding: 0,
                       display: 'flex',
                       flexDirection: 'column',
+                      alignItems: 'flex-start',
                       justifyContent: 'center',
                       zIndex: 20,
                       maxWidth: 'fit-content',
                       width: 'fit-content',
-                      height: 'auto',
-                      minHeight: 0,
-                      paddingTop: 0,
                     }
                   : undefined
               }
@@ -496,14 +498,18 @@ export default function WorkUI({
                   pointerEvents: 'auto',
                   userSelect: 'text',
                   WebkitUserSelect: 'text',
-                  ...(isIPadLandscape
+                  ...(applyCompactLandscape
                     ? {
-                        fontSize: 'clamp(3.2rem, 4.5vw, 4.0rem)',
-                        lineHeight: 0.88,
+                        position: 'relative',
+                        top: 'auto',
+                        left: 'auto',
+                        transform: 'none',
+                        margin: '0 0 0.5rem 0',
+                        fontSize: '3.4rem',
+                        lineHeight: 1,
+                        textAlign: 'left',
                         letterSpacing: '0.04em',
-                        marginTop: 0,
-                        marginBottom: '8px',
-                        flexShrink: 0,
+                        alignSelf: 'flex-start',
                       }
                     : {}),
                 }}
@@ -520,13 +526,17 @@ export default function WorkUI({
                   pointerEvents: isWorkActive ? 'auto' : 'none',
                   ...(applyCompactLandscape
                     ? {
+                        position: 'relative',
+                        top: 'auto',
+                        left: 'auto',
+                        transform: 'none',
+                        margin: 0,
                         maxWidth: 'fit-content',
                         width: 'fit-content',
                         padding: '0.75rem 1rem 0.85rem',
                         height: 'fit-content',
                         minHeight: 0,
                         maxHeight: 'none',
-                        marginTop: 0,
                         flex: 'none',
                         display: 'flex',
                         flexDirection: 'column',
@@ -612,9 +622,9 @@ export default function WorkUI({
                     applyCompactLandscape
                       ? {
                           flex: 'none',
-                          height: 'calc(3 * (112px * 4.3 / 4) + 16px + 4px)',
-                          maxHeight: 'calc(3 * (112px * 4.3 / 4) + 16px + 4px)',
-                          minHeight: 'calc(3 * (112px * 4.3 / 4) + 16px + 4px)',
+                          height: 'calc(3 * 105px + 16px + 4px)',
+                          maxHeight: 'calc(3 * 105px + 16px + 4px)',
+                          minHeight: 0,
                           overflow: 'visible',
                         }
                       : undefined
@@ -642,13 +652,13 @@ export default function WorkUI({
                             gap: '8px',
                             rowGap: '8px',
                             columnGap: '8px',
-                            gridTemplateColumns: 'repeat(3, 112px)',
-                            gridTemplateRows: 'repeat(3, calc(112px * 4.3 / 4))',
-                            gridAutoRows: 'calc(112px * 4.3 / 4)',
-                            width: 'calc(3 * 112px + 16px + 4px)',
-                            height: 'calc(3 * (112px * 4.3 / 4) + 16px + 4px)',
-                            maxHeight: 'calc(3 * (112px * 4.3 / 4) + 16px + 4px)',
-                            minHeight: 'calc(3 * (112px * 4.3 / 4) + 16px + 4px)',
+                            gridTemplateColumns: 'repeat(3, 105px)',
+                            gridTemplateRows: 'repeat(3, 105px)',
+                            gridAutoRows: '105px',
+                            width: 'calc(3 * 105px + 16px + 4px)',
+                            height: 'calc(3 * 105px + 16px + 4px)',
+                            maxHeight: 'calc(3 * 105px + 16px + 4px)',
+                            minHeight: 0,
                             overflowY: 'auto',
                             overflowX: 'hidden',
                             overscrollBehaviorY: 'contain',
@@ -672,6 +682,18 @@ export default function WorkUI({
                           key={project.id}
                           className="work-project-card bg-white/[0.06] backdrop-blur-md border border-white/15 rounded-xl shadow-inner"
                           aria-label={project.title}
+                          style={
+                            applyCompactLandscape
+                              ? {
+                                  backdropFilter: 'none',
+                                  WebkitBackdropFilter: 'none',
+                                  backgroundColor: 'rgba(20, 20, 24, 0.85)',
+                                  height: '105px',
+                                  maxHeight: '105px',
+                                  aspectRatio: 'auto',
+                                }
+                              : undefined
+                          }
                           onPointerDown={(e) => {
                             e.stopPropagation?.()
                           }}

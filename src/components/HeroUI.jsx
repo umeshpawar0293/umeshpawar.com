@@ -381,20 +381,21 @@ export default function HeroUI({ scrollProgress = 0 }) {
             ...copyStyle,
             ...(applyCompactLandscape
               ? {
-                  transform: `perspective(900px) rotateX(${scrollRotationX}deg) translate(4.5rem, 1.5rem) scale(0.82)`,
+                  position: 'absolute',
+                  top: '50%',
+                  left: 'clamp(2.5rem, 4.5vw, 4rem)',
+                  transform: `perspective(900px) rotateX(${scrollRotationX}deg) translateY(-50%) scale(0.82)`,
                   transformOrigin: 'left center',
-                  marginTop: 'auto',
-                  marginBottom: 'auto',
+                  margin: 0,
+                  padding: 0,
                   display: 'flex',
                   flexDirection: 'column',
+                  alignItems: 'flex-start',
                   justifyContent: 'center',
                   zIndex: 20,
-                  position: 'relative',
-                  top: 0,
-                  left: 0,
-                  maxWidth: 'min(46vw, 560px)',
-                  width: '100%',
-                  paddingTop: 0,
+                  maxWidth: 'min(46vw, 540px)',
+                  width: 'fit-content',
+                  textAlign: 'left',
                 }
               : {}),
           }}
@@ -405,12 +406,17 @@ export default function HeroUI({ scrollProgress = 0 }) {
             style={{
               transform: `translateY(${-scrollProgress * 40 * 0.4}px)`,
               willChange: 'transform',
-              ...(isIPadLandscape
+              ...(applyCompactLandscape
                 ? {
-                    fontSize: 'clamp(3.8rem, 6.8vw, 5.6rem)',
-                    lineHeight: 0.9,
-                    marginTop: 0,
-                    paddingTop: 0,
+                    position: 'relative',
+                    top: 'auto',
+                    left: 'auto',
+                    transform: 'none',
+                    margin: '0 0 0.5rem 0',
+                    fontSize: '3.4rem',
+                    lineHeight: 1,
+                    textAlign: 'left',
+                    alignSelf: 'flex-start',
                   }
                 : {}),
             }}
@@ -432,10 +438,16 @@ export default function HeroUI({ scrollProgress = 0 }) {
             ref={heroGlassBoxRef}
             className="hero-glass-box mx-auto mt-2 sm:mt-3 md:mt-3 transform-gpu will-change-transform"
             style={
-              isIPadLandscape
+              applyCompactLandscape
                 ? {
-                    marginTop: '0.65rem',
+                    position: 'relative',
+                    top: 'auto',
+                    left: 'auto',
+                    transform: 'none',
+                    margin: 0,
                     padding: '0.95rem 1.35rem',
+                    maxWidth: '480px',
+                    width: '100%',
                   }
                 : undefined
             }

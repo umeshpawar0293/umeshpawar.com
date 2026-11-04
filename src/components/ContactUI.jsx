@@ -13,6 +13,7 @@ import { useIPadLandscape } from '../hooks/useIPadLandscape'
 export function ContactBackdropHeading({ scrollProgress = 0 }) {
   const isIPadLandscape = useIPadLandscape()
   const applyCompactLandscape = isIPadLandscape
+  if (applyCompactLandscape) return null
   // Enters at 0.76, fully visible 0.88 - 1.00
   let contactT = 0
   if (scrollProgress >= 0.76) {
@@ -334,25 +335,46 @@ export default function ContactUI({
               pointerEvents: isInteractive ? 'auto' : 'none',
               ...(applyCompactLandscape
                 ? {
-                    transform: 'translate(4.5rem, 1.5rem) scale(0.82)',
+                    position: 'absolute',
+                    top: '50%',
+                    left: 'clamp(2.5rem, 4.5vw, 4rem)',
+                    transform: 'translateY(-50%) scale(0.82)',
                     transformOrigin: 'left center',
-                    marginTop: 'auto',
-                    marginBottom: 'auto',
+                    margin: 0,
+                    padding: 0,
                     display: 'flex',
                     flexDirection: 'column',
+                    alignItems: 'flex-start',
                     justifyContent: 'center',
                     zIndex: 20,
-                    position: 'relative',
-                    left: 0,
-                    top: 0,
                     width: 'clamp(320px, 26vw, 400px)',
                     maxWidth: '400px',
-                    paddingTop: 0,
-                    paddingBottom: 0,
                   }
                 : {}),
             }}
           >
+            {/* Inner Heading (LET'S TALK) when applyCompactLandscape is true */}
+            {applyCompactLandscape && (
+              <h2
+                className="contact-backdrop-heading has-transform-box sharp-isometric-shadow neon-long-shadow"
+                style={{
+                  position: 'relative',
+                  top: 'auto',
+                  left: 'auto',
+                  transform: 'none',
+                  margin: '0 0 0.5rem 0',
+                  fontSize: '3.4rem',
+                  lineHeight: 1,
+                  textAlign: 'left',
+                  letterSpacing: '0.04em',
+                  alignSelf: 'flex-start',
+                }}
+              >
+                LET'S TALK
+                <TransformBoundingBox />
+              </h2>
+            )}
+
             {/* All 3 Cards Vertically Stacked as a Unified Group on the Left Side */}
             <div
               ref={desktopCardsRef}
@@ -360,10 +382,13 @@ export default function ContactUI({
               style={
                 applyCompactLandscape
                   ? {
+                      position: 'relative',
+                      top: 'auto',
+                      left: 'auto',
+                      transform: 'none',
+                      margin: 0,
                       gap: '0.45rem',
                       width: '100%',
-                      paddingTop: 0,
-                      marginTop: 0,
                       maxHeight: 'none',
                     }
                   : undefined

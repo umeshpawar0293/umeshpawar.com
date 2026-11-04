@@ -7583,52 +7583,101 @@ body.is-character-dragging * {
    IPAD PRO 13" M4, 12.9", AND TABLET LANDSCAPE (JS HOOK DATA-ATTRIBUTE + CSS BACKUP)
    ========================================================================== */
 html[data-ipad-landscape="true"] {
-  --ipad-landscape-left: clamp(6.5rem, 8.5vw, 9rem) !important;
-  --section-heading-top: clamp(72px, 9.5vh, 88px) !important;
-  --section-heading-clearance: clamp(46px, 4.2vw, 56px) !important;
+  --ipad-landscape-left: clamp(2.5rem, 4.5vw, 4rem) !important;
+  --section-heading-top: auto !important;
+  --section-heading-clearance: 0 !important;
   --about-left-anchor: var(--ipad-landscape-left) !important;
   --work-grid-left: var(--ipad-landscape-left) !important;
   --shared-grid-left: var(--ipad-landscape-left) !important;
-  --display-heading-top: clamp(70px, 9vh, 85px) !important;
+  --display-heading-top: auto !important;
 }
 
 html[data-ipad-landscape="true"] .hero-body {
-  transform: translate(-3%, -2%) !important;
-  padding-top: 0 !important;
-  margin-top: 0 !important;
-}
-
-html[data-ipad-landscape="true"] .hero-copy-container {
-  top: clamp(70px, 9vh, 85px) !important;
-  left: clamp(6.5rem, 8.5vw, 9rem) !important;
-  max-width: min(40vw, 490px) !important;
-  padding-top: 0 !important;
-  margin-top: 0 !important;
-}
-
-html[data-ipad-landscape="true"] .about-backdrop-layer,
-html[data-ipad-landscape="true"] .contact-backdrop-layer {
-  top: clamp(72px, 9.5vh, 88px) !important;
-  left: clamp(6.5rem, 8.5vw, 9rem) !important;
-}
-
-html[data-ipad-landscape="true"] .about-content-column {
-  top: calc(clamp(72px, 9.5vh, 88px) + clamp(46px, 4.2vw, 56px)) !important;
-  left: clamp(6.5rem, 8.5vw, 9rem) !important;
-  max-width: 430px !important;
-}
-
-html[data-ipad-landscape="true"] .work-content-stage {
-  top: clamp(72px, 9.5vh, 88px) !important;
-  left: clamp(6.5rem, 8.5vw, 9rem) !important;
-  bottom: auto !important;
-  height: auto !important;
+  position: absolute !important;
+  inset: 0 !important;
+  width: 100% !important;
+  height: 100% !important;
+  display: flex !important;
+  flex-direction: column !important;
+  justify-content: center !important;
+  align-items: flex-start !important;
+  padding: 0 !important;
+  margin: 0 !important;
   transform: none !important;
 }
 
+html[data-ipad-landscape="true"] .hero-copy-container,
+html[data-ipad-landscape="true"] .about-content-column,
+html[data-ipad-landscape="true"] .work-left-pane,
 html[data-ipad-landscape="true"] .contact-left-block {
-  top: calc(clamp(72px, 9.5vh, 88px) + clamp(46px, 4.2vw, 56px)) !important;
-  left: clamp(6.5rem, 8.5vw, 9rem) !important;
+  position: absolute !important;
+  top: 50% !important;
+  left: clamp(2.5rem, 4.5vw, 4rem) !important;
+  transform: translateY(-50%) scale(0.82) !important;
+  transform-origin: left center !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: flex-start !important;
+  justify-content: center !important;
+  z-index: 20 !important;
+  width: fit-content !important;
+}
+
+html[data-ipad-landscape="true"] .hero-name,
+html[data-ipad-landscape="true"] .about-backdrop-heading,
+html[data-ipad-landscape="true"] .work-heading,
+html[data-ipad-landscape="true"] .contact-backdrop-heading {
+  position: relative !important;
+  top: auto !important;
+  left: auto !important;
+  transform: none !important;
+  margin: 0 0 0.5rem 0 !important;
+  font-size: 3.4rem !important;
+  line-height: 1 !important;
+  text-align: left !important;
+  align-self: flex-start !important;
+}
+
+html[data-ipad-landscape="true"] .hero-glass-box,
+html[data-ipad-landscape="true"] .about-glass-box,
+html[data-ipad-landscape="true"] .work-glass-container,
+html[data-ipad-landscape="true"] .contact-cards-stack {
+  position: relative !important;
+  top: auto !important;
+  left: auto !important;
+  transform: none !important;
+  margin: 0 !important;
+}
+
+html[data-ipad-landscape="true"] .work-content-stage {
+  position: absolute !important;
+  inset: 0 !important;
+  width: 100% !important;
+  height: 100% !important;
+  display: flex !important;
+  flex-direction: column !important;
+  justify-content: center !important;
+  align-items: flex-start !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  transform: none !important;
+}
+
+html[data-ipad-landscape="true"] .about-backdrop-layer,
+html[data-ipad-landscape="true"] .work-backdrop-layer,
+html[data-ipad-landscape="true"] .contact-backdrop-layer {
+  display: none !important;
+}
+
+html[data-ipad-landscape="true"] .work-project-card {
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+  background: rgba(20, 20, 24, 0.85) !important;
+  height: 105px !important;
+  max-height: 105px !important;
+  padding: 5px !important;
 }
 
 /* ==========================================================================
@@ -8047,6 +8096,125 @@ html[data-ipad-landscape="true"] .contact-left-block {
   .canvas-layer {
     pointer-events: none !important;
   }
+}
+
+/* ==========================================================================
+   EXACT LEFT-CENTER UNIFIED ARCHITECTURE FOR IPAD LANDSCAPE
+   Group Heading + Glass Box together, pinned to exact left-center.
+   Zero separation, zero clipping, zero GPU compositing lag.
+   ========================================================================== */
+html[data-ipad-landscape="true"] .hero-body {
+  position: absolute !important;
+  inset: 0 !important;
+  width: 100% !important;
+  height: 100% !important;
+  display: flex !important;
+  flex-direction: column !important;
+  justify-content: center !important;
+  align-items: flex-start !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  transform: none !important;
+}
+
+html[data-ipad-landscape="true"] .hero-copy-container,
+html[data-ipad-landscape="true"] .about-content-column,
+html[data-ipad-landscape="true"] .work-left-pane,
+html[data-ipad-landscape="true"] .contact-left-block {
+  position: absolute !important;
+  top: 50% !important;
+  left: clamp(2.5rem, 4.5vw, 4rem) !important;
+  transform: translateY(-50%) scale(0.82) !important;
+  transform-origin: left center !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: flex-start !important;
+  justify-content: center !important;
+  z-index: 20 !important;
+  width: fit-content !important;
+  max-width: min(46vw, 540px) !important;
+  text-align: left !important;
+}
+
+html[data-ipad-landscape="true"] .hero-name,
+html[data-ipad-landscape="true"] .about-backdrop-heading,
+html[data-ipad-landscape="true"] .work-heading,
+html[data-ipad-landscape="true"] .contact-backdrop-heading {
+  position: relative !important;
+  top: auto !important;
+  left: auto !important;
+  transform: none !important;
+  margin: 0 0 0.5rem 0 !important;
+  font-size: 3.4rem !important;
+  line-height: 1 !important;
+  text-align: left !important;
+  align-self: flex-start !important;
+}
+
+html[data-ipad-landscape="true"] .hero-glass-box,
+html[data-ipad-landscape="true"] .about-glass-box,
+html[data-ipad-landscape="true"] .work-glass-container,
+html[data-ipad-landscape="true"] .contact-cards-stack {
+  position: relative !important;
+  top: auto !important;
+  left: auto !important;
+  transform: none !important;
+  margin: 0 !important;
+}
+
+html[data-ipad-landscape="true"] .work-content-stage {
+  position: absolute !important;
+  inset: 0 !important;
+  width: 100% !important;
+  height: 100% !important;
+  display: flex !important;
+  flex-direction: column !important;
+  justify-content: center !important;
+  align-items: flex-start !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  transform: none !important;
+}
+
+html[data-ipad-landscape="true"] .about-backdrop-layer,
+html[data-ipad-landscape="true"] .work-backdrop-layer,
+html[data-ipad-landscape="true"] .contact-backdrop-layer {
+  display: none !important;
+}
+
+html[data-ipad-landscape="true"] .work-project-card {
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+  background: rgba(20, 20, 24, 0.85) !important;
+  height: 105px !important;
+  max-height: 105px !important;
+  aspect-ratio: auto !important;
+  padding: 5px !important;
+}
+
+html[data-ipad-landscape="true"] .work-grid-3col {
+  display: grid !important;
+  align-content: start !important;
+  align-items: start !important;
+  gap: 8px !important;
+  row-gap: 8px !important;
+  column-gap: 8px !important;
+  grid-template-columns: repeat(3, 105px) !important;
+  grid-template-rows: repeat(3, 105px) !important;
+  grid-auto-rows: 105px !important;
+  width: calc(3 * 105px + 16px + 4px) !important;
+  height: calc(3 * 105px + 16px + 4px) !important;
+  max-height: calc(3 * 105px + 16px + 4px) !important;
+  min-height: 0 !important;
+}
+
+html[data-ipad-landscape="true"] .work-grid-tracker-wrapper {
+  flex: none !important;
+  height: calc(3 * 105px + 16px + 4px) !important;
+  max-height: calc(3 * 105px + 16px + 4px) !important;
+  min-height: 0 !important;
 }
 
 /* ==========================================================================
