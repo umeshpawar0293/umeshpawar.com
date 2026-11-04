@@ -3,6 +3,7 @@ import gsap from 'gsap'
 import { PROJECTS_DATA, checkIsVideo, cleanAssetUrl } from '../data/projectsData'
 import ProjectPreview from './ProjectPreview'
 import TransformBoundingBox from './TransformBoundingBox'
+import { useIPadLandscape } from '../hooks/useIPadLandscape'
 
 /**
  * WorkUI Component (Matching Reference Image Composition Strictly)
@@ -32,6 +33,7 @@ import TransformBoundingBox from './TransformBoundingBox'
  * matching the exact typographic composition and vertical baseline of ABOUT ME and LET'S TALK.
  */
 export function WorkBackdropHeading({ scrollProgress = 0 }) {
+  const isIPadLandscape = useIPadLandscape()
   // Enters around 0.46, fully visible during Work [0.58, 0.74], fades out cleanly [0.74, 0.88]
   let workT = 0
   if (scrollProgress >= 0.46 && scrollProgress <= 0.88) {
@@ -53,10 +55,29 @@ export function WorkBackdropHeading({ scrollProgress = 0 }) {
         transform: `translateY(${translateY}px)`,
         pointerEvents: 'none',
         zIndex: 1,
+        ...(isIPadLandscape
+          ? {
+              top: 'clamp(72px, 9.5vh, 88px)',
+              left: 'clamp(6.5rem, 8.5vw, 9rem)',
+            }
+          : {}),
       }}
       aria-hidden="true"
     >
-      <h2 className="work-backdrop-heading sharp-isometric-shadow neon-long-shadow">WORK</h2>
+      <h2
+        className="work-backdrop-heading sharp-isometric-shadow neon-long-shadow"
+        style={
+          isIPadLandscape
+            ? {
+                fontSize: 'clamp(3.2rem, 4.5vw, 4.0rem)',
+                lineHeight: 0.88,
+                letterSpacing: '0.04em',
+              }
+            : undefined
+        }
+      >
+        WORK
+      </h2>
     </div>
   )
 }
@@ -69,6 +90,7 @@ export default function WorkUI({
   onCharacterTouchMove,
   onCharacterTouchEnd,
 }) {
+  const isIPadLandscape = useIPadLandscape()
   const [previewProject, setPreviewProject] = useState(null)
   const [scrollProgressPct, setScrollProgressPct] = useState(0)
 
@@ -419,8 +441,43 @@ export default function WorkUI({
           style={{ pointerEvents: isInteractive ? 'auto' : 'none' }}
         >
           {/* Main Content Stage: Left-anchored position, clear of the 3D character on the right */}
-          <div className="work-content-stage">
-            <div className="work-left-pane flex flex-col items-center w-fit">
+          <div
+            className="work-content-stage"
+            style={
+              isIPadLandscape
+                ? {
+                    top: 'clamp(72px, 9.5vh, 88px)',
+                    left: 'clamp(6.5rem, 8.5vw, 9rem)',
+                    bottom: 'auto',
+                    height: 'auto',
+                    minHeight: 0,
+                    maxHeight: 'fit-content',
+                    transform: 'none',
+                    paddingTop: 0,
+                    marginTop: 0,
+                  }
+                : undefined
+            }
+          >
+            <div
+              className="work-left-pane flex flex-col items-center w-fit"
+              style={
+                isIPadLandscape
+                  ? {
+                      maxWidth: 'fit-content',
+                      width: 'fit-content',
+                      height: 'auto',
+                      minHeight: 0,
+                      display: 'flex',
+                      flexDirection: 'column',
+                      alignItems: 'center',
+                      justifyContent: 'flex-start',
+                      paddingTop: 0,
+                      marginTop: 0,
+                    }
+                  : undefined
+              }
+            >
               {/* WORK heading: Horizontally centered relative to the single glass box below */}
               <h2
                 className="work-heading has-transform-box sharp-isometric-shadow neon-long-shadow select-text text-center mx-auto"
@@ -428,6 +485,16 @@ export default function WorkUI({
                   pointerEvents: 'auto',
                   userSelect: 'text',
                   WebkitUserSelect: 'text',
+                  ...(isIPadLandscape
+                    ? {
+                        fontSize: 'clamp(3.2rem, 4.5vw, 4.0rem)',
+                        lineHeight: 0.88,
+                        letterSpacing: '0.04em',
+                        marginTop: 0,
+                        marginBottom: '8px',
+                        flexShrink: 0,
+                      }
+                    : {}),
                 }}
                 onPointerDown={(e) => e.stopPropagation()}
               >
@@ -440,6 +507,23 @@ export default function WorkUI({
                 className="work-glass-container work-unified-glass-box flex flex-col items-center pt-5 md:pt-6 px-6 md:px-8 pb-6 md:pb-7 mt-2 md:mt-3 rounded-3xl w-fit mx-auto relative z-30 select-text"
                 style={{
                   pointerEvents: isWorkActive ? 'auto' : 'none',
+                  ...(isIPadLandscape
+                    ? {
+                        maxWidth: 'fit-content',
+                        width: 'fit-content',
+                        padding: '0.65rem 0.85rem 0.75rem',
+                        height: 'fit-content',
+                        minHeight: 0,
+                        maxHeight: 'none',
+                        marginTop: 0,
+                        flex: 'none',
+                        display: 'flex',
+                        flexDirection: 'column',
+                        justifyContent: 'flex-start',
+                        alignItems: 'center',
+                        boxSizing: 'border-box',
+                      }
+                    : {}),
                 }}
                 onPointerDown={(e) => e.stopPropagation()}
                 onMouseDown={(e) => e.stopPropagation()}
@@ -451,6 +535,14 @@ export default function WorkUI({
                     pointerEvents: isWorkActive ? 'auto' : 'none',
                     userSelect: 'text',
                     WebkitUserSelect: 'text',
+                    ...(isIPadLandscape
+                      ? {
+                          paddingTop: 0,
+                          marginBottom: '0.3rem',
+                          gap: '0.1rem',
+                          flexShrink: 0,
+                        }
+                      : {}),
                   }}
                   onPointerDown={(e) => e.stopPropagation()}
                   onMouseDown={(e) => e.stopPropagation()}
@@ -464,6 +556,14 @@ export default function WorkUI({
                       userSelect: 'text',
                       WebkitUserSelect: 'text',
                       margin: 0,
+                      ...(isIPadLandscape
+                        ? {
+                            whiteSpace: 'nowrap',
+                            wordBreak: 'keep-all',
+                            fontSize: 'clamp(10px, 0.8vw, 11.5px)',
+                            letterSpacing: '-0.015em',
+                          }
+                        : {}),
                     }}
                     onPointerDown={(e) => e.stopPropagation()}
                     onMouseDown={(e) => e.stopPropagation()}
@@ -478,6 +578,13 @@ export default function WorkUI({
                       userSelect: 'text',
                       WebkitUserSelect: 'text',
                       margin: 0,
+                      ...(isIPadLandscape
+                        ? {
+                            fontSize: '9.5px',
+                            lineHeight: 1.15,
+                            margin: 0,
+                          }
+                        : {}),
                     }}
                     onPointerDown={(e) => e.stopPropagation()}
                     onMouseDown={(e) => e.stopPropagation()}
@@ -488,7 +595,20 @@ export default function WorkUI({
                 </div>
 
                 {/* Bottom Project Grid Wrapper with Scroll Tracker */}
-                <div className="work-grid-tracker-wrapper flex flex-row items-stretch gap-4 md:gap-5 w-fit relative flex-1 min-h-0">
+                <div
+                  className="work-grid-tracker-wrapper flex flex-row items-stretch gap-4 md:gap-5 w-fit relative flex-1 min-h-0"
+                  style={
+                    isIPadLandscape
+                      ? {
+                          flex: 'none',
+                          height: 'calc(3 * (clamp(92px, 7.2vw, 102px) * 4.3 / 4) + 16px)',
+                          maxHeight: 'calc(3 * (clamp(92px, 7.2vw, 102px) * 4.3 / 4) + 16px)',
+                          minHeight: 'calc(3 * (clamp(92px, 7.2vw, 102px) * 4.3 / 4) + 16px)',
+                          overflow: 'visible',
+                        }
+                      : undefined
+                  }
+                >
                   {/* 3-Column Project Grid */}
                   <div
                     className="work-grid-3col overscroll-y-contain"
@@ -501,6 +621,25 @@ export default function WorkUI({
                       transform: gridSkewY !== 0 ? `skewY(${gridSkewY.toFixed(2)}deg)` : undefined,
                       transformOrigin: 'center center',
                       transition: gridSkewY === 0 ? 'transform 0.25s ease-out' : undefined,
+                      ...(isIPadLandscape
+                        ? {
+                            display: 'grid',
+                            gap: '5px',
+                            gridTemplateColumns: 'repeat(3, clamp(92px, 7.2vw, 102px))',
+                            gridTemplateRows: 'repeat(3, calc(clamp(92px, 7.2vw, 102px) * 4.3 / 4))',
+                            width: 'calc(3 * clamp(92px, 7.2vw, 102px) + 14px)',
+                            height: 'calc(3 * (clamp(92px, 7.2vw, 102px) * 4.3 / 4) + 16px)',
+                            maxHeight: 'calc(3 * (clamp(92px, 7.2vw, 102px) * 4.3 / 4) + 16px)',
+                            minHeight: 'calc(3 * (clamp(92px, 7.2vw, 102px) * 4.3 / 4) + 16px)',
+                            overflowY: 'auto',
+                            overflowX: 'hidden',
+                            overscrollBehaviorY: 'contain',
+                            WebkitOverflowScrolling: 'touch',
+                            padding: '2px',
+                            boxSizing: 'border-box',
+                            scrollbarWidth: 'none',
+                          }
+                        : {}),
                     }}
                     onScroll={handleGridScroll}
                     onWheel={handleGridWheel}

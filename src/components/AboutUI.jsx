@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react'
 import gsap from 'gsap'
 import TransformBoundingBox from './TransformBoundingBox'
+import { useIPadLandscape } from '../hooks/useIPadLandscape'
 
 /**
  * AboutBackdropHeading Component
@@ -9,6 +10,7 @@ import TransformBoundingBox from './TransformBoundingBox'
  * so the character naturally occludes/overlaps it matching the reference composition.
  */
 export function AboutBackdropHeading({ scrollProgress = 0 }) {
+  const isIPadLandscape = useIPadLandscape()
   // Enters around 0.14, full during About [0.26, 0.40], fades out cleanly [0.40, 0.54]
   let aboutT = 0
   if (scrollProgress >= 0.14 && scrollProgress <= 0.54) {
@@ -34,10 +36,33 @@ export function AboutBackdropHeading({ scrollProgress = 0 }) {
         pointerEvents: isInteractive ? 'auto' : 'none',
         visibility: isAboutVisible ? 'visible' : 'hidden',
         zIndex: 1,
+        ...(isIPadLandscape
+          ? {
+              top: 'clamp(72px, 9.5vh, 88px)',
+              left: 'clamp(6.5rem, 8.5vw, 9rem)',
+              maxWidth: '430px',
+              width: '100%',
+              margin: 0,
+              padding: 0,
+            }
+          : {}),
       }}
       aria-hidden={!isAboutActive}
     >
-      <h2 className="about-backdrop-heading has-transform-box sharp-isometric-shadow neon-long-shadow md:text-center md:mx-auto">
+      <h2
+        className="about-backdrop-heading has-transform-box sharp-isometric-shadow neon-long-shadow md:text-center md:mx-auto"
+        style={
+          isIPadLandscape
+            ? {
+                fontSize: 'clamp(3.2rem, 4.5vw, 4.0rem)',
+                lineHeight: 0.88,
+                letterSpacing: '0.04em',
+                margin: 0,
+                padding: 0,
+              }
+            : undefined
+        }
+      >
         ABOUT ME
         <TransformBoundingBox />
       </h2>
@@ -99,6 +124,7 @@ const SKILLS_DATA = [
  * - Narrative paragraphs and CV download CTA
  */
 export default function AboutUI({ scrollProgress = 0, activePage = 'hero' }) {
+  const isIPadLandscape = useIPadLandscape()
   // Enters around 0.16, full during About [0.28, 0.40], fades out cleanly [0.40, 0.54]
   let aboutT = 0
   if (scrollProgress >= 0.16 && scrollProgress <= 0.54) {
@@ -279,37 +305,109 @@ export default function AboutUI({ scrollProgress = 0, activePage = 'hero' }) {
         {/* Unified Content Column: Left-aligned to balance with the 3D character on the right */}
         <div
           className="about-content-column w-full max-w-[460px] lg:max-w-[520px] mx-0"
-          style={{ pointerEvents: isInteractive ? 'auto' : 'none' }}
+          style={{
+            pointerEvents: isInteractive ? 'auto' : 'none',
+            ...(isIPadLandscape
+              ? {
+                  position: 'absolute',
+                  top: 'calc(clamp(72px, 9.5vh, 88px) + clamp(46px, 4.2vw, 56px))',
+                  left: 'clamp(6.5rem, 8.5vw, 9rem)',
+                  maxWidth: '430px',
+                  width: '100%',
+                  height: 'auto',
+                  margin: 0,
+                  paddingTop: 0,
+                }
+              : {}),
+          }}
         >
           {/* ── Unified Luminous Glass Box Container (Shifted closer to ABOUT ME heading) ── */}
           <div
             className="about-glass-box neon-glass-box flex flex-col items-center min-h-fit h-auto p-5 md:p-6 lg:p-7 rounded-3xl w-full max-w-[460px] lg:max-w-[520px] mt-2 mx-0 relative z-30 select-text"
-            style={{ pointerEvents: 'auto', width: '100%', height: 'auto' }}
+            style={{
+              pointerEvents: 'auto',
+              width: '100%',
+              height: 'auto',
+              ...(isIPadLandscape
+                ? {
+                    maxWidth: '430px',
+                    height: 'fit-content',
+                    minHeight: 0,
+                    padding: '0.85rem 1.25rem',
+                    marginTop: '0.15rem',
+                    boxSizing: 'border-box',
+                  }
+                : {}),
+            }}
           >
             {/* Hero Stat: 12+ YEARS (Neon green & 56px scale) */}
-            <h3 className="about-hero-stat text-4xl md:text-5xl lg:text-[56px] font-black text-[#ccff00] tracking-tight leading-none text-center font-['Archivo'] m-0">
+            <h3
+              className="about-hero-stat text-4xl md:text-5xl lg:text-[56px] font-black text-[#ccff00] tracking-tight leading-none text-center font-['Archivo'] m-0"
+              style={
+                isIPadLandscape
+                  ? { fontSize: '1.9rem', lineHeight: 1, margin: 0, marginBottom: '0.2rem' }
+                  : undefined
+              }
+            >
               {yearsCount}+ YEARS
             </h3>
 
             {/* Subtitle: 2-Line Break in Heavy White Font (text-lg md:text-xl lg:text-[22px], tightly locked under 12+ YEARS) */}
-            <p className="about-hero-subtitle text-lg md:text-xl lg:text-[22px] font-extrabold text-white uppercase leading-tight tracking-tight text-center font-['Archivo'] mt-1.5 md:mt-2 mb-5 md:mb-6">
+            <p
+              className="about-hero-subtitle text-lg md:text-xl lg:text-[22px] font-extrabold text-white uppercase leading-tight tracking-tight text-center font-['Archivo'] mt-1.5 md:mt-2 mb-5 md:mb-6"
+              style={
+                isIPadLandscape
+                  ? { fontSize: '0.88rem', lineHeight: 1.15, letterSpacing: '-0.015em', margin: 0, marginBottom: '0.35rem' }
+                  : undefined
+              }
+            >
               TURNING CREATIVE CHAOS
               <br />
               INTO WORK THAT LANDS.
             </p>
 
             {/* Paragraph 1 (Agency Experience) */}
-            <p className="about-body-paragraph agency-exp font-normal md:font-medium text-sm md:text-[14px] leading-relaxed md:leading-[1.65] text-zinc-200 text-center mb-4 md:mb-5 font-['Archivo']">
+            <p
+              className="about-body-paragraph agency-exp font-normal md:font-medium text-sm md:text-[14px] leading-relaxed md:leading-[1.65] text-zinc-200 text-center mb-4 md:mb-5 font-['Archivo']"
+              style={
+                isIPadLandscape
+                  ? { fontSize: '11px', lineHeight: 1.38, margin: 0, marginBottom: '0.35rem' }
+                  : undefined
+              }
+            >
               Currently at Cheil India. Earlier at DDB Mudra, Gozoop, The Minimalist and WatConsult. Brands across automotive, tech, food, finance, hospitality, FMCG and entertainment.
             </p>
 
             {/* Paragraph 2 (Personal Philosophy / Flavor Line - Standalone Semantic Block) */}
-            <p className="about-body-paragraph flavor-line font-normal md:font-medium text-sm md:text-[14px] leading-relaxed md:leading-[1.65] text-zinc-200 text-center mb-6 font-['Archivo']">
+            <p
+              className="about-body-paragraph flavor-line font-normal md:font-medium text-sm md:text-[14px] leading-relaxed md:leading-[1.65] text-zinc-200 text-center mb-6 font-['Archivo']"
+              style={
+                isIPadLandscape
+                  ? { fontSize: '11px', lineHeight: 1.38, margin: 0, marginBottom: '0.45rem' }
+                  : undefined
+              }
+            >
               Sketch first, overthink later. Fueled by chai, deadlines aur ek stubborn pyaar white space ke saath.
             </p>
 
             {/* Skills Progress Bars Grid (Thick capsule bars with outer cyan border track) */}
-            <div className="skills-progress-grid grid grid-cols-2 gap-x-6 gap-y-5 md:gap-y-6 mt-6 md:mt-7 mb-2 md:mb-3 w-full text-left">
+            <div
+              className="skills-progress-grid grid grid-cols-2 gap-x-6 gap-y-5 md:gap-y-6 mt-6 md:mt-7 mb-2 md:mb-3 w-full text-left"
+              style={
+                isIPadLandscape
+                  ? {
+                      gridTemplateColumns: 'repeat(2, minmax(0, 1fr))',
+                      gap: '0.35rem 1rem',
+                      columnGap: '1rem',
+                      rowGap: '0.35rem',
+                      margin: 0,
+                      marginTop: '0.1rem',
+                      marginBottom: '0.45rem',
+                      width: '100%',
+                    }
+                  : undefined
+              }
+            >
               {SKILLS_DATA.map((skill) => (
                 <div key={skill.name} className="skill-item flex flex-col w-full">
                   {/* a) Header row (flex justify-between items-center mb-1.5) */}
@@ -363,6 +461,9 @@ export default function AboutUI({ scrollProgress = 0, activePage = 'hero' }) {
                 pointerEvents: 'auto',
                 userSelect: 'text',
                 WebkitUserSelect: 'text',
+                ...(isIPadLandscape
+                  ? { fontSize: '10px', lineHeight: 1.2, margin: 0, marginBottom: '0.45rem' }
+                  : {}),
               }}
             >
               *Percentages are subject to change after 3 rounds of feedback.
@@ -379,7 +480,13 @@ export default function AboutUI({ scrollProgress = 0, activePage = 'hero' }) {
                 aria-label="Download CV: Final_Final_Approved_CV.pdf"
                 onClick={(e) => e.stopPropagation()}
                 onTouchEnd={(e) => e.stopPropagation()}
-                style={{ textDecoration: 'none', color: '#004af2' }}
+                style={{
+                  textDecoration: 'none',
+                  color: '#004af2',
+                  ...(isIPadLandscape
+                    ? { padding: '0.38rem 1rem', fontSize: '0.68rem', letterSpacing: '0.05em', height: 'auto', margin: '0 auto' }
+                    : {}),
+                }}
               >
                 FINAL_FINAL_APPROVED_CV.PDF
                 <span className="text-sm font-extrabold leading-none no-underline inline-block" style={{ color: '#004af2', textDecoration: 'none' }} aria-hidden="true">↓</span>

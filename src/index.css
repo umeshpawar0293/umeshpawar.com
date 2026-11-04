@@ -7574,6 +7574,58 @@ body.is-character-dragging * {
 }
 
 /* ==========================================================================
+   IPAD PRO 13" M4, 12.9", AND TABLET LANDSCAPE (JS HOOK DATA-ATTRIBUTE + CSS BACKUP)
+   ========================================================================== */
+html[data-ipad-landscape="true"] {
+  --ipad-landscape-left: clamp(6.5rem, 8.5vw, 9rem) !important;
+  --section-heading-top: clamp(72px, 9.5vh, 88px) !important;
+  --section-heading-clearance: clamp(46px, 4.2vw, 56px) !important;
+  --about-left-anchor: var(--ipad-landscape-left) !important;
+  --work-grid-left: var(--ipad-landscape-left) !important;
+  --shared-grid-left: var(--ipad-landscape-left) !important;
+  --display-heading-top: clamp(70px, 9vh, 85px) !important;
+}
+
+html[data-ipad-landscape="true"] .hero-body {
+  transform: translate(-3%, -2%) !important;
+  padding-top: 0 !important;
+  margin-top: 0 !important;
+}
+
+html[data-ipad-landscape="true"] .hero-copy-container {
+  top: clamp(70px, 9vh, 85px) !important;
+  left: clamp(6.5rem, 8.5vw, 9rem) !important;
+  max-width: min(40vw, 490px) !important;
+  padding-top: 0 !important;
+  margin-top: 0 !important;
+}
+
+html[data-ipad-landscape="true"] .about-backdrop-layer,
+html[data-ipad-landscape="true"] .contact-backdrop-layer {
+  top: clamp(72px, 9.5vh, 88px) !important;
+  left: clamp(6.5rem, 8.5vw, 9rem) !important;
+}
+
+html[data-ipad-landscape="true"] .about-content-column {
+  top: calc(clamp(72px, 9.5vh, 88px) + clamp(46px, 4.2vw, 56px)) !important;
+  left: clamp(6.5rem, 8.5vw, 9rem) !important;
+  max-width: 430px !important;
+}
+
+html[data-ipad-landscape="true"] .work-content-stage {
+  top: clamp(72px, 9.5vh, 88px) !important;
+  left: clamp(6.5rem, 8.5vw, 9rem) !important;
+  bottom: auto !important;
+  height: auto !important;
+  transform: none !important;
+}
+
+html[data-ipad-landscape="true"] .contact-left-block {
+  top: calc(clamp(72px, 9.5vh, 88px) + clamp(46px, 4.2vw, 56px)) !important;
+  left: clamp(6.5rem, 8.5vw, 9rem) !important;
+}
+
+/* ==========================================================================
    IPAD PRO 13" M4, 12.9", AND TABLET LANDSCAPE VIEWPORTS (1024px - 1400px, HEIGHT <= 1050px)
    Covers ALL iPad Pro 12.9" & 13" M4 Landscape states (1376x1032 hardware, 920px-960px with Safari tabs).
    Calibrates top offsets, right-shifted left anchors, and compact heights to eliminate

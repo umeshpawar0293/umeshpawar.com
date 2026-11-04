@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react'
+import { useIPadLandscape } from '../hooks/useIPadLandscape'
 
 /**
  * Floating Glassmorphic Docked Footer
@@ -10,6 +11,7 @@ import React, { useState, useEffect, useRef } from 'react'
  * - Top neon gradient glow hairline (cyan -> lime-yellow)
  */
 export default function Footer({ scrollProgress = 0 }) {
+  const isIPadLandscape = useIPadLandscape()
   const getMumbaiTime = () => {
     try {
       return new Intl.DateTimeFormat('en-US', {
@@ -94,6 +96,18 @@ export default function Footer({ scrollProgress = 0 }) {
       className={`docked-footer ${isContactActive ? 'mobile-contact-visible' : ''} ${isRapidScrollDown ? 'is-rapid-scrolling' : ''} -translate-y-3 sm:-translate-y-3.5 md:translate-y-0 z-30`}
       role="contentinfo"
       aria-label="Portfolio Footer"
+      style={
+        isIPadLandscape
+          ? {
+              display: 'flex',
+              position: 'fixed',
+              bottom: '0.75rem',
+              height: '44px',
+              maxHeight: '44px',
+              zIndex: 50,
+            }
+          : undefined
+      }
     >
       {/* Top Neon Gradient Glow Border Hairline & Scroll Progress Indicator */}
       <div className="footer-glow-border" aria-hidden="true">

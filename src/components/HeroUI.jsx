@@ -2,6 +2,7 @@ import React, { useEffect, useRef } from 'react'
 import { createPortal } from 'react-dom'
 import gsap from 'gsap'
 import TransformBoundingBox from './TransformBoundingBox'
+import { useIPadLandscape } from '../hooks/useIPadLandscape'
 
 /**
  * HeroUI Component
@@ -10,6 +11,7 @@ import TransformBoundingBox from './TransformBoundingBox'
  * Nav active indicator transitions cleanly between HOME and ABOUT.
  */
 export default function HeroUI({ scrollProgress = 0 }) {
+  const isIPadLandscape = useIPadLandscape()
   const [mobileMenuOpen, setMobileMenuOpen] = React.useState(false)
   const [isQuickScrolling, setIsQuickScrolling] = React.useState(false)
   const heroCopyRef = useRef(null)
@@ -86,6 +88,19 @@ export default function HeroUI({ scrollProgress = 0 }) {
     display: isHeroVisible ? 'flex' : 'none',
     transformOrigin: 'top center',
     transition: 'transform 0.14s ease-out, opacity 0.14s ease-out',
+    ...(isIPadLandscape
+      ? {
+          position: 'absolute',
+          top: 'clamp(70px, 9vh, 85px)',
+          left: 'clamp(6.5rem, 8.5vw, 9rem)',
+          maxWidth: 'min(40vw, 490px)',
+          width: '100%',
+          alignItems: 'center',
+          textAlign: 'center',
+          paddingTop: 0,
+          marginTop: 0,
+        }
+      : {}),
   }
 
   const [navTarget, setNavTarget] = React.useState(null)
@@ -341,6 +356,18 @@ export default function HeroUI({ scrollProgress = 0 }) {
           display: isHeroVisible ? 'flex' : 'none',
           visibility: isHeroVisible ? 'visible' : 'hidden',
           pointerEvents: 'none',
+          ...(isIPadLandscape
+            ? {
+                position: 'absolute',
+                top: 0,
+                left: 0,
+                width: '100%',
+                height: '100%',
+                transform: 'translate(-3%, -2%)',
+                padding: 0,
+                margin: 0,
+              }
+            : {}),
         }}
       >
         <div ref={heroCopyRef} className="hero-copy-container flex flex-col items-center justify-center text-center mx-auto w-full" style={copyStyle}>
@@ -350,6 +377,14 @@ export default function HeroUI({ scrollProgress = 0 }) {
             style={{
               transform: `translateY(${-scrollProgress * 40 * 0.4}px)`,
               willChange: 'transform',
+              ...(isIPadLandscape
+                ? {
+                    fontSize: 'clamp(3.8rem, 6.8vw, 5.6rem)',
+                    lineHeight: 0.9,
+                    marginTop: 0,
+                    paddingTop: 0,
+                  }
+                : {}),
             }}
           >
             {"UMESH PAWAR".split("").map((char, idx) => (
@@ -368,6 +403,14 @@ export default function HeroUI({ scrollProgress = 0 }) {
           <div
             ref={heroGlassBoxRef}
             className="hero-glass-box mx-auto mt-2 sm:mt-3 md:mt-3 transform-gpu will-change-transform"
+            style={
+              isIPadLandscape
+                ? {
+                    marginTop: '0.65rem',
+                    padding: '0.95rem 1.35rem',
+                  }
+                : undefined
+            }
           >
             <h2 className="hero-tagline text-[11px] sm:text-xs md:text-sm lg:text-base font-black tracking-wider text-[#ccff00] uppercase text-center mx-auto drop-shadow-[0_0_8px_rgba(204,255,0,0.4)] md:whitespace-nowrap" style={{ marginTop: 0 }}>
               <span className="hero-clean-text text-[11px] sm:text-xs md:text-sm lg:text-base font-black tracking-wider text-[#ccff00] uppercase text-center drop-shadow-[0_0_8px_rgba(204,255,0,0.4)] md:whitespace-nowrap">

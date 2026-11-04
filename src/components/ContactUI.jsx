@@ -1,6 +1,7 @@
 import React, { useRef, useEffect } from 'react'
 import gsap from 'gsap'
 import TransformBoundingBox from './TransformBoundingBox'
+import { useIPadLandscape } from '../hooks/useIPadLandscape'
 
 /**
  * ContactBackdropHeading Component
@@ -10,6 +11,7 @@ import TransformBoundingBox from './TransformBoundingBox'
  * matching the exact typographic composition of the ABOUT ME section.
  */
 export function ContactBackdropHeading({ scrollProgress = 0 }) {
+  const isIPadLandscape = useIPadLandscape()
   // Enters at 0.76, fully visible 0.88 - 1.00
   let contactT = 0
   if (scrollProgress >= 0.76) {
@@ -73,12 +75,33 @@ export function ContactBackdropHeading({ scrollProgress = 0 }) {
         pointerEvents: isInteractive ? 'auto' : 'none',
         visibility: isContactVisible ? 'visible' : 'hidden',
         zIndex: 1,
+        ...(isIPadLandscape
+          ? {
+              top: 'clamp(72px, 9.5vh, 88px)',
+              left: 'clamp(6.5rem, 8.5vw, 9rem)',
+              width: 'clamp(320px, 26vw, 390px)',
+              maxWidth: '390px',
+              margin: 0,
+              padding: 0,
+            }
+          : {}),
       }}
       aria-hidden={!isContactActive}
     >
       <h2
         ref={headingRef}
         className="contact-backdrop-heading has-transform-box sharp-isometric-shadow neon-long-shadow md:text-center md:mx-auto"
+        style={
+          isIPadLandscape
+            ? {
+                fontSize: 'clamp(3.2rem, 4.5vw, 4.0rem)',
+                lineHeight: 0.88,
+                letterSpacing: '0.04em',
+                margin: 0,
+                padding: 0,
+              }
+            : undefined
+        }
       >
         LET'S TALK
         <TransformBoundingBox />
@@ -104,6 +127,7 @@ export default function ContactUI({
   onCharacterTouchMove,
   onCharacterTouchEnd,
 }) {
+  const isIPadLandscape = useIPadLandscape()
   let contactT = 0
   if (scrollProgress >= 0.76) {
     if (scrollProgress < 0.88) {
@@ -273,14 +297,56 @@ export default function ContactUI({
     >
       {/* Desktop Stage: Preserved strictly for min-width: 769px */}
       <div className="contact-desktop-stage">
-        <div className="contact-composition-wrapper">
+        <div
+          className="contact-composition-wrapper"
+          style={
+            isIPadLandscape
+              ? {
+                  height: '100%',
+                  maxHeight: '100dvh',
+                  paddingTop: 0,
+                  paddingBottom: 0,
+                  overflow: 'hidden',
+                  boxSizing: 'border-box',
+                }
+              : undefined
+          }
+        >
           {/* Left Block: Aligned to the EXACT same left edge as LET'S TALK */}
           <div
             className="contact-left-block md:mx-auto md:flex md:justify-center"
-            style={{ pointerEvents: isInteractive ? 'auto' : 'none' }}
+            style={{
+              pointerEvents: isInteractive ? 'auto' : 'none',
+              ...(isIPadLandscape
+                ? {
+                    position: 'absolute',
+                    top: 'calc(clamp(72px, 9.5vh, 88px) + clamp(46px, 4.2vw, 56px))',
+                    left: 'clamp(6.5rem, 8.5vw, 9rem)',
+                    width: 'clamp(320px, 26vw, 390px)',
+                    maxWidth: '390px',
+                    maxHeight: 'calc(100dvh - clamp(72px, 9.5vh, 88px) - clamp(46px, 4.2vw, 56px) - 55px)',
+                    margin: 0,
+                    paddingTop: 0,
+                    paddingBottom: 0,
+                  }
+                : {}),
+            }}
           >
             {/* All 3 Cards Vertically Stacked as a Unified Group on the Left Side */}
-            <div ref={desktopCardsRef} className="contact-cards-stack">
+            <div
+              ref={desktopCardsRef}
+              className="contact-cards-stack"
+              style={
+                isIPadLandscape
+                  ? {
+                      gap: '0.35rem',
+                      width: '100%',
+                      paddingTop: 0,
+                      marginTop: 0,
+                    }
+                  : undefined
+              }
+            >
               {/* Card 1: DIRECT LINES */}
               <div className="contact-card direct-lines-card">
                 <span className="contact-card-header-label mb-1">
