@@ -907,6 +907,11 @@ export default function HeroCharacter({
       delta
     )
 
+    // Guarantee 60/120 FPS on mobile during active kinetic scrolling / touch drag by regressing dynamic DPR
+    if (isMobile && (Math.abs(instantVelocity) > 0.015 || Math.abs(smoothVelocityRef.current) > 0.015 || characterDragRef?.current?.isDragging)) {
+      state.performance?.regress?.()
+    }
+
     // Scroll Velocity Character Tilt (pitch and bank tilt, max ±0.06 rad):
     // Pitch (X): subtle forward/backward tilt based on velocity
     // Bank (Z): subtle side-to-side bank based on movement

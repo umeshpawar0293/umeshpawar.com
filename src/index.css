@@ -866,6 +866,35 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
+/* ==========================================================================
+   NATIVE MOBILE SCROLL ERGONOMICS & HARDWARE MOMENTUM (< 768px)
+   Enforces native touch physics, prevents canvas scroll blocking,
+   and eliminates rubber-band bounce breaking the dark canvas background.
+   ========================================================================== */
+@media (max-width: 767px) {
+  html,
+  body {
+    -webkit-overflow-scrolling: touch;
+    touch-action: pan-y;
+    overscroll-behavior-y: none; /* Prevents ugly rubber-band bounce breaking the dark canvas background */
+    scroll-behavior: smooth;
+  }
+
+  #root,
+  .portfolio-root,
+  .app-container {
+    touch-action: pan-y;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  /* Prevent canvas layer and character drag zone from intercepting vertical scroll momentum */
+  canvas,
+  .canvas-layer,
+  .character-drag-zone {
+    touch-action: pan-y !important;
+  }
+}
+
 #root {
   width: 100%;
   min-height: 100%;

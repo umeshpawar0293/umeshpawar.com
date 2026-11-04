@@ -340,11 +340,20 @@ export default function App() {
 
     /**
      * Deterministic Section Transition Engine:
-     * - Animates camera, environment, and character smoothly over ~0.95s (cinematic power3.inOut).
+     * - Animates camera, environment, and character smoothly over ~0.70s on mobile (touch kinetic feel)
+     *   or ~1.10s on desktop (cinematic power3.inOut).
      * - Blocks ALL incoming wheel/scroll/touch events during transition.
-     * - Enforces 400ms cooldown buffer upon arrival to completely discard trailing trackpad inertia.
+     * - Enforces cooldown buffer upon arrival to completely discard trailing trackpad/touch inertia.
      */
-    const transitionToSection = (targetIndex, duration = 1100) => {
+    const transitionToSection = (targetIndex, customDuration = null) => {
+      const isMobileDevice = typeof window !== 'undefined' && window.innerWidth < 768
+      const duration = customDuration !== null
+        ? customDuration
+        : isMobileDevice
+        ? 700
+        : 1100
+      const cooldownMs = isMobileDevice ? 180 : 400
+
       const clampedIndex = Math.max(0, Math.min(3, targetIndex))
       if (
         clampedIndex === currentSectionRef.current &&
@@ -359,7 +368,7 @@ export default function App() {
           detail: {
             targetIndex: clampedIndex,
             fromIndex: currentSectionRef.current,
-            duration: 1.1,
+            duration: isMobileDevice ? 0.7 : 1.1,
           },
         })
       )
@@ -433,12 +442,12 @@ export default function App() {
             window.history.replaceState(null, '', hashNames[clampedIndex])
           }
 
-          // 4. Intentional cooldown buffer (400ms) to discard trailing trackpad momentum/coasting
+          // 4. Intentional cooldown buffer to discard trailing momentum/coasting
           cooldownTimerRef.current = setTimeout(() => {
             isTransitioningRef.current = false
             accumulatedDeltaYRef.current = 0
             cooldownTimerRef.current = null
-          }, 400)
+          }, cooldownMs)
         }
       }
 
@@ -530,6 +539,7 @@ export default function App() {
     // Touch handling for mobile
     let touchStartY = 0
     let touchStartX = 0
+    let touchStartTime = 0
     let touchStartGridEl = null
 
     const handleTouchStart = (e) => {
@@ -550,6 +560,7 @@ export default function App() {
       if (e.touches && e.touches.length > 0) {
         touchStartY = e.touches[0].clientY
         touchStartX = e.touches[0].clientX
+        touchStartTime = performance.now()
       }
     }
 
@@ -589,6 +600,8 @@ export default function App() {
 
       const deltaY = touchStartY - e.changedTouches[0].clientY
       const deltaX = touchStartX - e.changedTouches[0].clientX
+      const dt = Math.max(1, performance.now() - touchStartTime)
+      const velocityY = Math.abs(deltaY) / dt // px/ms
 
       // If touch originated or ended inside the 3x3 Work grid, only trigger section change when scrolling past boundaries
       const gridEl = e.target?.closest?.('.work-grid-3col') || touchStartGridEl
@@ -603,8 +616,13 @@ export default function App() {
         }
       }
 
-      // Dominant vertical swipe over horizontal
-      if (Math.abs(deltaY) > 40 && Math.abs(deltaY) > Math.abs(deltaX) * 1.1) {
+      // Intentional swipe detection:
+      // Either deliberate distance > 35px or responsive flick with velocity > 0.30 px/ms (dominant vertical)
+      const isFlick = velocityY > 0.30 && Math.abs(deltaY) > 20
+      const isDistanceSwipe = Math.abs(deltaY) > 35
+      const isVerticalDominant = Math.abs(deltaY) > Math.abs(deltaX) * 1.1
+
+      if ((isFlick || isDistanceSwipe) && isVerticalDominant) {
         const direction = deltaY > 0 ? 1 : -1
         const nextSection = Math.max(
           0,
