@@ -7257,7 +7257,7 @@ body.is-character-dragging * {
   }
 
   .work-left-pane {
-    --work-card-w: clamp(114px, 8.8vw, 124px) !important;
+    --work-card-w: clamp(118px, 9.2vw, 126px) !important;
     --work-card-gap: 8px !important;
     max-width: fit-content !important;
     width: fit-content !important;
@@ -7278,42 +7278,62 @@ body.is-character-dragging * {
   .work-unified-glass-box {
     max-width: fit-content !important;
     width: fit-content !important;
-    padding: 0.85rem 1.15rem !important;
+    padding: 0.85rem 1.15rem 1rem !important;
     height: fit-content !important;
+    max-height: none !important;
     min-height: 0 !important;
     margin-top: 0 !important;
     flex: none !important;
     display: flex !important;
     flex-direction: column !important;
     justify-content: flex-start !important;
+    align-items: center !important;
     box-sizing: border-box !important;
   }
 
   .work-unified-text-top {
     padding-top: 0 !important;
-    margin-bottom: 0.4rem !important;
+    margin-bottom: 0.45rem !important;
     gap: 0.2rem !important;
     flex-shrink: 0 !important;
+    width: 100% !important;
   }
 
   /* Work Subtitle: single continuous line, eliminate orphan word "sharp." wrapping */
-  .work-unified-text-top p:first-child {
+  .work-unified-text-top p:first-child,
+  .work-unified-glass-box .work-unified-text-top p:first-child,
+  .work-glass-container .work-unified-text-top p:first-child {
     white-space: nowrap !important;
     text-wrap: nowrap !important;
-    font-size: clamp(11.5px, 0.95vw, 13.5px) !important;
+    word-break: keep-all !important;
+    overflow: visible !important;
+    font-size: clamp(10.5px, 0.9vw, 11.8px) !important;
     letter-spacing: -0.015em !important;
+    line-height: 1.25 !important;
+    display: block !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    text-align: center !important;
   }
 
-  .work-unified-text-top p:last-child {
-    font-size: 11px !important;
+  .work-unified-text-top p:last-child,
+  .work-unified-glass-box .work-unified-text-top p:last-child,
+  .work-glass-container .work-unified-text-top p:last-child {
+    white-space: nowrap !important;
+    text-wrap: nowrap !important;
+    font-size: clamp(9px, 0.85vw, 10.5px) !important;
     line-height: 1.2 !important;
+    letter-spacing: -0.01em !important;
     margin: 0 !important;
+    text-align: center !important;
   }
 
+  /* Lock visible project grid strictly to 3x3 (3 rows × 3 columns = 9 items upfront) with internal scroll */
   .work-grid-tracker-wrapper {
     flex: none !important;
     height: calc(3 * (var(--work-card-w) * 4.3 / 4) + 2 * var(--work-card-gap) + 6px) !important;
     max-height: calc(3 * (var(--work-card-w) * 4.3 / 4) + 2 * var(--work-card-gap) + 6px) !important;
+    min-height: calc(3 * (var(--work-card-w) * 4.3 / 4) + 2 * var(--work-card-gap) + 6px) !important;
     overflow: visible !important;
   }
 
@@ -7326,12 +7346,18 @@ body.is-character-dragging * {
     width: calc(3 * var(--work-card-w) + 2 * var(--work-card-gap) + 4px) !important;
     height: calc(3 * (var(--work-card-w) * 4.3 / 4) + 2 * var(--work-card-gap) + 6px) !important;
     max-height: calc(3 * (var(--work-card-w) * 4.3 / 4) + 2 * var(--work-card-gap) + 6px) !important;
+    min-height: calc(3 * (var(--work-card-w) * 4.3 / 4) + 2 * var(--work-card-gap) + 6px) !important;
     overflow-y: auto !important;
     overflow-x: hidden !important;
     overscroll-behavior-y: contain !important;
     -webkit-overflow-scrolling: touch !important;
     padding: 2px !important;
     box-sizing: border-box !important;
+    scrollbar-width: none !important;
+  }
+
+  .work-grid-3col::-webkit-scrollbar {
+    display: none !important;
   }
 
   .work-vertical-scroll-tracker {
