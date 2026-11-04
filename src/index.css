@@ -7345,28 +7345,34 @@ body.is-character-dragging * {
   }
 
   .contact-backdrop-layer {
-    top: var(--display-heading-top) !important;
-    left: var(--shared-grid-left) !important;
+    top: clamp(170px, 24vh, 250px) !important;
+    left: clamp(5.5rem, 7.5vw, 7.5rem) !important;
+    width: clamp(360px, 30vw, 440px) !important;
+    max-width: 440px !important;
   }
 
   .contact-backdrop-heading {
-    font-size: clamp(5.2rem, 9.2vw, 8.5rem) !important;
+    font-size: clamp(4.5rem, 6.8vw, 6.2rem) !important;
+    line-height: 0.9 !important;
   }
 
   .contact-left-block {
-    top: calc(var(--display-heading-top) + var(--display-heading-clearance)) !important;
-    left: var(--shared-grid-left) !important;
-    width: clamp(340px, 28vw, 420px) !important;
-    max-height: calc(100vh - var(--display-heading-top) - var(--display-heading-clearance) - 95px) !important;
+    top: calc(clamp(170px, 24vh, 250px) + clamp(85px, 7vw, 105px)) !important;
+    left: clamp(5.5rem, 7.5vw, 7.5rem) !important;
+    width: clamp(360px, 30vw, 440px) !important;
+    max-width: 440px !important;
+    max-height: calc(100vh - clamp(170px, 24vh, 250px) - 100px) !important;
     margin-bottom: 75px !important;
   }
 
   .contact-cards-stack {
     gap: 0.65rem !important;
+    width: 100% !important;
   }
 
   .contact-card {
     padding: 0.85rem 1.15rem !important;
+    box-sizing: border-box !important;
   }
 
   /* ── 5. FLOATING DOCKED FOOTER ── */
