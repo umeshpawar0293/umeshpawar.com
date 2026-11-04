@@ -3,6 +3,7 @@ import { createPortal } from 'react-dom'
 import gsap from 'gsap'
 import TransformBoundingBox from './TransformBoundingBox'
 import { useIPadLandscape } from '../hooks/useIPadLandscape'
+import { useIPadPortrait } from '../hooks/useIPadPortrait'
 
 /**
  * HeroUI Component
@@ -13,6 +14,8 @@ import { useIPadLandscape } from '../hooks/useIPadLandscape'
 export default function HeroUI({ scrollProgress = 0 }) {
   const isIPadLandscape = useIPadLandscape()
   const applyCompactLandscape = isIPadLandscape
+  const isIPadPortrait = useIPadPortrait()
+  const applyCompactPortrait = isIPadPortrait
   const [mobileMenuOpen, setMobileMenuOpen] = React.useState(false)
   const [isQuickScrolling, setIsQuickScrolling] = React.useState(false)
   const heroCopyRef = useRef(null)
@@ -397,6 +400,24 @@ export default function HeroUI({ scrollProgress = 0 }) {
                   width: 'fit-content',
                   textAlign: 'center',
                 }
+              : applyCompactPortrait
+              ? {
+                  position: 'fixed',
+                  left: '5vw',
+                  top: '50%',
+                  transform: `perspective(900px) rotateX(${scrollRotationX}deg) translateY(-50%) scale(0.80)`,
+                  transformOrigin: 'left center',
+                  display: 'flex',
+                  flexDirection: 'column',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  width: '480px',
+                  maxWidth: '480px',
+                  margin: 0,
+                  padding: 0,
+                  zIndex: 20,
+                  textAlign: 'center',
+                }
               : {}),
           }}
         >
@@ -406,7 +427,7 @@ export default function HeroUI({ scrollProgress = 0 }) {
             style={{
               transform: `translateY(${-scrollProgress * 40 * 0.4}px)`,
               willChange: 'transform',
-              ...(applyCompactLandscape
+              ...(applyCompactLandscape || applyCompactPortrait
                 ? {
                     position: 'relative',
                     top: 'auto',
@@ -443,7 +464,7 @@ export default function HeroUI({ scrollProgress = 0 }) {
             ref={heroGlassBoxRef}
             className="hero-glass-box mx-auto mt-2 sm:mt-3 md:mt-3 transform-gpu will-change-transform"
             style={
-              applyCompactLandscape
+              applyCompactLandscape || applyCompactPortrait
                 ? {
                     position: 'relative',
                     top: 'auto',

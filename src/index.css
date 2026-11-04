@@ -8258,6 +8258,34 @@ html[data-ipad-landscape="true"] .work-grid-tracker-wrapper {
 }
 
 /* ==========================================================================
+   IPAD PORTRAIT SPECIFIC TARGETING (SYNCHRONIZED WITH JS HOOK)
+   ========================================================================== */
+html[data-ipad-portrait="true"] .about-backdrop-layer,
+html[data-ipad-portrait="true"] .work-backdrop-layer,
+html[data-ipad-portrait="true"] .contact-backdrop-layer {
+  display: none !important;
+}
+
+html[data-ipad-portrait="true"] .hero-copy-container,
+html[data-ipad-portrait="true"] .about-content-column,
+html[data-ipad-portrait="true"] .work-left-pane,
+html[data-ipad-portrait="true"] .contact-left-block {
+  position: fixed !important;
+  left: 5vw !important;
+  top: 50% !important;
+  transform: translateY(-50%) scale(0.80) !important;
+  transform-origin: left center !important;
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: center !important;
+  justify-content: center !important;
+  width: 480px !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  z-index: 20 !important;
+}
+
+/* ==========================================================================
    FLOATING GLASSMORPHIC DOCKED FOOTER
    ========================================================================== */
 

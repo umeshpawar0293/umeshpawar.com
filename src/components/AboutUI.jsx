@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from 'react'
 import gsap from 'gsap'
 import TransformBoundingBox from './TransformBoundingBox'
 import { useIPadLandscape } from '../hooks/useIPadLandscape'
+import { useIPadPortrait } from '../hooks/useIPadPortrait'
 
 /**
  * AboutBackdropHeading Component
@@ -12,7 +13,9 @@ import { useIPadLandscape } from '../hooks/useIPadLandscape'
 export function AboutBackdropHeading({ scrollProgress = 0 }) {
   const isIPadLandscape = useIPadLandscape()
   const applyCompactLandscape = isIPadLandscape
-  if (applyCompactLandscape) return null
+  const isIPadPortrait = useIPadPortrait()
+  const applyCompactPortrait = isIPadPortrait
+  if (applyCompactLandscape || applyCompactPortrait) return null
   // Enters around 0.14, full during About [0.26, 0.40], fades out cleanly [0.40, 0.54]
   let aboutT = 0
   if (scrollProgress >= 0.14 && scrollProgress <= 0.54) {
@@ -134,6 +137,8 @@ const SKILLS_DATA = [
 export default function AboutUI({ scrollProgress = 0, activePage = 'hero' }) {
   const isIPadLandscape = useIPadLandscape()
   const applyCompactLandscape = isIPadLandscape
+  const isIPadPortrait = useIPadPortrait()
+  const applyCompactPortrait = isIPadPortrait
   // Enters around 0.16, full during About [0.28, 0.40], fades out cleanly [0.40, 0.54]
   let aboutT = 0
   if (scrollProgress >= 0.16 && scrollProgress <= 0.54) {
@@ -313,7 +318,7 @@ export default function AboutUI({ scrollProgress = 0, activePage = 'hero' }) {
       <div
         className="about-desktop-stage"
         style={
-          applyCompactLandscape
+          applyCompactLandscape || applyCompactPortrait
             ? {
                 position: 'absolute',
                 inset: 0,
@@ -351,11 +356,29 @@ export default function AboutUI({ scrollProgress = 0, activePage = 'hero' }) {
                   width: 'fit-content',
                   textAlign: 'center',
                 }
+              : applyCompactPortrait
+              ? {
+                  position: 'fixed',
+                  left: '5vw',
+                  top: '50%',
+                  transform: 'translateY(-50%) scale(0.80)',
+                  transformOrigin: 'left center',
+                  display: 'flex',
+                  flexDirection: 'column',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  width: '480px',
+                  maxWidth: '480px',
+                  margin: 0,
+                  padding: 0,
+                  zIndex: 20,
+                  textAlign: 'center',
+                }
               : {}),
           }}
         >
-          {/* Inner Heading (ABOUT ME) when applyCompactLandscape is true */}
-          {applyCompactLandscape && (
+          {/* Inner Heading (ABOUT ME) when applyCompactLandscape or applyCompactPortrait is true */}
+          {(applyCompactLandscape || applyCompactPortrait) && (
             <h2
               className="about-backdrop-heading has-transform-box sharp-isometric-shadow neon-long-shadow"
               style={{
@@ -388,7 +411,7 @@ export default function AboutUI({ scrollProgress = 0, activePage = 'hero' }) {
               pointerEvents: 'auto',
               width: '100%',
               height: 'auto',
-              ...(applyCompactLandscape
+              ...(applyCompactLandscape || applyCompactPortrait
                 ? {
                     position: 'relative',
                     top: 'auto',

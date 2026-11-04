@@ -4,6 +4,7 @@ import { PROJECTS_DATA, checkIsVideo, cleanAssetUrl } from '../data/projectsData
 import ProjectPreview from './ProjectPreview'
 import TransformBoundingBox from './TransformBoundingBox'
 import { useIPadLandscape } from '../hooks/useIPadLandscape'
+import { useIPadPortrait } from '../hooks/useIPadPortrait'
 
 /**
  * WorkUI Component (Matching Reference Image Composition Strictly)
@@ -35,7 +36,9 @@ import { useIPadLandscape } from '../hooks/useIPadLandscape'
 export function WorkBackdropHeading({ scrollProgress = 0 }) {
   const isIPadLandscape = useIPadLandscape()
   const applyCompactLandscape = isIPadLandscape
-  if (applyCompactLandscape) return null
+  const isIPadPortrait = useIPadPortrait()
+  const applyCompactPortrait = isIPadPortrait
+  if (applyCompactLandscape || applyCompactPortrait) return null
   // Enters around 0.46, fully visible during Work [0.58, 0.74], fades out cleanly [0.74, 0.88]
   let workT = 0
   if (scrollProgress >= 0.46 && scrollProgress <= 0.88) {
@@ -97,6 +100,8 @@ export default function WorkUI({
 }) {
   const isIPadLandscape = useIPadLandscape()
   const applyCompactLandscape = isIPadLandscape
+  const isIPadPortrait = useIPadPortrait()
+  const applyCompactPortrait = isIPadPortrait
   const [previewProject, setPreviewProject] = useState(null)
   const [scrollProgressPct, setScrollProgressPct] = useState(0)
 
@@ -488,6 +493,23 @@ export default function WorkUI({
                       width: '505px',
                       maxWidth: '505px',
                     }
+                  : applyCompactPortrait
+                  ? {
+                      position: 'fixed',
+                      left: '5vw',
+                      top: '50%',
+                      transform: 'translateY(-50%) scale(0.80)',
+                      transformOrigin: 'left center',
+                      display: 'flex',
+                      flexDirection: 'column',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      width: '480px',
+                      maxWidth: '480px',
+                      margin: 0,
+                      padding: 0,
+                      zIndex: 20,
+                    }
                   : undefined
               }
             >
@@ -498,7 +520,7 @@ export default function WorkUI({
                   pointerEvents: 'auto',
                   userSelect: 'text',
                   WebkitUserSelect: 'text',
-                  ...(applyCompactLandscape
+                  ...(applyCompactLandscape || applyCompactPortrait
                     ? {
                         position: 'relative',
                         top: 'auto',
@@ -529,7 +551,7 @@ export default function WorkUI({
                 className="work-glass-container work-unified-glass-box flex flex-col items-center pt-5 md:pt-6 px-6 md:px-8 pb-6 md:pb-7 mt-2 md:mt-3 rounded-3xl w-fit mx-auto relative z-30 select-text"
                 style={{
                   pointerEvents: isWorkActive ? 'auto' : 'none',
-                  ...(applyCompactLandscape
+                  ...(applyCompactLandscape || applyCompactPortrait
                     ? {
                         position: 'relative',
                         top: 'auto',
@@ -537,8 +559,8 @@ export default function WorkUI({
                         transform: 'none',
                         margin: 0,
                         marginTop: '0px',
-                        width: '505px',
-                        maxWidth: '505px',
+                        width: '480px',
+                        maxWidth: '480px',
                         padding: '0.85rem 1.15rem',
                         height: 'fit-content',
                         minHeight: 0,
@@ -625,7 +647,7 @@ export default function WorkUI({
                 <div
                   className="work-grid-tracker-wrapper flex flex-row items-stretch gap-4 md:gap-5 w-fit relative flex-1 min-h-0"
                   style={
-                    applyCompactLandscape
+                    applyCompactLandscape || applyCompactPortrait
                       ? {
                           height: '330px',
                           maxHeight: '330px',
@@ -652,7 +674,7 @@ export default function WorkUI({
                       transform: gridSkewY !== 0 ? `skewY(${gridSkewY.toFixed(2)}deg)` : undefined,
                       transformOrigin: 'center center',
                       transition: gridSkewY === 0 ? 'transform 0.25s ease-out' : undefined,
-                      ...(applyCompactLandscape
+                      ...(applyCompactLandscape || applyCompactPortrait
                         ? {
                             display: 'grid',
                             alignContent: 'start',
@@ -687,7 +709,7 @@ export default function WorkUI({
                           className="work-project-card bg-white/[0.06] backdrop-blur-md border border-white/15 rounded-xl shadow-inner"
                           aria-label={project.title}
                           style={
-                            applyCompactLandscape
+                            applyCompactLandscape || applyCompactPortrait
                               ? {
                                   backdropFilter: 'none',
                                   WebkitBackdropFilter: 'none',

@@ -2,6 +2,7 @@ import React, { useRef, useEffect } from 'react'
 import gsap from 'gsap'
 import TransformBoundingBox from './TransformBoundingBox'
 import { useIPadLandscape } from '../hooks/useIPadLandscape'
+import { useIPadPortrait } from '../hooks/useIPadPortrait'
 
 /**
  * ContactBackdropHeading Component
@@ -13,7 +14,9 @@ import { useIPadLandscape } from '../hooks/useIPadLandscape'
 export function ContactBackdropHeading({ scrollProgress = 0 }) {
   const isIPadLandscape = useIPadLandscape()
   const applyCompactLandscape = isIPadLandscape
-  if (applyCompactLandscape) return null
+  const isIPadPortrait = useIPadPortrait()
+  const applyCompactPortrait = isIPadPortrait
+  if (applyCompactLandscape || applyCompactPortrait) return null
   // Enters at 0.76, fully visible 0.88 - 1.00
   let contactT = 0
   if (scrollProgress >= 0.76) {
@@ -137,6 +140,8 @@ export default function ContactUI({
 }) {
   const isIPadLandscape = useIPadLandscape()
   const applyCompactLandscape = isIPadLandscape
+  const isIPadPortrait = useIPadPortrait()
+  const applyCompactPortrait = isIPadPortrait
   let contactT = 0
   if (scrollProgress >= 0.76) {
     if (scrollProgress < 0.88) {
@@ -309,7 +314,7 @@ export default function ContactUI({
         <div
           className="contact-composition-wrapper"
           style={
-            applyCompactLandscape
+            applyCompactLandscape || applyCompactPortrait
               ? {
                   position: 'absolute',
                   inset: 0,
@@ -350,11 +355,28 @@ export default function ContactUI({
                     width: 'clamp(320px, 26vw, 400px)',
                     maxWidth: '400px',
                   }
+                : applyCompactPortrait
+                ? {
+                    position: 'fixed',
+                    left: '5vw',
+                    top: '50%',
+                    transform: 'translateY(-50%) scale(0.80)',
+                    transformOrigin: 'left center',
+                    display: 'flex',
+                    flexDirection: 'column',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    width: '480px',
+                    maxWidth: '480px',
+                    margin: 0,
+                    padding: 0,
+                    zIndex: 20,
+                  }
                 : {}),
             }}
           >
-            {/* Inner Heading (LET'S TALK) when applyCompactLandscape is true */}
-            {applyCompactLandscape && (
+            {/* Inner Heading (LET'S TALK) when applyCompactLandscape or applyCompactPortrait is true */}
+            {(applyCompactLandscape || applyCompactPortrait) && (
               <h2
                 className="contact-backdrop-heading has-transform-box sharp-isometric-shadow neon-long-shadow"
                 style={{
@@ -386,7 +408,7 @@ export default function ContactUI({
               ref={desktopCardsRef}
               className="contact-cards-stack"
               style={
-                applyCompactLandscape
+                applyCompactLandscape || applyCompactPortrait
                   ? {
                       position: 'relative',
                       top: 'auto',
