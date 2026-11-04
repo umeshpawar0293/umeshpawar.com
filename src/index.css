@@ -7210,18 +7210,19 @@ body.is-character-dragging * {
 
   /* ── 2. ABOUT ME PAGE ── */
   .about-backdrop-layer {
-    top: clamp(180px, 25.5vh, 265px) !important;
+    top: clamp(210px, 24vh, 255px) !important;
     left: var(--about-left-anchor) !important;
     max-width: 460px !important;
   }
 
   .about-backdrop-heading {
-    font-size: clamp(4.5rem, 6.8vw, 6.2rem) !important;
-    line-height: 0.9 !important;
+    font-size: clamp(3.8rem, 5.2vw, 4.8rem) !important;
+    line-height: 0.88 !important;
   }
 
-  .about-content-column {
-    top: calc(clamp(180px, 25.5vh, 265px) + clamp(75px, 6.5vw, 90px)) !important;
+  .about-content-column,
+  section#about .about-content-column {
+    top: calc(clamp(210px, 24vh, 255px) + clamp(66px, 5.6vw, 76px)) !important;
     left: var(--about-left-anchor) !important;
     max-width: 460px !important;
     width: 100% !important;
@@ -7229,71 +7230,105 @@ body.is-character-dragging * {
     margin-bottom: 0 !important;
   }
 
-  .about-glass-box {
+  .about-glass-box,
+  section#about .about-glass-box {
     max-width: 460px !important;
     width: 100% !important;
     height: fit-content !important;
     min-height: 0 !important;
-    padding: 0.95rem 1.3rem !important;
-    margin-top: 0.2rem !important;
+    padding: 0.75rem 1.15rem !important;
+    margin-top: 0.15rem !important;
     box-sizing: border-box !important;
   }
 
-  .about-hero-stat {
-    font-size: 2.25rem !important;
+  .about-hero-stat,
+  section#about .about-hero-stat {
+    font-size: 1.85rem !important;
     line-height: 1 !important;
-    margin-bottom: 0.15rem !important;
+    margin: 0 !important;
+    margin-bottom: 0.1rem !important;
   }
 
-  .about-hero-subtitle {
-    font-size: 0.875rem !important;
-    line-height: 1.2 !important;
-    margin-top: 0.15rem !important;
-    margin-bottom: 0.45rem !important;
+  .about-hero-subtitle,
+  section#about .about-hero-subtitle {
+    font-size: 0.8rem !important;
+    line-height: 1.15 !important;
+    margin: 0 !important;
+    margin-top: 0.1rem !important;
+    margin-bottom: 0.35rem !important;
   }
 
-  .about-body-paragraph {
-    font-size: 11.5px !important;
-    line-height: 1.45 !important;
-    margin-bottom: 0.4rem !important;
+  .about-body-paragraph,
+  section#about .about-body-paragraph {
+    font-size: 10.5px !important;
+    line-height: 1.35 !important;
+    margin: 0 !important;
+    margin-bottom: 0.25rem !important;
   }
 
-  .skills-progress-grid {
-    gap: 0.35rem 1.15rem !important;
-    margin-top: 0.4rem !important;
+  .about-body-paragraph.agency-exp,
+  section#about .about-body-paragraph.agency-exp {
+    margin-bottom: 0.25rem !important;
+  }
+
+  .about-body-paragraph.flavor-line,
+  section#about .about-body-paragraph.flavor-line {
+    margin-bottom: 0.3rem !important;
+  }
+
+  .skills-progress-grid,
+  section#about .skills-progress-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    gap: 0.25rem 0.85rem !important;
+    column-gap: 0.85rem !important;
+    row-gap: 0.25rem !important;
+    margin: 0 !important;
+    margin-top: 0.25rem !important;
     margin-bottom: 0.2rem !important;
+    width: 100% !important;
   }
 
-  .skills-progress-grid .skill-progress-track {
-    height: 8px !important;
+  .skill-progress-track,
+  section#about .skills-progress-grid .skill-progress-track {
+    height: 6px !important;
+    min-height: 6px !important;
+    padding: 1px !important;
   }
 
-  .skills-progress-grid .skill-item > div:first-child {
-    margin-bottom: 2px !important;
+  .skills-progress-grid .skill-item > div:first-child,
+  section#about .skills-progress-grid .skill-item > div:first-child {
+    margin-bottom: 1.5px !important;
   }
 
-  .skills-progress-grid .skill-item span {
-    font-size: 10.5px !important;
+  .skills-progress-grid .skill-item span,
+  section#about .skills-progress-grid .skill-item span {
+    font-size: 9.5px !important;
+    line-height: 1.1 !important;
   }
 
-  .about-disclaimer-note {
-    font-size: 10.5px !important;
-    margin-top: 0.35rem !important;
-    margin-bottom: 0.45rem !important;
-    line-height: 1.2 !important;
+  .about-disclaimer-note,
+  section#about .about-disclaimer-note {
+    font-size: 9.5px !important;
+    line-height: 1.15 !important;
+    margin: 0 !important;
+    margin-top: 0.25rem !important;
+    margin-bottom: 0.35rem !important;
   }
 
-  .btn-about-cv {
-    padding: 0.45rem 1.25rem !important;
-    font-size: 0.72rem !important;
+  .btn-about-cv,
+  section#about .btn-about-cv {
+    padding: 0.35rem 0.95rem !important;
+    font-size: 0.65rem !important;
     font-weight: 800 !important;
     letter-spacing: 0.05em !important;
-    gap: 0.35rem !important;
-    height: auto !important;
+    gap: 0.3rem !important;
+    height: 26px !important;
+    margin: 0 auto !important;
   }
 
-  .btn-about-cv span {
-    font-size: 0.8rem !important;
+  .btn-about-cv span,
+  section#about .btn-about-cv span {
+    font-size: 0.75rem !important;
   }
 
   /* ── 3. WORK PAGE ── */
