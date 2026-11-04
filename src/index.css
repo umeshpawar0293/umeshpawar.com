@@ -7095,78 +7095,322 @@ body.is-character-dragging * {
    remain 100% untouched.
    ========================================================================== */
 @media screen and (min-width: 1024px) and (max-width: 1030px) and (orientation: portrait) {
-  /* 1. Re-position glass box closer to "ABOUT ME" heading to match Contact page spacing */
-  .about-content-column {
-    top: calc(var(--display-heading-top) + clamp(120px, 12.5vw, 135px)) !important;
+  :root {
+    --ipad-portrait-left: clamp(3rem, 5.5vw, 4.5rem);
+    --section-heading-top: clamp(340px, 26vh, 380px);
+    --section-heading-clearance: clamp(86px, 8.5vw, 96px);
+    --about-left-anchor: var(--ipad-portrait-left);
+    --work-grid-left: var(--ipad-portrait-left);
+    --shared-grid-left: var(--ipad-portrait-left);
+  }
+
+  /* ── SYNCHRONIZED HEADINGS TYPOGRAPHY ("ABOUT ME", "WORK", "LET'S TALK") ── */
+  .about-backdrop-heading,
+  .work-heading,
+  .contact-backdrop-heading {
+    font-size: clamp(4.4rem, 7.5vw, 5.5rem) !important;
+    line-height: 0.88 !important;
+    letter-spacing: 0.04em !important;
+  }
+
+  /* ── 1. ABOUT ME PAGE ── */
+  .about-backdrop-layer {
+    top: var(--section-heading-top) !important;
+    left: var(--about-left-anchor) !important;
+    max-width: 460px !important;
+    width: 100% !important;
+    display: flex !important;
+    justify-content: center !important;
+    text-align: center !important;
+  }
+
+  .about-backdrop-heading {
+    text-align: center !important;
+    margin: 0 auto !important;
+  }
+
+  .about-content-column,
+  section#about .about-content-column {
+    top: calc(var(--section-heading-top) + var(--section-heading-clearance)) !important;
+    left: var(--about-left-anchor) !important;
+    max-width: 460px !important;
+    width: 100% !important;
+    height: auto !important;
+    margin-bottom: 0 !important;
   }
 
   .about-glass-box,
-  .about-content-column .neon-glass-box {
+  section#about .about-glass-box {
+    max-width: 460px !important;
+    width: 100% !important;
+    height: fit-content !important;
+    min-height: 0 !important;
+    padding: 1.35rem 1.75rem !important;
     margin-top: 0.25rem !important;
+    box-sizing: border-box !important;
   }
 
-  /* 2. Harmonize CV button size with Landing page CTA button */
+  .about-hero-stat,
+  section#about .about-hero-stat {
+    font-size: 2.6rem !important;
+    line-height: 1 !important;
+    margin: 0 !important;
+    margin-bottom: 0.35rem !important;
+  }
+
+  .about-hero-subtitle,
+  section#about .about-hero-subtitle {
+    font-size: 1.05rem !important;
+    line-height: 1.25 !important;
+    letter-spacing: -0.015em !important;
+    margin: 0 !important;
+    margin-bottom: 0.75rem !important;
+  }
+
+  .about-body-paragraph,
+  section#about .about-body-paragraph {
+    font-size: 12.5px !important;
+    line-height: 1.55 !important;
+    margin: 0 !important;
+    margin-bottom: 0.65rem !important;
+  }
+
+  .about-body-paragraph.agency-exp,
+  section#about .about-body-paragraph.agency-exp {
+    margin-bottom: 0.65rem !important;
+  }
+
+  .about-body-paragraph.flavor-line,
+  section#about .about-body-paragraph.flavor-line {
+    margin-bottom: 0.85rem !important;
+  }
+
+  .skills-progress-grid,
+  section#about .skills-progress-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    gap: 0.65rem 1.35rem !important;
+    column-gap: 1.35rem !important;
+    row-gap: 0.65rem !important;
+    margin: 0 !important;
+    margin-top: 0.25rem !important;
+    margin-bottom: 0.75rem !important;
+    width: 100% !important;
+  }
+
+  .skill-progress-track,
+  section#about .skills-progress-grid .skill-progress-track {
+    height: 10px !important;
+    min-height: 10px !important;
+    padding: 1.5px !important;
+  }
+
+  .skills-progress-grid .skill-item > div:first-child,
+  section#about .skills-progress-grid .skill-item > div:first-child {
+    margin-bottom: 4px !important;
+  }
+
+  .skills-progress-grid .skill-item span,
+  section#about .skills-progress-grid .skill-item span {
+    font-size: 11px !important;
+    line-height: 1.2 !important;
+    font-weight: 700 !important;
+    letter-spacing: 0.04em !important;
+  }
+
+  .about-disclaimer-note,
+  section#about .about-disclaimer-note {
+    font-size: 11px !important;
+    line-height: 1.3 !important;
+    margin: 0 !important;
+    margin-bottom: 0.85rem !important;
+  }
+
   .btn-about-cv,
+  section#about .btn-about-cv,
   .btn-cv {
-    padding: 0.55rem 1.25rem !important;
+    padding: 0.55rem 1.35rem !important;
     font-size: 0.75rem !important;
     font-weight: 800 !important;
     letter-spacing: 0.05em !important;
     gap: 0.35rem !important;
     height: auto !important;
+    margin: 0 auto !important;
   }
 
   .btn-about-cv span,
+  section#about .btn-about-cv span,
   .btn-cv .download-icon {
-    font-size: 0.8125rem !important;
+    font-size: 0.85rem !important;
     margin-left: 0.25rem !important;
   }
 
-  /* 3. Work Page: Reduce gap between "WORK" and glass box */
+  /* ── 2. WORK PAGE ── */
+  .work-content-stage {
+    top: var(--section-heading-top) !important;
+    left: var(--work-grid-left) !important;
+    bottom: auto !important;
+    height: auto !important;
+    min-height: 0 !important;
+    max-height: fit-content !important;
+    transform: none !important;
+    box-sizing: border-box !important;
+  }
+
+  .work-left-pane {
+    --work-card-w: clamp(114px, 8.8vw, 124px) !important;
+    --work-card-gap: 8px !important;
+    max-width: fit-content !important;
+    width: fit-content !important;
+    height: auto !important;
+    min-height: 0 !important;
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    justify-content: flex-start !important;
+  }
+
   .work-heading {
-    margin-bottom: 0.35rem !important;
+    margin-bottom: clamp(14px, 1.25vw, 18px) !important;
+    flex-shrink: 0 !important;
   }
 
   .work-glass-container,
   .work-unified-glass-box {
-    margin-top: 0.25rem !important;
-    height: auto !important;
-    max-height: none !important;
+    max-width: fit-content !important;
+    width: fit-content !important;
+    padding: 0.85rem 1.15rem !important;
+    height: fit-content !important;
+    min-height: 0 !important;
+    margin-top: 0 !important;
+    flex: none !important;
+    display: flex !important;
+    flex-direction: column !important;
+    justify-content: flex-start !important;
+    box-sizing: border-box !important;
   }
 
-  /* 4. Format brief subtitle onto a single line */
+  .work-unified-text-top {
+    padding-top: 0 !important;
+    margin-bottom: 0.4rem !important;
+    gap: 0.2rem !important;
+    flex-shrink: 0 !important;
+  }
+
+  /* Work Subtitle: single continuous line, eliminate orphan word "sharp." wrapping */
   .work-unified-text-top p:first-child {
     white-space: nowrap !important;
-    font-size: clamp(11px, 1.2vw, 13px) !important;
-    letter-spacing: -0.01em !important;
+    text-wrap: nowrap !important;
+    font-size: clamp(11.5px, 0.95vw, 13.5px) !important;
+    letter-spacing: -0.015em !important;
   }
 
-  /* 5. Show only 2 rows (6 cards) visibly in grid with internal scroll for the rest */
+  .work-unified-text-top p:last-child {
+    font-size: 11px !important;
+    line-height: 1.2 !important;
+    margin: 0 !important;
+  }
+
   .work-grid-tracker-wrapper {
-    height: auto !important;
     flex: none !important;
+    height: calc(3 * (var(--work-card-w) * 4.3 / 4) + 2 * var(--work-card-gap) + 6px) !important;
+    max-height: calc(3 * (var(--work-card-w) * 4.3 / 4) + 2 * var(--work-card-gap) + 6px) !important;
+    overflow: visible !important;
   }
 
   .work-grid-3col {
-    height: calc(2 * (var(--work-card-w) * 4.3 / 4) + 10px) !important;
-    max-height: calc(2 * (var(--work-card-w) * 4.3 / 4) + 10px) !important;
+    display: grid !important;
+    gap: var(--work-card-gap) !important;
+    grid-template-columns: repeat(3, var(--work-card-w)) !important;
+    grid-template-rows: repeat(3, calc(var(--work-card-w) * 4.3 / 4)) !important;
+    grid-auto-rows: calc(var(--work-card-w) * 4.3 / 4) !important;
+    width: calc(3 * var(--work-card-w) + 2 * var(--work-card-gap) + 4px) !important;
+    height: calc(3 * (var(--work-card-w) * 4.3 / 4) + 2 * var(--work-card-gap) + 6px) !important;
+    max-height: calc(3 * (var(--work-card-w) * 4.3 / 4) + 2 * var(--work-card-gap) + 6px) !important;
     overflow-y: auto !important;
     overflow-x: hidden !important;
     overscroll-behavior-y: contain !important;
-    -webkit-overflow-scrolling: touch;
+    -webkit-overflow-scrolling: touch !important;
+    padding: 2px !important;
+    box-sizing: border-box !important;
   }
 
-  /* 6. Contact Page: Shift "LET'S TALK" heading and contact cards rightward closer to character */
-  .contact-backdrop-layer,
+  .work-vertical-scroll-tracker {
+    height: 100% !important;
+  }
+
+  .work-project-card {
+    padding: 6px !important;
+    border-radius: 10px !important;
+  }
+
+  .work-card-bottom-bar {
+    padding: 4px 2px 2px !important;
+    min-height: 32px !important;
+    gap: 4px !important;
+  }
+
+  .work-card-name {
+    font-size: 10.5px !important;
+    line-height: 1.15 !important;
+  }
+
+  .work-card-arrow-btn {
+    width: 20px !important;
+    height: 20px !important;
+  }
+
+  /* ── 3. CONTACT PAGE ── */
+  .contact-composition-wrapper {
+    padding-bottom: 85px !important;
+    box-sizing: border-box !important;
+  }
+
+  .contact-backdrop-layer {
+    top: var(--section-heading-top) !important;
+    left: var(--shared-grid-left) !important;
+    width: clamp(360px, 36vw, 440px) !important;
+    max-width: 440px !important;
+    display: flex !important;
+    justify-content: center !important;
+    text-align: center !important;
+  }
+
+  .contact-backdrop-heading {
+    text-align: center !important;
+    margin: 0 auto !important;
+  }
+
   .contact-left-block {
-    left: clamp(6.5rem, 11vw, 8.5rem) !important;
+    top: calc(var(--section-heading-top) + var(--section-heading-clearance)) !important;
+    left: var(--shared-grid-left) !important;
+    width: clamp(360px, 36vw, 440px) !important;
+    max-width: 440px !important;
+    max-height: calc(100vh - var(--section-heading-top) - var(--section-heading-clearance) - 80px) !important;
+    margin-bottom: 75px !important;
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    justify-content: center !important;
   }
 
-  .contact-left-block {
-    width: clamp(340px, 34vw, 380px) !important;
+  .contact-cards-stack {
+    gap: 0.65rem !important;
+    width: 100% !important;
   }
 
-  /* 7. 3D Character: +30% scale and +20% upward shift handled natively via WebGL in HeroCharacter */
+  .contact-card {
+    padding: 0.85rem 1.15rem !important;
+    box-sizing: border-box !important;
+  }
+
+  /* ── 4. FLOATING DOCKED FOOTER ── */
+  .docked-footer {
+    display: flex !important;
+    bottom: 1.5rem !important;
+    height: 48px !important;
+  }
+
+  /* ── 5. 3D Character canvas layer interactivity ── */
   .canvas-layer {
     pointer-events: auto !important;
   }
