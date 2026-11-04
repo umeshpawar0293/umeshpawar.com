@@ -854,10 +854,13 @@ select,
 
 html,
 body {
+  overflow-y: auto !important;
+  overflow-x: hidden !important;
+  -webkit-overflow-scrolling: touch !important;
+  touch-action: pan-y !important;
+  height: auto !important;
   width: 100%;
   min-height: 100%;
-  overflow-x: hidden;
-  overflow-y: auto;
   scroll-behavior: smooth;
   background-color: #0a071b;
   font-family: var(--font-primary);
@@ -9711,6 +9714,25 @@ body.is-character-dragging * {
    Strictly scoped to max-width: 767px (Desktop & Tablet >= 768px 100% untouched).
    ========================================================================== */
 @media (max-width: 767px) {
+  /* Ensure page wrappers and sections let the user scroll naturally */
+  .mobile-section-container,
+  main,
+  section,
+  #root,
+  #__next {
+    overflow-y: visible !important;
+    height: auto !important;
+    min-height: 100dvh;
+    touch-action: pan-y !important;
+  }
+
+  /* Unrestricted native touch scrolling and gesture handling */
+  canvas,
+  .canvas-layer,
+  .character-drag-zone {
+    touch-action: pan-y !important;
+  }
+
   .mobile-page-wrapper {
     min-height: 100vh;
     min-height: -webkit-fill-available;
@@ -9720,6 +9742,7 @@ body.is-character-dragging * {
     padding-left: max(env(safe-area-inset-left), 1rem);
     padding-right: max(env(safe-area-inset-right), 1rem);
     box-sizing: border-box;
+    touch-action: pan-y !important;
   }
 
   /* Universal Mobile Viewport Container Adaptation & Safe-Area Padding */
@@ -9727,9 +9750,13 @@ body.is-character-dragging * {
     min-height: 100vh;
     min-height: -webkit-fill-available;
     min-height: 100dvh;
+    height: auto !important;
+    overflow-y: visible !important;
     padding-bottom: calc(env(safe-area-inset-bottom, 20px) + 3.5rem) !important;
     box-sizing: border-box;
-    overscroll-behavior-y: contain;
+    touch-action: pan-y !important;
+    overscroll-behavior: auto !important;
+    overscroll-behavior-y: auto !important;
     -webkit-overflow-scrolling: touch;
   }
 
@@ -9759,7 +9786,9 @@ body.is-character-dragging * {
     padding-bottom: max(calc(env(safe-area-inset-bottom, 20px) + 2rem), 2.5rem) !important;
     bottom: max(2.5rem, calc(2rem + env(safe-area-inset-bottom, 0px))) !important;
     box-sizing: border-box !important;
-    overscroll-behavior-y: contain;
+    touch-action: pan-y !important;
+    overscroll-behavior: auto !important;
+    overscroll-behavior-y: auto !important;
     -webkit-overflow-scrolling: touch;
   }
 
@@ -9767,7 +9796,9 @@ body.is-character-dragging * {
     padding-bottom: calc(env(safe-area-inset-bottom, 20px) + 3.5rem) !important;
     bottom: max(2.5rem, calc(2rem + env(safe-area-inset-bottom, 0px))) !important;
     box-sizing: border-box !important;
-    overscroll-behavior-y: contain;
+    touch-action: pan-y !important;
+    overscroll-behavior: auto !important;
+    overscroll-behavior-y: auto !important;
     -webkit-overflow-scrolling: touch;
   }
 
@@ -9775,7 +9806,9 @@ body.is-character-dragging * {
     padding-bottom: calc(env(safe-area-inset-bottom, 20px) + 3.5rem) !important;
     bottom: max(3rem, calc(2.5rem + env(safe-area-inset-bottom, 0px))) !important;
     box-sizing: border-box !important;
-    overscroll-behavior-y: contain;
+    touch-action: pan-y !important;
+    overscroll-behavior: auto !important;
+    overscroll-behavior-y: auto !important;
     -webkit-overflow-scrolling: touch;
   }
 
@@ -9783,13 +9816,16 @@ body.is-character-dragging * {
     min-height: 100vh !important;
     min-height: -webkit-fill-available !important;
     min-height: 100dvh !important;
-    height: 100dvh !important;
+    height: auto !important;
+    overflow-y: visible !important;
     padding-top: max(env(safe-area-inset-top), 1rem) !important;
     padding-bottom: calc(env(safe-area-inset-bottom, 20px) + 3.5rem) !important;
     padding-left: max(env(safe-area-inset-left), 1rem) !important;
     padding-right: max(env(safe-area-inset-right), 1rem) !important;
     box-sizing: border-box !important;
-    overscroll-behavior-y: contain;
+    touch-action: pan-y !important;
+    overscroll-behavior: auto !important;
+    overscroll-behavior-y: auto !important;
     -webkit-overflow-scrolling: touch;
   }
 
@@ -9799,7 +9835,9 @@ body.is-character-dragging * {
   .about-mobile-copy-block,
   .contact-cards-wrapper,
   .contact-mobile-bento-container {
-    overscroll-behavior-y: contain;
+    touch-action: pan-y !important;
+    overscroll-behavior: auto !important;
+    overscroll-behavior-y: auto !important;
     -webkit-overflow-scrolling: touch;
   }
 

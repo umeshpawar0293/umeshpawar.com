@@ -498,6 +498,9 @@ export default function App() {
         }
       }
 
+      // On mobile viewports, never hijack or prevent wheel
+      if (typeof window !== 'undefined' && window.innerWidth < 768) return
+
       // Prevent native window scroll jumping
       e.preventDefault()
 
@@ -599,9 +602,7 @@ export default function App() {
         return
       }
 
-      if (isTransitioningRef.current) {
-        e.preventDefault()
-      }
+      // DO NOT call e.preventDefault()! Allow natural, unrestricted touch scrolling
     }
 
     const handleTouchEnd = (e) => {
@@ -702,7 +703,7 @@ export default function App() {
 
     window.addEventListener('wheel', handleWheel, { passive: false })
     window.addEventListener('touchstart', handleTouchStart, { passive: true })
-    window.addEventListener('touchmove', handleTouchMove, { passive: false })
+    window.addEventListener('touchmove', handleTouchMove, { passive: true })
     window.addEventListener('touchend', handleTouchEnd, { passive: true })
     window.addEventListener('keydown', handleKeyDown)
     window.addEventListener('sectionnavigate', handleSectionNavigate)
@@ -1026,7 +1027,11 @@ export default function App() {
         {/* Layer 2 (3D Scene): Transparent Three.js Character Canvas */}
         <div
           className="canvas-layer transition-opacity duration-500 ease-out"
-          style={{ zIndex: 20, pointerEvents: 'auto', touchAction: 'none' }}
+          style={{
+            zIndex: 20,
+            pointerEvents: 'auto',
+            touchAction: typeof window !== 'undefined' && window.innerWidth < 768 ? 'pan-y' : 'none',
+          }}
           onPointerDown={handleDragDown}
         >
           <Canvas
@@ -1060,7 +1065,11 @@ export default function App() {
         <div
           ref={dragZoneRef}
           className="character-drag-zone"
-          style={{ zIndex: 21, pointerEvents: isModalOpen ? 'none' : 'auto' }}
+          style={{
+            zIndex: 21,
+            pointerEvents: isModalOpen ? 'none' : 'auto',
+            touchAction: typeof window !== 'undefined' && window.innerWidth < 768 ? 'pan-y' : 'none',
+          }}
           aria-label="Drag horizontally to rotate character"
           onPointerDown={handleDragDown}
         />
