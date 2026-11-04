@@ -494,18 +494,21 @@ export default function AboutUI({ scrollProgress = 0, activePage = 'hero' }) {
               </p>
             </div>
 
-            {/* Mobile-Friendly Skills Grid (Sleek & Spaced 2-Column Component) */}
+            {/* Mobile-Friendly Skills Grid (Sleek & Spaced 2-Column Component, 85% Width Centered) */}
             <div
-              className="skills-mobile-grid grid grid-cols-2 gap-x-5 gap-y-2 mb-2 w-full text-left"
+              className="skills-mobile-grid grid grid-cols-2 gap-x-3 gap-y-2 mb-2 w-[85%] max-w-[85%] mx-auto text-left"
               style={{
                 display: 'grid',
                 gridTemplateColumns: 'repeat(2, minmax(0, 1fr))',
-                columnGap: '1.25rem',
-                rowGap: '0.5rem',
+                columnGap: 'clamp(0.6rem, 2.5vw, 0.85rem)',
+                rowGap: '0.45rem',
                 marginBottom: '0.5rem',
                 paddingLeft: 0,
                 paddingRight: 0,
-                width: '100%',
+                width: '85%',
+                maxWidth: '85%',
+                marginLeft: 'auto',
+                marginRight: 'auto',
                 boxSizing: 'border-box',
               }}
             >
@@ -513,21 +516,21 @@ export default function AboutUI({ scrollProgress = 0, activePage = 'hero' }) {
                 const isLeft = idx % 2 === 0
                 const fillColor = isLeft ? '#ccff00' : '#0066ff'
                 return (
-                  <div key={skill.name} className="flex flex-col w-full" style={{ width: '100%' }}>
+                  <div key={skill.name} className="flex flex-col w-full min-w-0" style={{ width: '100%', minWidth: 0 }}>
                     {/* Label & Percentage row */}
                     <div
-                      className="flex justify-between items-center mb-0.5 w-full"
-                      style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.125rem', width: '100%' }}
+                      className="flex justify-between items-center mb-0.5 w-full min-w-0"
+                      style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.125rem', width: '100%', minWidth: 0 }}
                     >
                       <span
-                        className="text-[7.5px] font-bold tracking-tight text-white uppercase font-['Archivo']"
-                        style={{ fontSize: '7.5px', fontWeight: 700, letterSpacing: '-0.02em', color: '#ffffff', textTransform: 'uppercase', lineHeight: 1 }}
+                        className="text-[7px] sm:text-[7.5px] font-bold tracking-tight text-white uppercase font-['Archivo'] whitespace-nowrap"
+                        style={{ fontSize: 'clamp(6.8px, 1.9vw, 7.5px)', fontWeight: 700, letterSpacing: '-0.02em', color: '#ffffff', textTransform: 'uppercase', lineHeight: 1, whiteSpace: 'nowrap' }}
                       >
                         {skill.name}
                       </span>
                       <span
-                        className="text-[7.5px] font-bold tracking-tight text-[#ccff00] font-['Archivo']"
-                        style={{ fontSize: '7.5px', fontWeight: 700, color: '#ccff00', lineHeight: 1 }}
+                        className="text-[7px] sm:text-[7.5px] font-bold tracking-tight text-[#ccff00] font-['Archivo'] shrink-0 ml-1 whitespace-nowrap"
+                        style={{ fontSize: 'clamp(6.8px, 1.9vw, 7.5px)', fontWeight: 700, color: '#ccff00', lineHeight: 1, flexShrink: 0, marginLeft: '4px', whiteSpace: 'nowrap' }}
                       >
                         {skill.percentage}%
                       </span>

@@ -2797,17 +2797,16 @@ body.is-character-dragging * {
   .skills-mobile-grid {
     display: grid !important;
     grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
-    column-gap: 1.25rem !important;
-    /* gap-x-5 */
-    row-gap: 0.5rem !important;
-    /* gap-y-2 */
+    column-gap: clamp(0.6rem, 2.5vw, 0.85rem) !important;
+    row-gap: 0.45rem !important;
     margin-top: 0 !important;
     margin-bottom: 0.5rem !important;
-    /* mb-2 */
+    margin-left: auto !important;
+    margin-right: auto !important;
     padding-left: 0 !important;
     padding-right: 0 !important;
-    width: 100% !important;
-    max-width: 100% !important;
+    width: 85% !important;
+    max-width: 85% !important;
     box-sizing: border-box !important;
   }
 
@@ -2884,9 +2883,11 @@ body.is-character-dragging * {
 }
 
 /* ==========================================================================
-   MOBILE ABOUT ME: SKILLS GRID 100% WIDTH ALIGNMENT (< 768px)
-   Strictly aligns the combined width of the two-column skill bars container
-   to 100% of the intro and bio text blocks directly above it.
+   MOBILE ABOUT ME: SKILLS GRID 85% WIDTH (< 768px)
+   Reduces the combined width of the two-column skill bars container by 15%
+   (setting it to 85% of the parent/text width, centered).
+   Ensures individual skill bars and labels shrink proportionally inside their
+   grid cells with zero horizontal overlap.
    Tablet and Desktop layouts remain 100% untouched.
    ========================================================================== */
 @media screen and (max-width: 767px) {
@@ -2912,28 +2913,34 @@ body.is-character-dragging * {
   }
 
   .skills-mobile-grid,
-  .skills-progress-grid,
   .about-mobile-stage .skills-mobile-grid,
   .about-mobile-glass-container .skills-mobile-grid {
-    width: 100% !important;
-    max-width: 100% !important;
+    width: 85% !important;
+    max-width: 85% !important;
     padding-left: 0 !important;
     padding-right: 0 !important;
     margin-left: auto !important;
     margin-right: auto !important;
+    column-gap: clamp(0.6rem, 2.5vw, 0.85rem) !important;
+    row-gap: 0.45rem !important;
     box-sizing: border-box !important;
   }
 
   .skills-mobile-grid .skill-item,
-  .skills-progress-grid .skill-item {
+  .skills-mobile-grid > div {
     width: 100% !important;
+    min-width: 0 !important;
     box-sizing: border-box !important;
   }
 
   .skills-mobile-grid .skill-progress-track,
-  .skills-progress-grid .skill-progress-track {
+  .skills-mobile-grid .w-full.h-\[3px\] {
     width: 100% !important;
     box-sizing: border-box !important;
+  }
+
+  .skills-mobile-grid span {
+    white-space: nowrap !important;
   }
 }
 
