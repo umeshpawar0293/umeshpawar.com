@@ -5219,8 +5219,11 @@ body.is-character-dragging * {
 
   /* Safe clearance: ensure contact section and wrapper stop safely above the dock */
   .contact-composition-wrapper {
-    padding-bottom: 96px;
-    box-sizing: border-box;
+    height: 100% !important;
+    max-height: 100dvh !important;
+    padding-bottom: 0 !important;
+    overflow: hidden !important;
+    box-sizing: border-box !important;
   }
 
   /* Lift backdrop heading slightly so it stays clear and prominent */
@@ -5236,8 +5239,8 @@ body.is-character-dragging * {
   .contact-left-block {
     top: clamp(170px, 22.5vh, 210px) !important;
     width: clamp(320px, 27vw, 380px) !important;
-    max-height: calc(100vh - clamp(170px, 22.5vh, 210px) - 100px) !important;
-    margin-bottom: 80px !important;
+    max-height: calc(100dvh - clamp(170px, 22.5vh, 210px) - 60px) !important;
+    margin-bottom: 0 !important;
     overflow-y: auto !important;
     overflow-x: hidden !important;
     scrollbar-width: none !important;
@@ -7496,15 +7499,14 @@ body.is-character-dragging * {
 }
 
 /* ==========================================================================
-   IPAD PRO 13" LANDSCAPE & 4:3 COMPACT DESKTOP VIEWPORTS (1180px - 1400px)
-   Specifically targeting iPad Pro Landscape (covers both 1366px legacy and 1376px M4,
-   as well as 1180px iPad Air Landscape).
+   IPAD PRO 13" LANDSCAPE & 4:3 COMPACT DESKTOP VIEWPORTS (1024px - 1400px)
+   Specifically targeting iPad Pro Landscape (covers 1024px iPad, 1180px iPad Air,
+   1194px iPad Pro 11", 1366px legacy 12.9", and 1376px M4 13").
    Calibrates top offsets, right-shifted left anchors, and compact heights to render
-   identically to clean widescreen desktop with zero card squishing or footer overlap,
-   even when mobile Safari/Chrome browser toolbars compress viewport height to ~820px-860px.
+   identically to clean widescreen desktop with zero card squishing or footer overlap.
    Mobile (< 768px) and Widescreen Desktop (>= 1440px) remain 100% untouched.
    ========================================================================== */
-@media screen and (min-width: 1180px) and (max-width: 1400px) and (orientation: landscape) {
+@media screen and (min-width: 1024px) and (max-width: 1400px) and (orientation: landscape) {
   :root {
     --ipad-landscape-left: clamp(7.5rem, 9.5vw, 9.5rem);
     --section-heading-top: clamp(105px, 13vh, 125px);
@@ -7835,6 +7837,390 @@ body.is-character-dragging * {
     display: flex !important;
     bottom: 1rem !important;
     height: 46px !important;
+  }
+
+  /* ── 6. 3D Character canvas layer interactivity ── */
+  .canvas-layer {
+    pointer-events: none !important;
+  }
+}
+
+/* ==========================================================================
+   SHORT-HEIGHT IPAD PRO 13" M4 & LANDSCAPE TABLETS (700px - 900px HEIGHT)
+   Specifically handles iPad Pro 13" M4, 12.9", iPad Air, 11" Pro, and landscape
+   tablets when browser URL bars / toolbars reduce viewport height to 700px - 900px.
+   Eliminates all footer overlap and pulls left column away from the far-left bezel.
+   ========================================================================== */
+@media screen and (min-width: 1024px) and (max-width: 1400px) and (max-height: 900px) and (orientation: landscape) {
+  :root {
+    --ipad-landscape-left: clamp(6.5rem, 8.5vw, 9rem);
+    --section-heading-top: clamp(80px, 11vh, 100px);
+    --section-heading-clearance: clamp(52px, 4.5vw, 64px);
+    --about-left-anchor: var(--ipad-landscape-left);
+    --work-grid-left: var(--ipad-landscape-left);
+    --shared-grid-left: var(--ipad-landscape-left);
+    --display-heading-top: clamp(80px, 10vh, 95px);
+  }
+
+  /* ── 1. HOME / HERO PAGE ── */
+  .hero-body {
+    transform: translate(-3%, -2%) !important;
+  }
+
+  .hero-copy-container {
+    top: var(--display-heading-top) !important;
+    left: var(--ipad-landscape-left) !important;
+    max-width: min(40vw, 490px) !important;
+  }
+
+  .hero-name {
+    font-size: clamp(3.8rem, 6.8vw, 5.6rem) !important;
+    line-height: 0.9 !important;
+  }
+
+  .hero-glass-box {
+    margin-top: 0.65rem !important;
+    padding: 0.95rem 1.35rem !important;
+  }
+
+  .hero-bio {
+    font-size: 11.5px !important;
+    line-height: 1.4 !important;
+    margin-bottom: 0.75rem !important;
+  }
+
+  /* ── SYNCHRONIZED HEADINGS TYPOGRAPHY ("ABOUT ME", "WORK", "LET'S TALK") ── */
+  .about-backdrop-heading,
+  .work-heading,
+  .contact-backdrop-heading {
+    font-size: clamp(3.2rem, 4.5vw, 4.0rem) !important;
+    line-height: 0.88 !important;
+    letter-spacing: 0.04em !important;
+  }
+
+  /* ── 2. ABOUT ME PAGE ── */
+  .about-backdrop-layer {
+    top: var(--section-heading-top) !important;
+    left: var(--ipad-landscape-left) !important;
+    max-width: 430px !important;
+    width: 100% !important;
+  }
+
+  .about-content-column,
+  section#about .about-content-column {
+    top: calc(var(--section-heading-top) + var(--section-heading-clearance)) !important;
+    left: var(--ipad-landscape-left) !important;
+    max-width: 430px !important;
+    width: 100% !important;
+    height: auto !important;
+    margin-bottom: 0 !important;
+  }
+
+  .about-glass-box,
+  section#about .about-glass-box {
+    max-width: 430px !important;
+    width: 100% !important;
+    height: fit-content !important;
+    min-height: 0 !important;
+    padding: 0.85rem 1.25rem !important;
+    margin-top: 0.15rem !important;
+    box-sizing: border-box !important;
+  }
+
+  .about-hero-stat,
+  section#about .about-hero-stat {
+    font-size: 1.9rem !important;
+    line-height: 1 !important;
+    margin: 0 !important;
+    margin-bottom: 0.2rem !important;
+  }
+
+  .about-hero-subtitle,
+  section#about .about-hero-subtitle {
+    font-size: 0.88rem !important;
+    line-height: 1.15 !important;
+    letter-spacing: -0.015em !important;
+    margin: 0 !important;
+    margin-bottom: 0.35rem !important;
+  }
+
+  .about-body-paragraph,
+  section#about .about-body-paragraph {
+    font-size: 11px !important;
+    line-height: 1.38 !important;
+    margin: 0 !important;
+    margin-bottom: 0.35rem !important;
+  }
+
+  .about-body-paragraph.agency-exp,
+  section#about .about-body-paragraph.agency-exp {
+    margin-bottom: 0.35rem !important;
+  }
+
+  .about-body-paragraph.flavor-line,
+  section#about .about-body-paragraph.flavor-line {
+    margin-bottom: 0.45rem !important;
+  }
+
+  .skills-progress-grid,
+  section#about .skills-progress-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    gap: 0.35rem 1rem !important;
+    column-gap: 1rem !important;
+    row-gap: 0.35rem !important;
+    margin: 0 !important;
+    margin-top: 0.1rem !important;
+    margin-bottom: 0.45rem !important;
+    width: 100% !important;
+  }
+
+  .skill-progress-track,
+  section#about .skills-progress-grid .skill-progress-track {
+    height: 7px !important;
+    min-height: 7px !important;
+    padding: 1px !important;
+  }
+
+  .skills-progress-grid .skill-item > div:first-child,
+  section#about .skills-progress-grid .skill-item > div:first-child {
+    margin-bottom: 1.5px !important;
+  }
+
+  .skills-progress-grid .skill-item span,
+  section#about .skills-progress-grid .skill-item span {
+    font-size: 10px !important;
+    line-height: 1.15 !important;
+    font-weight: 700 !important;
+    letter-spacing: 0.04em !important;
+  }
+
+  .about-disclaimer-note,
+  section#about .about-disclaimer-note {
+    font-size: 10px !important;
+    line-height: 1.2 !important;
+    margin: 0 !important;
+    margin-bottom: 0.45rem !important;
+  }
+
+  .btn-about-cv,
+  section#about .btn-about-cv {
+    padding: 0.38rem 1rem !important;
+    font-size: 0.68rem !important;
+    font-weight: 800 !important;
+    letter-spacing: 0.05em !important;
+    gap: 0.3rem !important;
+    height: auto !important;
+    margin: 0 auto !important;
+  }
+
+  .btn-about-cv span,
+  section#about .btn-about-cv span {
+    font-size: 0.75rem !important;
+  }
+
+  /* ── 3. WORK PAGE ── */
+  .work-content-stage,
+  section#work .work-content-stage {
+    top: var(--section-heading-top) !important;
+    left: var(--ipad-landscape-left) !important;
+    bottom: auto !important;
+    height: auto !important;
+    min-height: 0 !important;
+    max-height: fit-content !important;
+    transform: none !important;
+    box-sizing: border-box !important;
+  }
+
+  .work-left-pane {
+    --work-card-w: clamp(92px, 7.2vw, 102px) !important;
+    --work-card-gap: 5px !important;
+    max-width: fit-content !important;
+    width: fit-content !important;
+    height: auto !important;
+    min-height: 0 !important;
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    justify-content: flex-start !important;
+  }
+
+  .work-heading {
+    margin-bottom: 8px !important;
+    flex-shrink: 0 !important;
+  }
+
+  .work-glass-container,
+  .work-unified-glass-box {
+    max-width: fit-content !important;
+    width: fit-content !important;
+    padding: 0.65rem 0.85rem 0.75rem !important;
+    height: fit-content !important;
+    min-height: 0 !important;
+    max-height: none !important;
+    margin-top: 0 !important;
+    flex: none !important;
+    display: flex !important;
+    flex-direction: column !important;
+    justify-content: flex-start !important;
+    align-items: center !important;
+    box-sizing: border-box !important;
+  }
+
+  .work-unified-text-top {
+    padding-top: 0 !important;
+    margin-bottom: 0.3rem !important;
+    gap: 0.1rem !important;
+    flex-shrink: 0 !important;
+  }
+
+  .work-unified-text-top p:first-child,
+  .work-unified-glass-box .work-unified-text-top p:first-child,
+  .work-glass-container .work-unified-text-top p:first-child {
+    white-space: nowrap !important;
+    text-wrap: nowrap !important;
+    word-break: keep-all !important;
+    font-size: clamp(10px, 0.8vw, 11.5px) !important;
+    letter-spacing: -0.015em !important;
+  }
+
+  .work-unified-text-top p:last-child,
+  .work-unified-glass-box .work-unified-text-top p:last-child,
+  .work-glass-container .work-unified-text-top p:last-child {
+    font-size: 9.5px !important;
+    line-height: 1.15 !important;
+    margin: 0 !important;
+  }
+
+  .work-grid-tracker-wrapper {
+    flex: none !important;
+    height: calc(3 * (var(--work-card-w) * 4.3 / 4) + 2 * var(--work-card-gap) + 6px) !important;
+    max-height: calc(3 * (var(--work-card-w) * 4.3 / 4) + 2 * var(--work-card-gap) + 6px) !important;
+    min-height: calc(3 * (var(--work-card-w) * 4.3 / 4) + 2 * var(--work-card-gap) + 6px) !important;
+    overflow: visible !important;
+  }
+
+  .work-grid-3col {
+    display: grid !important;
+    gap: var(--work-card-gap) !important;
+    grid-template-columns: repeat(3, var(--work-card-w)) !important;
+    grid-template-rows: repeat(3, calc(var(--work-card-w) * 4.3 / 4)) !important;
+    grid-auto-rows: calc(var(--work-card-w) * 4.3 / 4) !important;
+    width: calc(3 * var(--work-card-w) + 2 * var(--work-card-gap) + 4px) !important;
+    height: calc(3 * (var(--work-card-w) * 4.3 / 4) + 2 * var(--work-card-gap) + 6px) !important;
+    max-height: calc(3 * (var(--work-card-w) * 4.3 / 4) + 2 * var(--work-card-gap) + 6px) !important;
+    min-height: calc(3 * (var(--work-card-w) * 4.3 / 4) + 2 * var(--work-card-gap) + 6px) !important;
+    overflow-y: auto !important;
+    overflow-x: hidden !important;
+    overscroll-behavior-y: contain !important;
+    -webkit-overflow-scrolling: touch !important;
+    touch-action: pan-y !important;
+    padding: 2px !important;
+    box-sizing: border-box !important;
+    scrollbar-width: none !important;
+  }
+
+  .work-grid-3col::-webkit-scrollbar {
+    display: none !important;
+  }
+
+  .work-vertical-scroll-tracker {
+    height: 100% !important;
+  }
+
+  .work-project-card {
+    padding: 5px !important;
+    border-radius: 8px !important;
+    touch-action: pan-y !important;
+  }
+
+  .work-card-bottom-bar {
+    padding: 2px 2px 1px !important;
+    min-height: 26px !important;
+    gap: 3px !important;
+  }
+
+  .work-card-name {
+    font-size: 9.5px !important;
+    line-height: 1.15 !important;
+  }
+
+  .work-card-arrow-btn {
+    width: 17px !important;
+    height: 17px !important;
+  }
+
+  /* ── 4. CONTACT PAGE ── */
+  .contact-composition-wrapper {
+    height: 100% !important;
+    max-height: 100dvh !important;
+    padding-bottom: 0 !important;
+    overflow: hidden !important;
+    box-sizing: border-box !important;
+  }
+
+  .contact-backdrop-layer {
+    top: var(--section-heading-top) !important;
+    left: var(--ipad-landscape-left) !important;
+    width: clamp(320px, 26vw, 390px) !important;
+    max-width: 390px !important;
+  }
+
+  .contact-left-block,
+  section#contact .contact-left-block {
+    top: calc(var(--section-heading-top) + var(--section-heading-clearance)) !important;
+    left: var(--ipad-landscape-left) !important;
+    width: clamp(320px, 26vw, 390px) !important;
+    max-width: 390px !important;
+    max-height: calc(100dvh - var(--section-heading-top) - var(--section-heading-clearance) - 55px) !important;
+    margin-bottom: 0 !important;
+    padding-bottom: 0 !important;
+  }
+
+  .contact-cards-stack {
+    gap: 0.35rem !important;
+    width: 100% !important;
+  }
+
+  .contact-card {
+    padding: 0.55rem 0.85rem !important;
+    box-sizing: border-box !important;
+  }
+
+  .contact-field-label {
+    font-size: 8.5px !important;
+    margin-bottom: 1px !important;
+  }
+
+  .contact-field-value {
+    font-size: 0.8rem !important;
+  }
+
+  .contact-field-subtext {
+    font-size: 0.62rem !important;
+    line-height: 1.2 !important;
+    margin-top: 1px !important;
+  }
+
+  .collab-heading {
+    font-size: 0.72rem !important;
+    margin: 0 0 0.25rem !important;
+  }
+
+  .btn-collab-primary,
+  .btn-collab-secondary,
+  .btn-collab-cv {
+    padding: 0.35rem 0.65rem !important;
+    font-size: 0.64rem !important;
+  }
+
+  /* ── 5. FLOATING DOCKED FOOTER ── */
+  .docked-footer {
+    display: flex !important;
+    position: fixed !important;
+    bottom: 0.75rem !important;
+    height: 44px !important;
+    max-height: 44px !important;
+    z-index: 50 !important;
   }
 
   /* ── 6. 3D Character canvas layer interactivity ── */
