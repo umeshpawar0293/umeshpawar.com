@@ -829,11 +829,11 @@ export default function HeroCharacter({
   // Mobile Viewport Character Scale Adjustment:
   // Reduced by 15% (0.792 * 0.85 = 0.6732) strictly in Mobile view (< 768px)
   const MOBILE_SCALE_FACTOR = 0.6732
-  // iPad Pro 13" Portrait: Scale up character group & props by 15% (0.62 * 1.15 = 0.713)
+  // iPad Pro 13" Portrait: Scale up character group & props by 30% (0.62 * 1.30 = 0.806)
   const heroDesiredFraction = isMobile
     ? 0.70
     : isIPadProPortrait
-    ? 0.713
+    ? 0.806
     : isTablet
     ? 0.62
     : 0.69
@@ -844,11 +844,11 @@ export default function HeroCharacter({
     (isMobile ? MOBILE_SCALE_FACTOR : 1.0)
 
   // Y-Elevation: Fine-tuned vertical elevation
-  // iPad Pro 13" Portrait: Elevate vertical position upward by 7.5% of viewport height (0.095 + 0.075 = 0.170)
+  // iPad Pro 13" Portrait: Elevate vertical position upward by 20% of viewport height (0.095 + 0.20 = 0.295)
   const heroPosY = isMobile
     ? -viewport.height / 2 + viewport.height * 0.365
     : isIPadProPortrait
-    ? -viewport.height / 2 + viewport.height * 0.170
+    ? -viewport.height / 2 + viewport.height * 0.295
     : -viewport.height / 2 + viewport.height * (isTablet ? 0.095 : 0.11)
 
   // Desktop Hero composition: Re-centered with ~7% to 8% leftward shift

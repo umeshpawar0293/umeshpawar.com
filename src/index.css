@@ -7166,7 +7166,7 @@ body.is-character-dragging * {
     width: clamp(340px, 34vw, 380px) !important;
   }
 
-  /* 7. 3D Character: +15% scale and +7.5% upward shift handled natively via WebGL in HeroCharacter */
+  /* 7. 3D Character: +30% scale and +20% upward shift handled natively via WebGL in HeroCharacter */
   .canvas-layer {
     pointer-events: auto !important;
   }
