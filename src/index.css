@@ -7473,48 +7473,50 @@ body.is-character-dragging * {
 }
 
 /* ==========================================================================
-   IPAD PRO 13" LANDSCAPE & 4:3 COMPACT DESKTOP VIEWPORTS (1200px - 1399px)
-   Specifically targeting iPad Pro 13" Landscape (covers both 1366px legacy and 1376px M4).
-   Calibrates top offsets, card max-widths, and bottom margins to render
-   identically to clean widescreen desktop with zero card squishing or footer overlap.
+   IPAD PRO 13" LANDSCAPE & 4:3 COMPACT DESKTOP VIEWPORTS (1180px - 1400px)
+   Specifically targeting iPad Pro Landscape (covers both 1366px legacy and 1376px M4,
+   as well as 1180px iPad Air Landscape).
+   Calibrates top offsets, right-shifted left anchors, and compact heights to render
+   identically to clean widescreen desktop with zero card squishing or footer overlap,
+   even when mobile Safari/Chrome browser toolbars compress viewport height to ~820px-860px.
    Mobile (< 768px) and Widescreen Desktop (>= 1440px) remain 100% untouched.
    ========================================================================== */
-@media screen and (min-width: 1200px) and (max-width: 1399px) and (orientation: landscape) {
+@media screen and (min-width: 1180px) and (max-width: 1400px) and (orientation: landscape) {
   :root {
-    --display-heading-top: clamp(110px, 13vh, 135px);
-    --display-heading-clearance: clamp(75px, 6.8vw, 95px);
-    --section-heading-top: clamp(170px, 19.5vh, 210px);
-    --section-heading-clearance: clamp(82px, 6.5vw, 92px);
-    --about-left-anchor: clamp(5.5rem, 7.5vw, 7.5rem);
-    --work-grid-left: clamp(5.5rem, 7.5vw, 7.5rem);
-    --shared-grid-left: clamp(5.5rem, 7.5vw, 7.5rem);
+    --ipad-landscape-left: clamp(7.5rem, 9.5vw, 9.5rem);
+    --section-heading-top: clamp(105px, 13vh, 125px);
+    --section-heading-clearance: clamp(66px, 5.2vw, 76px);
+    --about-left-anchor: var(--ipad-landscape-left);
+    --work-grid-left: var(--ipad-landscape-left);
+    --shared-grid-left: var(--ipad-landscape-left);
+    --display-heading-top: clamp(100px, 12vh, 120px);
   }
 
   /* ── 1. HOME / HERO PAGE ── */
   .hero-body {
-    transform: translate(-6%, -3%) !important;
+    transform: translate(-4%, -2%) !important;
   }
 
   .hero-copy-container {
     top: var(--display-heading-top) !important;
-    left: calc(var(--shared-grid-left) + 1.5rem) !important;
-    max-width: min(44vw, 540px) !important;
+    left: var(--shared-grid-left) !important;
+    max-width: min(42vw, 520px) !important;
   }
 
   .hero-name {
-    font-size: clamp(4.8rem, 8vw, 7.5rem) !important;
+    font-size: clamp(4.4rem, 7.5vw, 6.8rem) !important;
   }
 
   .hero-glass-box {
-    margin-top: 1rem !important;
-    padding: 1.25rem 1.75rem !important;
+    margin-top: 0.85rem !important;
+    padding: 1.15rem 1.5rem !important;
   }
 
   /* ── SYNCHRONIZED HEADINGS TYPOGRAPHY ("ABOUT ME", "WORK", "LET'S TALK") ── */
   .about-backdrop-heading,
   .work-heading,
   .contact-backdrop-heading {
-    font-size: clamp(4.2rem, 6vw, 5.2rem) !important;
+    font-size: clamp(3.8rem, 5.2vw, 4.6rem) !important;
     line-height: 0.88 !important;
     letter-spacing: 0.04em !important;
   }
@@ -7523,14 +7525,15 @@ body.is-character-dragging * {
   .about-backdrop-layer {
     top: var(--section-heading-top) !important;
     left: var(--about-left-anchor) !important;
-    max-width: 480px !important;
+    max-width: 450px !important;
+    width: 100% !important;
   }
 
   .about-content-column,
   section#about .about-content-column {
     top: calc(var(--section-heading-top) + var(--section-heading-clearance)) !important;
     left: var(--about-left-anchor) !important;
-    max-width: 480px !important;
+    max-width: 450px !important;
     width: 100% !important;
     height: auto !important;
     margin-bottom: 0 !important;
@@ -7538,77 +7541,77 @@ body.is-character-dragging * {
 
   .about-glass-box,
   section#about .about-glass-box {
-    max-width: 480px !important;
+    max-width: 450px !important;
     width: 100% !important;
     height: fit-content !important;
     min-height: 0 !important;
-    padding: 1.35rem 1.75rem !important;
-    margin-top: 0.25rem !important;
+    padding: 1.05rem 1.45rem !important;
+    margin-top: 0.2rem !important;
     box-sizing: border-box !important;
   }
 
   .about-hero-stat,
   section#about .about-hero-stat {
-    font-size: 2.6rem !important;
+    font-size: 2.2rem !important;
     line-height: 1 !important;
     margin: 0 !important;
-    margin-bottom: 0.35rem !important;
+    margin-bottom: 0.25rem !important;
   }
 
   .about-hero-subtitle,
   section#about .about-hero-subtitle {
-    font-size: 1.05rem !important;
-    line-height: 1.25 !important;
+    font-size: 0.95rem !important;
+    line-height: 1.2 !important;
     letter-spacing: -0.015em !important;
     margin: 0 !important;
-    margin-bottom: 0.75rem !important;
+    margin-bottom: 0.5rem !important;
   }
 
   .about-body-paragraph,
   section#about .about-body-paragraph {
-    font-size: 12.5px !important;
-    line-height: 1.55 !important;
+    font-size: 11.5px !important;
+    line-height: 1.45 !important;
     margin: 0 !important;
-    margin-bottom: 0.65rem !important;
+    margin-bottom: 0.45rem !important;
   }
 
   .about-body-paragraph.agency-exp,
   section#about .about-body-paragraph.agency-exp {
-    margin-bottom: 0.65rem !important;
+    margin-bottom: 0.45rem !important;
   }
 
   .about-body-paragraph.flavor-line,
   section#about .about-body-paragraph.flavor-line {
-    margin-bottom: 0.85rem !important;
+    margin-bottom: 0.55rem !important;
   }
 
   .skills-progress-grid,
   section#about .skills-progress-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
-    gap: 0.65rem 1.35rem !important;
-    column-gap: 1.35rem !important;
-    row-gap: 0.65rem !important;
+    gap: 0.45rem 1.15rem !important;
+    column-gap: 1.15rem !important;
+    row-gap: 0.45rem !important;
     margin: 0 !important;
-    margin-top: 0.25rem !important;
-    margin-bottom: 0.75rem !important;
+    margin-top: 0.15rem !important;
+    margin-bottom: 0.55rem !important;
     width: 100% !important;
   }
 
   .skill-progress-track,
   section#about .skills-progress-grid .skill-progress-track {
-    height: 10px !important;
-    min-height: 10px !important;
-    padding: 1.5px !important;
+    height: 8px !important;
+    min-height: 8px !important;
+    padding: 1px !important;
   }
 
   .skills-progress-grid .skill-item > div:first-child,
   section#about .skills-progress-grid .skill-item > div:first-child {
-    margin-bottom: 4px !important;
+    margin-bottom: 2px !important;
   }
 
   .skills-progress-grid .skill-item span,
   section#about .skills-progress-grid .skill-item span {
-    font-size: 11px !important;
+    font-size: 10.5px !important;
     line-height: 1.2 !important;
     font-weight: 700 !important;
     letter-spacing: 0.04em !important;
@@ -7616,16 +7619,16 @@ body.is-character-dragging * {
 
   .about-disclaimer-note,
   section#about .about-disclaimer-note {
-    font-size: 11px !important;
-    line-height: 1.3 !important;
+    font-size: 10.5px !important;
+    line-height: 1.25 !important;
     margin: 0 !important;
-    margin-bottom: 0.85rem !important;
+    margin-bottom: 0.6rem !important;
   }
 
   .btn-about-cv,
   section#about .btn-about-cv {
-    padding: 0.55rem 1.35rem !important;
-    font-size: 0.75rem !important;
+    padding: 0.45rem 1.15rem !important;
+    font-size: 0.72rem !important;
     font-weight: 800 !important;
     letter-spacing: 0.05em !important;
     gap: 0.35rem !important;
@@ -7635,7 +7638,7 @@ body.is-character-dragging * {
 
   .btn-about-cv span,
   section#about .btn-about-cv span {
-    font-size: 0.85rem !important;
+    font-size: 0.8rem !important;
   }
 
   /* ── 3. WORK PAGE ── */
@@ -7651,8 +7654,8 @@ body.is-character-dragging * {
   }
 
   .work-left-pane {
-    --work-card-w: clamp(114px, 8.8vw, 124px) !important;
-    --work-card-gap: 8px !important;
+    --work-card-w: clamp(100px, 7.6vw, 108px) !important;
+    --work-card-gap: 6px !important;
     max-width: fit-content !important;
     width: fit-content !important;
     height: auto !important;
@@ -7664,7 +7667,7 @@ body.is-character-dragging * {
   }
 
   .work-heading {
-    margin-bottom: clamp(14px, 1.25vw, 18px) !important;
+    margin-bottom: clamp(10px, 1.1vh, 14px) !important;
     flex-shrink: 0 !important;
   }
 
@@ -7672,34 +7675,41 @@ body.is-character-dragging * {
   .work-unified-glass-box {
     max-width: fit-content !important;
     width: fit-content !important;
-    padding: 0.85rem 1.15rem !important;
+    padding: 0.75rem 1rem 0.85rem !important;
     height: fit-content !important;
     min-height: 0 !important;
+    max-height: none !important;
     margin-top: 0 !important;
     flex: none !important;
     display: flex !important;
     flex-direction: column !important;
     justify-content: flex-start !important;
+    align-items: center !important;
     box-sizing: border-box !important;
   }
 
   .work-unified-text-top {
     padding-top: 0 !important;
-    margin-bottom: 0.4rem !important;
-    gap: 0.2rem !important;
+    margin-bottom: 0.35rem !important;
+    gap: 0.15rem !important;
     flex-shrink: 0 !important;
   }
 
   /* Work Subtitle: single continuous line, eliminate orphan word "sharp." wrapping */
-  .work-unified-text-top p:first-child {
+  .work-unified-text-top p:first-child,
+  .work-unified-glass-box .work-unified-text-top p:first-child,
+  .work-glass-container .work-unified-text-top p:first-child {
     white-space: nowrap !important;
     text-wrap: nowrap !important;
-    font-size: clamp(11.5px, 0.95vw, 13.5px) !important;
+    word-break: keep-all !important;
+    font-size: clamp(10.5px, 0.85vw, 12px) !important;
     letter-spacing: -0.015em !important;
   }
 
-  .work-unified-text-top p:last-child {
-    font-size: 11px !important;
+  .work-unified-text-top p:last-child,
+  .work-unified-glass-box .work-unified-text-top p:last-child,
+  .work-glass-container .work-unified-text-top p:last-child {
+    font-size: 10px !important;
     line-height: 1.2 !important;
     margin: 0 !important;
   }
@@ -7708,6 +7718,7 @@ body.is-character-dragging * {
     flex: none !important;
     height: calc(3 * (var(--work-card-w) * 4.3 / 4) + 2 * var(--work-card-gap) + 6px) !important;
     max-height: calc(3 * (var(--work-card-w) * 4.3 / 4) + 2 * var(--work-card-gap) + 6px) !important;
+    min-height: calc(3 * (var(--work-card-w) * 4.3 / 4) + 2 * var(--work-card-gap) + 6px) !important;
     overflow: visible !important;
   }
 
@@ -7720,12 +7731,18 @@ body.is-character-dragging * {
     width: calc(3 * var(--work-card-w) + 2 * var(--work-card-gap) + 4px) !important;
     height: calc(3 * (var(--work-card-w) * 4.3 / 4) + 2 * var(--work-card-gap) + 6px) !important;
     max-height: calc(3 * (var(--work-card-w) * 4.3 / 4) + 2 * var(--work-card-gap) + 6px) !important;
+    min-height: calc(3 * (var(--work-card-w) * 4.3 / 4) + 2 * var(--work-card-gap) + 6px) !important;
     overflow-y: auto !important;
     overflow-x: hidden !important;
     overscroll-behavior-y: contain !important;
     -webkit-overflow-scrolling: touch !important;
     padding: 2px !important;
     box-sizing: border-box !important;
+    scrollbar-width: none !important;
+  }
+
+  .work-grid-3col::-webkit-scrollbar {
+    display: none !important;
   }
 
   .work-vertical-scroll-tracker {
@@ -7733,63 +7750,63 @@ body.is-character-dragging * {
   }
 
   .work-project-card {
-    padding: 6px !important;
-    border-radius: 10px !important;
+    padding: 5px !important;
+    border-radius: 9px !important;
   }
 
   .work-card-bottom-bar {
-    padding: 4px 2px 2px !important;
-    min-height: 32px !important;
-    gap: 4px !important;
+    padding: 3px 2px 2px !important;
+    min-height: 28px !important;
+    gap: 3px !important;
   }
 
   .work-card-name {
-    font-size: 10.5px !important;
+    font-size: 10px !important;
     line-height: 1.15 !important;
   }
 
   .work-card-arrow-btn {
-    width: 20px !important;
-    height: 20px !important;
+    width: 18px !important;
+    height: 18px !important;
   }
 
   /* ── 4. CONTACT PAGE ── */
   .contact-composition-wrapper {
-    padding-bottom: 85px !important;
+    padding-bottom: 60px !important;
     box-sizing: border-box !important;
   }
 
   .contact-backdrop-layer {
     top: var(--section-heading-top) !important;
     left: var(--shared-grid-left) !important;
-    width: clamp(360px, 30vw, 440px) !important;
-    max-width: 440px !important;
+    width: clamp(340px, 28vw, 420px) !important;
+    max-width: 420px !important;
   }
 
   .contact-left-block {
     top: calc(var(--section-heading-top) + var(--section-heading-clearance)) !important;
     left: var(--shared-grid-left) !important;
-    width: clamp(360px, 30vw, 440px) !important;
-    max-width: 440px !important;
-    max-height: calc(100vh - var(--section-heading-top) - var(--section-heading-clearance) - 80px) !important;
-    margin-bottom: 75px !important;
+    width: clamp(340px, 28vw, 420px) !important;
+    max-width: 420px !important;
+    max-height: calc(100vh - var(--section-heading-top) - var(--section-heading-clearance) - 60px) !important;
+    margin-bottom: 50px !important;
   }
 
   .contact-cards-stack {
-    gap: 0.65rem !important;
+    gap: 0.5rem !important;
     width: 100% !important;
   }
 
   .contact-card {
-    padding: 0.85rem 1.15rem !important;
+    padding: 0.7rem 1rem !important;
     box-sizing: border-box !important;
   }
 
   /* ── 5. FLOATING DOCKED FOOTER ── */
   .docked-footer {
     display: flex !important;
-    bottom: 1.25rem !important;
-    height: 48px !important;
+    bottom: 1rem !important;
+    height: 46px !important;
   }
 }
 
