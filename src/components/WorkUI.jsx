@@ -496,9 +496,9 @@ export default function WorkUI({
                   : applyCompactPortrait
                   ? {
                       position: 'fixed',
-                      left: '5vw',
+                      left: '18vw',
                       top: '50%',
-                      transform: 'translateY(-50%) scale(0.80)',
+                      transform: 'translateY(-50%) scale(0.82)',
                       transformOrigin: 'left center',
                       display: 'flex',
                       flexDirection: 'column',
