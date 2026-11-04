@@ -24,21 +24,33 @@
     />
     <link
       rel="preload"
-      href="/environment/hero-environment.webm"
-      as="video"
-      type="video/webm"
+      href="/environment/hero-environment_mobile_poster.jpg"
+      as="image"
+      media="(max-width: 768px)"
+    />
+    <link
+      rel="preload"
+      href="/environment/hero-environment_poster.jpg"
+      as="image"
       media="(min-width: 769px)"
     />
     <link
       rel="preload"
-      href="/environment/hero-environment_mobile.webm"
+      href="/environment/hero-environment_mobile.mp4"
       as="video"
-      type="video/webm"
+      type="video/mp4"
       media="(max-width: 768px)"
+    />
+    <link
+      rel="preload"
+      href="/environment/hero-environment.mp4"
+      as="video"
+      type="video/mp4"
+      media="(min-width: 769px)"
     />
     <title>Umesh Pawar | Portfolio</title>
   </head>
-  <body style="background-color: #0a071b; margin: 0;">
+  <body style="background-color: #12092b; margin: 0;">
     <div id="root"></div>
     <script type="module" src="/src/main.jsx"></script>
   </body>
