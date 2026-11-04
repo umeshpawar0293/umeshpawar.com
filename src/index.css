@@ -7117,13 +7117,14 @@ body.is-character-dragging * {
 }
 
 /* ==========================================================================
-   IPAD PRO 13" PORTRAIT SPECIFIC TARGETING (1024px × 1366px)
-   Re-positions the glass box closer to "ABOUT ME" heading to match Contact page spacing,
-   and harmonizes the CV download button size with the Landing page CTA button.
+   IPAD PRO 13" PORTRAIT SPECIFIC TARGETING (1020px - 1040px)
+   Covers both 1024px × 1366px (legacy 12.9" / Air) and 1032px × 1376px (iPad Pro 13" M4).
+   Applies synchronized heading size, tight gap, vertical centering, 3x3 work grid,
+   and right-shifted contact elements.
    Strictly scoped: iPad Pro Landscape, standard Desktop (>= 1280px), & Mobile (< 768px)
    remain 100% untouched.
    ========================================================================== */
-@media screen and (min-width: 1024px) and (max-width: 1030px) and (orientation: portrait) {
+@media screen and (min-width: 1020px) and (max-width: 1040px) and (orientation: portrait) {
   :root {
     --ipad-portrait-left: clamp(3rem, 5.5vw, 4.5rem);
     --section-heading-top: clamp(340px, 26vh, 380px);
@@ -7473,7 +7474,7 @@ body.is-character-dragging * {
 
 /* ==========================================================================
    IPAD PRO 13" LANDSCAPE & 4:3 COMPACT DESKTOP VIEWPORTS (1200px - 1399px)
-   Specifically targeting iPad Pro 13" Landscape (1366px × 1024px, 4:3 aspect).
+   Specifically targeting iPad Pro 13" Landscape (covers both 1366px legacy and 1376px M4).
    Calibrates top offsets, card max-widths, and bottom margins to render
    identically to clean widescreen desktop with zero card squishing or footer overlap.
    Mobile (< 768px) and Widescreen Desktop (>= 1440px) remain 100% untouched.
