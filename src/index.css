@@ -2817,7 +2817,7 @@ body.is-character-dragging * {
     font-weight: 400 !important;
     font-style: italic !important;
     letter-spacing: -0.015em !important;
-    color: rgba(161, 161, 170, 0.85) !important;
+    color: #ffffff !important;
     white-space: nowrap !important;
     text-align: center !important;
     display: block !important;

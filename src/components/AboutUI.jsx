@@ -563,10 +563,10 @@ export default function AboutUI({ scrollProgress = 0, activePage = 'hero' }) {
 
             {/* Disclaimer Footnote */}
             <p
-              className="about-mobile-footnote text-[8.5px] sm:text-[9px] font-normal italic text-zinc-400 text-center tracking-tight block whitespace-nowrap px-0 mb-2.5 font-['Archivo']"
+              className="about-mobile-footnote text-[8.5px] sm:text-[9px] font-normal italic text-white text-center tracking-tight block whitespace-nowrap px-0 mb-2.5 font-['Archivo']"
               style={{
                 fontSize: 'clamp(8.5px, 2.3vw, 9px)',
-                color: 'rgba(161, 161, 170, 0.85)',
+                color: '#ffffff',
                 fontStyle: 'italic',
                 fontWeight: 400,
                 letterSpacing: '-0.015em',
