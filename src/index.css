@@ -7567,383 +7567,48 @@ body.is-character-dragging * {
 }
 
 /* ==========================================================================
-   IPAD PRO 13" LANDSCAPE & 4:3 COMPACT DESKTOP VIEWPORTS (1024px - 1400px)
-   Specifically targeting iPad Pro Landscape (covers 1024px iPad, 1180px iPad Air,
-   1194px iPad Pro 11", 1366px legacy 12.9", and 1376px M4 13").
-   Calibrates top offsets, right-shifted left anchors, and compact heights to render
-   identically to clean widescreen desktop with zero card squishing or footer overlap.
-   Mobile (< 768px) and Widescreen Desktop (>= 1440px) remain 100% untouched.
+   IPAD PRO 13" M4, 12.9", AND TABLET LANDSCAPE VIEWPORTS (1024px - 1400px, HEIGHT <= 1050px)
+   Covers ALL iPad Pro 12.9" & 13" M4 Landscape states (1376x1032 hardware, 920px-960px with Safari tabs).
+   Calibrates top offsets, right-shifted left anchors, and compact heights to eliminate
+   any collision or clipping behind the bottom footer bar.
+   Desktop (>= 1440px) and Mobile (< 768px) remain 100% untouched.
    ========================================================================== */
-@media screen and (min-width: 1024px) and (max-width: 1400px) and (orientation: landscape) {
-  :root {
-    --ipad-landscape-left: clamp(7.5rem, 9.5vw, 9.5rem);
-    --section-heading-top: clamp(105px, 13vh, 125px);
-    --section-heading-clearance: clamp(66px, 5.2vw, 76px);
-    --about-left-anchor: var(--ipad-landscape-left);
-    --work-grid-left: var(--ipad-landscape-left);
-    --shared-grid-left: var(--ipad-landscape-left);
-    --display-heading-top: clamp(100px, 12vh, 120px);
-  }
-
-  /* ── 1. HOME / HERO PAGE ── */
-  .hero-body {
-    transform: translate(-4%, -2%) !important;
-  }
-
-  .hero-copy-container {
-    top: var(--display-heading-top) !important;
-    left: var(--shared-grid-left) !important;
-    max-width: min(42vw, 520px) !important;
-  }
-
-  .hero-name {
-    font-size: clamp(4.4rem, 7.5vw, 6.8rem) !important;
-  }
-
-  .hero-glass-box {
-    margin-top: 0.85rem !important;
-    padding: 1.15rem 1.5rem !important;
-  }
-
-  /* ── SYNCHRONIZED HEADINGS TYPOGRAPHY ("ABOUT ME", "WORK", "LET'S TALK") ── */
-  .about-backdrop-heading,
-  .work-heading,
-  .contact-backdrop-heading {
-    font-size: clamp(3.8rem, 5.2vw, 4.6rem) !important;
-    line-height: 0.88 !important;
-    letter-spacing: 0.04em !important;
-  }
-
-  /* ── 2. ABOUT ME PAGE ── */
-  .about-backdrop-layer {
-    top: var(--section-heading-top) !important;
-    left: var(--about-left-anchor) !important;
-    max-width: 450px !important;
-    width: 100% !important;
-  }
-
-  .about-content-column,
-  section#about .about-content-column {
-    top: calc(var(--section-heading-top) + var(--section-heading-clearance)) !important;
-    left: var(--about-left-anchor) !important;
-    max-width: 450px !important;
-    width: 100% !important;
-    height: auto !important;
-    margin-bottom: 0 !important;
-  }
-
-  .about-glass-box,
-  section#about .about-glass-box {
-    max-width: 450px !important;
-    width: 100% !important;
-    height: fit-content !important;
-    min-height: 0 !important;
-    padding: 1.05rem 1.45rem !important;
-    margin-top: 0.2rem !important;
-    box-sizing: border-box !important;
-  }
-
-  .about-hero-stat,
-  section#about .about-hero-stat {
-    font-size: 2.2rem !important;
-    line-height: 1 !important;
-    margin: 0 !important;
-    margin-bottom: 0.25rem !important;
-  }
-
-  .about-hero-subtitle,
-  section#about .about-hero-subtitle {
-    font-size: 0.95rem !important;
-    line-height: 1.2 !important;
-    letter-spacing: -0.015em !important;
-    margin: 0 !important;
-    margin-bottom: 0.5rem !important;
-  }
-
-  .about-body-paragraph,
-  section#about .about-body-paragraph {
-    font-size: 11.5px !important;
-    line-height: 1.45 !important;
-    margin: 0 !important;
-    margin-bottom: 0.45rem !important;
-  }
-
-  .about-body-paragraph.agency-exp,
-  section#about .about-body-paragraph.agency-exp {
-    margin-bottom: 0.45rem !important;
-  }
-
-  .about-body-paragraph.flavor-line,
-  section#about .about-body-paragraph.flavor-line {
-    margin-bottom: 0.55rem !important;
-  }
-
-  .skills-progress-grid,
-  section#about .skills-progress-grid {
-    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
-    gap: 0.45rem 1.15rem !important;
-    column-gap: 1.15rem !important;
-    row-gap: 0.45rem !important;
-    margin: 0 !important;
-    margin-top: 0.15rem !important;
-    margin-bottom: 0.55rem !important;
-    width: 100% !important;
-  }
-
-  .skill-progress-track,
-  section#about .skills-progress-grid .skill-progress-track {
-    height: 8px !important;
-    min-height: 8px !important;
-    padding: 1px !important;
-  }
-
-  .skills-progress-grid .skill-item > div:first-child,
-  section#about .skills-progress-grid .skill-item > div:first-child {
-    margin-bottom: 2px !important;
-  }
-
-  .skills-progress-grid .skill-item span,
-  section#about .skills-progress-grid .skill-item span {
-    font-size: 10.5px !important;
-    line-height: 1.2 !important;
-    font-weight: 700 !important;
-    letter-spacing: 0.04em !important;
-  }
-
-  .about-disclaimer-note,
-  section#about .about-disclaimer-note {
-    font-size: 10.5px !important;
-    line-height: 1.25 !important;
-    margin: 0 !important;
-    margin-bottom: 0.6rem !important;
-  }
-
-  .btn-about-cv,
-  section#about .btn-about-cv {
-    padding: 0.45rem 1.15rem !important;
-    font-size: 0.72rem !important;
-    font-weight: 800 !important;
-    letter-spacing: 0.05em !important;
-    gap: 0.35rem !important;
-    height: auto !important;
-    margin: 0 auto !important;
-  }
-
-  .btn-about-cv span,
-  section#about .btn-about-cv span {
-    font-size: 0.8rem !important;
-  }
-
-  /* ── 3. WORK PAGE ── */
-  .work-content-stage {
-    top: var(--section-heading-top) !important;
-    left: var(--work-grid-left) !important;
-    bottom: auto !important;
-    height: auto !important;
-    min-height: 0 !important;
-    max-height: fit-content !important;
-    transform: none !important;
-    box-sizing: border-box !important;
-  }
-
-  .work-left-pane {
-    --work-card-w: clamp(100px, 7.6vw, 108px) !important;
-    --work-card-gap: 6px !important;
-    max-width: fit-content !important;
-    width: fit-content !important;
-    height: auto !important;
-    min-height: 0 !important;
-    display: flex !important;
-    flex-direction: column !important;
-    align-items: center !important;
-    justify-content: flex-start !important;
-  }
-
-  .work-heading {
-    margin-bottom: clamp(10px, 1.1vh, 14px) !important;
-    flex-shrink: 0 !important;
-  }
-
-  .work-glass-container,
-  .work-unified-glass-box {
-    max-width: fit-content !important;
-    width: fit-content !important;
-    padding: 0.75rem 1rem 0.85rem !important;
-    height: fit-content !important;
-    min-height: 0 !important;
-    max-height: none !important;
-    margin-top: 0 !important;
-    flex: none !important;
-    display: flex !important;
-    flex-direction: column !important;
-    justify-content: flex-start !important;
-    align-items: center !important;
-    box-sizing: border-box !important;
-  }
-
-  .work-unified-text-top {
-    padding-top: 0 !important;
-    margin-bottom: 0.35rem !important;
-    gap: 0.15rem !important;
-    flex-shrink: 0 !important;
-  }
-
-  /* Work Subtitle: single continuous line, eliminate orphan word "sharp." wrapping */
-  .work-unified-text-top p:first-child,
-  .work-unified-glass-box .work-unified-text-top p:first-child,
-  .work-glass-container .work-unified-text-top p:first-child {
-    white-space: nowrap !important;
-    text-wrap: nowrap !important;
-    word-break: keep-all !important;
-    font-size: clamp(10.5px, 0.85vw, 12px) !important;
-    letter-spacing: -0.015em !important;
-  }
-
-  .work-unified-text-top p:last-child,
-  .work-unified-glass-box .work-unified-text-top p:last-child,
-  .work-glass-container .work-unified-text-top p:last-child {
-    font-size: 10px !important;
-    line-height: 1.2 !important;
-    margin: 0 !important;
-  }
-
-  .work-grid-tracker-wrapper {
-    flex: none !important;
-    height: calc(3 * (var(--work-card-w) * 4.3 / 4) + 2 * var(--work-card-gap) + 6px) !important;
-    max-height: calc(3 * (var(--work-card-w) * 4.3 / 4) + 2 * var(--work-card-gap) + 6px) !important;
-    min-height: calc(3 * (var(--work-card-w) * 4.3 / 4) + 2 * var(--work-card-gap) + 6px) !important;
-    overflow: visible !important;
-  }
-
-  .work-grid-3col {
-    display: grid !important;
-    gap: var(--work-card-gap) !important;
-    grid-template-columns: repeat(3, var(--work-card-w)) !important;
-    grid-template-rows: repeat(3, calc(var(--work-card-w) * 4.3 / 4)) !important;
-    grid-auto-rows: calc(var(--work-card-w) * 4.3 / 4) !important;
-    width: calc(3 * var(--work-card-w) + 2 * var(--work-card-gap) + 4px) !important;
-    height: calc(3 * (var(--work-card-w) * 4.3 / 4) + 2 * var(--work-card-gap) + 6px) !important;
-    max-height: calc(3 * (var(--work-card-w) * 4.3 / 4) + 2 * var(--work-card-gap) + 6px) !important;
-    min-height: calc(3 * (var(--work-card-w) * 4.3 / 4) + 2 * var(--work-card-gap) + 6px) !important;
-    overflow-y: auto !important;
-    overflow-x: hidden !important;
-    overscroll-behavior-y: contain !important;
-    -webkit-overflow-scrolling: touch !important;
-    touch-action: pan-y !important;
-    padding: 2px !important;
-    box-sizing: border-box !important;
-    scrollbar-width: none !important;
-  }
-
-  .work-grid-3col::-webkit-scrollbar {
-    display: none !important;
-  }
-
-  .work-vertical-scroll-tracker {
-    height: 100% !important;
-  }
-
-  .work-project-card {
-    padding: 5px !important;
-    border-radius: 9px !important;
-    touch-action: pan-y !important;
-  }
-
-  .work-card-bottom-bar {
-    padding: 3px 2px 2px !important;
-    min-height: 28px !important;
-    gap: 3px !important;
-  }
-
-  .work-card-name {
-    font-size: 10px !important;
-    line-height: 1.15 !important;
-  }
-
-  .work-card-arrow-btn {
-    width: 18px !important;
-    height: 18px !important;
-  }
-
-  /* ── 4. CONTACT PAGE ── */
-  .contact-composition-wrapper {
-    height: 100% !important;
-    max-height: 100dvh !important;
-    padding-bottom: 0 !important;
-    overflow: hidden !important;
-    box-sizing: border-box !important;
-  }
-
-  .contact-backdrop-layer {
-    top: var(--section-heading-top) !important;
-    left: var(--shared-grid-left) !important;
-    width: clamp(340px, 28vw, 420px) !important;
-    max-width: 420px !important;
-  }
-
-  .contact-left-block {
-    top: calc(var(--section-heading-top) + var(--section-heading-clearance)) !important;
-    left: var(--shared-grid-left) !important;
-    width: clamp(340px, 28vw, 420px) !important;
-    max-width: 420px !important;
-    max-height: calc(100dvh - var(--section-heading-top) - var(--section-heading-clearance) - 60px) !important;
-    margin-bottom: 0 !important;
-  }
-
-  .contact-cards-stack {
-    gap: 0.5rem !important;
-    width: 100% !important;
-  }
-
-  .contact-card {
-    padding: 0.7rem 1rem !important;
-    box-sizing: border-box !important;
-  }
-
-  /* ── 5. FLOATING DOCKED FOOTER ── */
-  .docked-footer {
-    display: flex !important;
-    bottom: 1rem !important;
-    height: 46px !important;
-  }
-
-  /* ── 6. 3D Character canvas layer interactivity ── */
-  .canvas-layer {
-    pointer-events: none !important;
-  }
-}
-
-/* ==========================================================================
-   SHORT-HEIGHT IPAD PRO 13" M4 & LANDSCAPE TABLETS (700px - 900px HEIGHT)
-   Specifically handles iPad Pro 13" M4, 12.9", iPad Air, 11" Pro, and landscape
-   tablets when browser URL bars / toolbars reduce viewport height to 700px - 900px.
-   Eliminates all footer overlap and pulls left column away from the far-left bezel.
-   ========================================================================== */
-@media screen and (min-width: 1024px) and (max-width: 1400px) and (max-height: 900px) and (orientation: landscape) {
+@media screen and (min-width: 1024px) and (max-width: 1400px) and (max-height: 1050px) and (orientation: landscape) {
   :root {
     --ipad-landscape-left: clamp(6.5rem, 8.5vw, 9rem);
-    --section-heading-top: clamp(80px, 11vh, 100px);
-    --section-heading-clearance: clamp(52px, 4.5vw, 64px);
+    --section-heading-top: clamp(72px, 9.5vh, 88px);
+    --section-heading-clearance: clamp(46px, 4.2vw, 56px);
     --about-left-anchor: var(--ipad-landscape-left);
     --work-grid-left: var(--ipad-landscape-left);
     --shared-grid-left: var(--ipad-landscape-left);
-    --display-heading-top: clamp(80px, 10vh, 95px);
+    --display-heading-top: clamp(70px, 9vh, 85px);
+  }
+
+  /* ── 0. OVERLAYS & WRAPPERS RESET ── */
+  .hero-ui-overlay {
+    padding: 1.25rem 2.5rem !important;
   }
 
   /* ── 1. HOME / HERO PAGE ── */
   .hero-body {
     transform: translate(-3%, -2%) !important;
+    padding-top: 0 !important;
+    margin-top: 0 !important;
   }
 
   .hero-copy-container {
     top: var(--display-heading-top) !important;
     left: var(--ipad-landscape-left) !important;
     max-width: min(40vw, 490px) !important;
+    padding-top: 0 !important;
+    margin-top: 0 !important;
   }
 
   .hero-name {
     font-size: clamp(3.8rem, 6.8vw, 5.6rem) !important;
     line-height: 0.9 !important;
+    margin-top: 0 !important;
+    padding-top: 0 !important;
   }
 
   .hero-glass-box {
@@ -7964,6 +7629,8 @@ body.is-character-dragging * {
     font-size: clamp(3.2rem, 4.5vw, 4.0rem) !important;
     line-height: 0.88 !important;
     letter-spacing: 0.04em !important;
+    margin-top: 0 !important;
+    padding-top: 0 !important;
   }
 
   /* ── 2. ABOUT ME PAGE ── */
@@ -7972,6 +7639,8 @@ body.is-character-dragging * {
     left: var(--ipad-landscape-left) !important;
     max-width: 430px !important;
     width: 100% !important;
+    margin-top: 0 !important;
+    padding-top: 0 !important;
   }
 
   .about-content-column,
@@ -7981,7 +7650,9 @@ body.is-character-dragging * {
     max-width: 430px !important;
     width: 100% !important;
     height: auto !important;
+    margin-top: 0 !important;
     margin-bottom: 0 !important;
+    padding-top: 0 !important;
   }
 
   .about-glass-box,
@@ -8097,6 +7768,8 @@ body.is-character-dragging * {
     max-height: fit-content !important;
     transform: none !important;
     box-sizing: border-box !important;
+    padding-top: 0 !important;
+    margin-top: 0 !important;
   }
 
   .work-left-pane {
@@ -8110,9 +7783,12 @@ body.is-character-dragging * {
     flex-direction: column !important;
     align-items: center !important;
     justify-content: flex-start !important;
+    padding-top: 0 !important;
+    margin-top: 0 !important;
   }
 
   .work-heading {
+    margin-top: 0 !important;
     margin-bottom: 8px !important;
     flex-shrink: 0 !important;
   }
@@ -8221,6 +7897,7 @@ body.is-character-dragging * {
   .contact-composition-wrapper {
     height: 100% !important;
     max-height: 100dvh !important;
+    padding-top: 0 !important;
     padding-bottom: 0 !important;
     overflow: hidden !important;
     box-sizing: border-box !important;
@@ -8231,6 +7908,8 @@ body.is-character-dragging * {
     left: var(--ipad-landscape-left) !important;
     width: clamp(320px, 26vw, 390px) !important;
     max-width: 390px !important;
+    margin-top: 0 !important;
+    padding-top: 0 !important;
   }
 
   .contact-left-block,
@@ -8240,13 +7919,17 @@ body.is-character-dragging * {
     width: clamp(320px, 26vw, 390px) !important;
     max-width: 390px !important;
     max-height: calc(100dvh - var(--section-heading-top) - var(--section-heading-clearance) - 55px) !important;
+    margin-top: 0 !important;
     margin-bottom: 0 !important;
+    padding-top: 0 !important;
     padding-bottom: 0 !important;
   }
 
   .contact-cards-stack {
     gap: 0.35rem !important;
     width: 100% !important;
+    padding-top: 0 !important;
+    margin-top: 0 !important;
   }
 
   .contact-card {

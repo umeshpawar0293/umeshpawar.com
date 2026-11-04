@@ -283,7 +283,7 @@ export default function AboutUI({ scrollProgress = 0, activePage = 'hero' }) {
         >
           {/* ── Unified Luminous Glass Box Container (Shifted closer to ABOUT ME heading) ── */}
           <div
-            className="about-glass-box neon-glass-box flex flex-col items-center min-h-fit h-auto p-6 md:p-8 lg:p-10 rounded-3xl w-full max-w-[460px] lg:max-w-[520px] mt-2 md:mt-3 mx-0 relative z-30 select-text"
+            className="about-glass-box neon-glass-box flex flex-col items-center min-h-fit h-auto p-5 md:p-6 lg:p-7 rounded-3xl w-full max-w-[460px] lg:max-w-[520px] mt-2 mx-0 relative z-30 select-text"
             style={{ pointerEvents: 'auto', width: '100%', height: 'auto' }}
           >
             {/* Hero Stat: 12+ YEARS (Neon green & 56px scale) */}

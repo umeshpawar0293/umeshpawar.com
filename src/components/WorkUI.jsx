@@ -428,7 +428,6 @@ export default function WorkUI({
                   pointerEvents: 'auto',
                   userSelect: 'text',
                   WebkitUserSelect: 'text',
-                  marginBottom: 'clamp(1rem, 2vh, 1.75rem)',
                 }}
                 onPointerDown={(e) => e.stopPropagation()}
               >
@@ -438,7 +437,7 @@ export default function WorkUI({
 
               {/* Unified Expanded Glass Box: Subtitle text on top, project grid directly beneath */}
               <div
-                className="work-glass-container work-unified-glass-box flex flex-col items-center pt-9 md:pt-11 px-7 md:px-8 pb-7 md:pb-8 mt-8 md:mt-10 rounded-3xl w-fit mx-auto relative z-30 select-text"
+                className="work-glass-container work-unified-glass-box flex flex-col items-center pt-5 md:pt-6 px-6 md:px-8 pb-6 md:pb-7 mt-2 md:mt-3 rounded-3xl w-fit mx-auto relative z-30 select-text"
                 style={{
                   pointerEvents: isWorkActive ? 'auto' : 'none',
                 }}
@@ -447,7 +446,7 @@ export default function WorkUI({
               >
                 {/* Top Text Block - Flex column with explicit top spacing and strict gap-2 separation */}
                 <div
-                  className="work-unified-text-top flex flex-col items-center gap-2 pt-6 mb-6 w-full select-text"
+                  className="work-unified-text-top flex flex-col items-center gap-2 pt-1 mb-3 w-full select-text"
                   style={{
                     pointerEvents: isWorkActive ? 'auto' : 'none',
                     userSelect: 'text',

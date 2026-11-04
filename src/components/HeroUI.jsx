@@ -367,7 +367,7 @@ export default function HeroUI({ scrollProgress = 0 }) {
           {/* ── Frosted Glass Box Container across Desktop and Mobile (Tight mt-2 sm:mt-3) ── */}
           <div
             ref={heroGlassBoxRef}
-            className="hero-glass-box mx-auto mt-2 sm:mt-3 md:mt-6 transform-gpu will-change-transform"
+            className="hero-glass-box mx-auto mt-2 sm:mt-3 md:mt-3 transform-gpu will-change-transform"
           >
             <h2 className="hero-tagline text-[11px] sm:text-xs md:text-sm lg:text-base font-black tracking-wider text-[#ccff00] uppercase text-center mx-auto drop-shadow-[0_0_8px_rgba(204,255,0,0.4)] md:whitespace-nowrap" style={{ marginTop: 0 }}>
               <span className="hero-clean-text text-[11px] sm:text-xs md:text-sm lg:text-base font-black tracking-wider text-[#ccff00] uppercase text-center drop-shadow-[0_0_8px_rgba(204,255,0,0.4)] md:whitespace-nowrap">
