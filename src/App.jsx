@@ -330,9 +330,11 @@ export default function App() {
      * Deterministic Section Transition Engine:
      * - Animates camera, environment, and character smoothly over ~0.95s (cinematic power3.inOut).
      * - Blocks ALL incoming wheel/scroll/touch events during transition.
-     * - Enforces 400ms cooldown buffer upon arrival to completely discard trailing trackpad inertia.
+     * - Enforces cooldown buffer upon arrival to completely discard trailing trackpad inertia.
      */
-    const transitionToSection = (targetIndex, duration = 1100) => {
+    const transitionToSection = (targetIndex, duration) => {
+      const isMobile = typeof window !== 'undefined' && window.innerWidth < 768
+      const animDuration = duration !== undefined ? duration : (isMobile ? 600 : 1100)
       const clampedIndex = Math.max(0, Math.min(3, targetIndex))
       if (
         clampedIndex === currentSectionRef.current &&
@@ -347,7 +349,7 @@ export default function App() {
           detail: {
             targetIndex: clampedIndex,
             fromIndex: currentSectionRef.current,
-            duration: 1.1,
+            duration: isMobile ? 0.6 : 1.1,
           },
         })
       )
@@ -394,7 +396,7 @@ export default function App() {
 
       const step = (now) => {
         const elapsed = now - startTime
-        const t = Math.min(elapsed / duration, 1)
+        const t = Math.min(elapsed / animDuration, 1)
         const easedT = easePower3InOut(t)
         const currentP = startP + deltaP * easedT
 
@@ -421,12 +423,13 @@ export default function App() {
             window.history.replaceState(null, '', hashNames[clampedIndex])
           }
 
-          // 4. Intentional cooldown buffer (400ms) to discard trailing trackpad momentum/coasting
+          // 4. Intentional cooldown buffer to discard trailing trackpad momentum/coasting
+          const cooldownDuration = isMobile ? 120 : 400
           cooldownTimerRef.current = setTimeout(() => {
             isTransitioningRef.current = false
             accumulatedDeltaYRef.current = 0
             cooldownTimerRef.current = null
-          }, 400)
+          }, cooldownDuration)
         }
       }
 
@@ -455,27 +458,41 @@ export default function App() {
         return // DO NOT call e.preventDefault()! Let native vertical scroll happen!
       }
 
-      // Helper to find nearest scrollable ancestor or active container
+      // Helper to find nearest genuinely scrollable internal container
       const findScrollableElement = (target) => {
         if (!target || typeof target.closest !== 'function') return null
 
-        // Check explicit known scrollable containers first
-        const explicit = target.closest(
-          '.work-grid-3col, .mobile-section-container, .about-mobile-stage, .neon-glass-box, .about-mobile-copy-container, .contact-mobile-stage, .contact-cards-wrapper, .contact-mobile-bento-container, .work-mobile-stage'
-        )
-        if (explicit && explicit.scrollHeight > explicit.clientHeight + 2) {
+        // Explicit internal scrollable container ONLY (e.g. desktop 3-col work grid)
+        const explicit = target.closest('.work-grid-3col')
+        if (explicit && explicit.scrollHeight > explicit.clientHeight + 4) {
           return explicit
         }
 
-        // Check DOM hierarchy upwards for any element with auto/scroll overflow
+        // Check DOM hierarchy upwards for any internal element with auto/scroll overflow
+        // Never treat page section wrappers or root stages as internal scrollable elements!
         let curr = target
         while (curr && curr !== document.body && curr !== document.documentElement) {
           if (curr instanceof HTMLElement) {
+            // Ignore top-level sections and wrappers
+            if (
+              curr.classList.contains('mobile-section-container') ||
+              curr.classList.contains('mobile-page-wrapper') ||
+              curr.classList.contains('app-container') ||
+              curr.classList.contains('portfolio-root') ||
+              curr.classList.contains('hero-body') ||
+              curr.classList.contains('about-mobile-stage') ||
+              curr.classList.contains('work-mobile-stage') ||
+              curr.classList.contains('contact-mobile-stage') ||
+              curr.classList.contains('hero-ui-overlay')
+            ) {
+              break
+            }
+
             const style = window.getComputedStyle(curr)
             const overflowY = style.overflowY
             if (
               (overflowY === 'auto' || overflowY === 'scroll') &&
-              curr.scrollHeight > curr.clientHeight + 2
+              curr.scrollHeight > curr.clientHeight + 8
             ) {
               return curr
             }
@@ -621,28 +638,29 @@ export default function App() {
         return
       }
       if (isTransitioningRef.current) return
-      if (!e.changedTouches || e.changedTouches.length === 0) return
+      if (!e || !e.changedTouches || e.changedTouches.length === 0) return
       if (e.target?.closest?.('a, button, input, textarea, select, [role="button"], .footer-social-btn, .footer-scroll-top-btn, .mobile-menu-toggle')) return
 
       const deltaY = touchStartY - e.changedTouches[0].clientY
       const deltaX = touchStartX - e.changedTouches[0].clientX
 
-      // Check if touch originated or ended inside a scrollable container
+      // Check if touch originated or ended inside a genuinely scrollable internal container
       const scrollEl = findScrollableElement(e.target) || touchStartScrollEl
       touchStartScrollEl = null
 
       if (scrollEl) {
         const isDown = deltaY > 0
         const canScrollDown =
-          scrollEl.scrollTop + scrollEl.clientHeight < scrollEl.scrollHeight - 5
-        const canScrollUp = scrollEl.scrollTop > 5
+          scrollEl.scrollTop + scrollEl.clientHeight < scrollEl.scrollHeight - 6
+        const canScrollUp = scrollEl.scrollTop > 6
         if ((isDown && canScrollDown) || (!isDown && canScrollUp)) {
           return // Allow internal content scroll without switching section
         }
       }
 
-      // Dominant vertical swipe over horizontal
-      if (Math.abs(deltaY) > 48 && Math.abs(deltaY) > Math.abs(deltaX) * 1.2) {
+      // Dominant vertical swipe over horizontal (threshold: 32px on mobile, 48px on desktop)
+      const threshold = typeof window !== 'undefined' && window.innerWidth < 768 ? 32 : 48
+      if (Math.abs(deltaY) > threshold && Math.abs(deltaY) > Math.abs(deltaX) * 1.1) {
         const direction = deltaY > 0 ? 1 : -1
         const nextSection = Math.max(
           0,
@@ -952,8 +970,9 @@ export default function App() {
     state.touchDirection = null
   }
 
-  // Bind touch listeners on dragZoneRef with passive: true
+  // Bind touch listeners on dragZoneRef with passive: true (Desktop / tablet landscape only)
   useEffect(() => {
+    if (typeof window !== 'undefined' && window.innerWidth < 768) return
     const el = dragZoneRef.current
     if (!el) return
 
@@ -1029,10 +1048,10 @@ export default function App() {
           className="canvas-layer transition-opacity duration-500 ease-out"
           style={{
             zIndex: 20,
-            pointerEvents: 'auto',
+            pointerEvents: typeof window !== 'undefined' && window.innerWidth < 768 ? 'none' : 'auto',
             touchAction: typeof window !== 'undefined' && window.innerWidth < 768 ? 'pan-y' : 'none',
           }}
-          onPointerDown={handleDragDown}
+          onPointerDown={typeof window !== 'undefined' && window.innerWidth < 768 ? undefined : handleDragDown}
         >
           <Canvas
             camera={{ position: [0, 0, 3], fov: 42 }}
@@ -1067,11 +1086,11 @@ export default function App() {
           className="character-drag-zone"
           style={{
             zIndex: 21,
-            pointerEvents: isModalOpen ? 'none' : 'auto',
+            pointerEvents: typeof window !== 'undefined' && window.innerWidth < 768 ? 'none' : (isModalOpen ? 'none' : 'auto'),
             touchAction: typeof window !== 'undefined' && window.innerWidth < 768 ? 'pan-y' : 'none',
           }}
           aria-label="Drag horizontally to rotate character"
-          onPointerDown={handleDragDown}
+          onPointerDown={typeof window !== 'undefined' && window.innerWidth < 768 ? undefined : handleDragDown}
         />
 
         {/* Loading Screen Overlay while GLB streams */}

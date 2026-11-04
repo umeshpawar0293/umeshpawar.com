@@ -147,19 +147,25 @@ export default function HeroUI({ scrollProgress = 0 }) {
     scrollFn(e)
   }
 
-  // Prevent background scroll when mobile drawer is open
+  // Prevent background scroll when mobile drawer is open; ensure full clean reset when closed
   React.useEffect(() => {
     if (mobileMenuOpen) {
-      const origBodyOverflow = document.body.style.overflow
-      const origHtmlOverflow = document.documentElement.style.overflow
       document.body.style.overflow = 'hidden'
       document.documentElement.style.overflow = 'hidden'
       document.body.dataset.mobileMenuOpen = 'true'
       return () => {
-        document.body.style.overflow = origBodyOverflow
-        document.documentElement.style.overflow = origHtmlOverflow
+        document.body.style.overflow = ''
+        document.documentElement.style.overflow = ''
+        document.body.style.position = ''
+        document.documentElement.style.position = ''
         delete document.body.dataset.mobileMenuOpen
       }
+    } else {
+      document.body.style.overflow = ''
+      document.documentElement.style.overflow = ''
+      document.body.style.position = ''
+      document.documentElement.style.position = ''
+      delete document.body.dataset.mobileMenuOpen
     }
   }, [mobileMenuOpen])
 

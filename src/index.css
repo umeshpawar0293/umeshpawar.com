@@ -9726,10 +9726,11 @@ body.is-character-dragging * {
     touch-action: pan-y !important;
   }
 
-  /* Unrestricted native touch scrolling and gesture handling */
+  /* Unrestricted native touch scrolling and gesture handling: Canvas & drag overlay pass through pointers */
   canvas,
   .canvas-layer,
   .character-drag-zone {
+    pointer-events: none !important;
     touch-action: pan-y !important;
   }
 
