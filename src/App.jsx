@@ -31,8 +31,8 @@ function ResponsiveCamera() {
     (size?.width >= 1020 && size?.width <= 1040 && size?.height > size?.width)
 
   const isMobile = size.width <= 768
-  const baseFov = isIPadPro13Portrait ? 40 : 42
-  const baseZ = isMobile ? 3.35 : isIPadPro13Portrait ? 2.9 : 3.0
+  const baseFov = 42
+  const baseZ = isMobile ? 3.35 : isIPadPro13Portrait ? 3.2 : 3.0
 
   useEffect(() => {
     if (!cameraTimelineRef.current?.isActive()) {
@@ -50,8 +50,8 @@ function ResponsiveCamera() {
         window.innerWidth <= 1040 &&
         window.innerHeight > window.innerWidth
       const isMobileNow = window.innerWidth <= 768
-      const currentBaseZ = isMobileNow ? 3.35 : isIPadPro13PortraitNow ? 2.9 : 3.0
-      const currentBaseFov = isIPadPro13PortraitNow ? 40 : 42
+      const currentBaseZ = isMobileNow ? 3.35 : isIPadPro13PortraitNow ? 3.2 : 3.0
+      const currentBaseFov = 42
 
       if (cameraTimelineRef.current) {
         cameraTimelineRef.current.kill()
@@ -1001,16 +1001,10 @@ export default function App() {
                 window.innerWidth >= 1020 &&
                 window.innerWidth <= 1040 &&
                 window.innerHeight > window.innerWidth
-                  ? 2.9
+                  ? 3.2
                   : 3,
               ],
-              fov:
-                typeof window !== 'undefined' &&
-                window.innerWidth >= 1020 &&
-                window.innerWidth <= 1040 &&
-                window.innerHeight > window.innerWidth
-                  ? 40
-                  : 42,
+              fov: 42,
             }}
             gl={{
               alpha: true,

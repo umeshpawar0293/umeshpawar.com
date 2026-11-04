@@ -830,11 +830,11 @@ export default function HeroCharacter({
   // Mobile Viewport Character Scale Adjustment:
   // Reduced by 15% (0.792 * 0.85 = 0.6732) strictly in Mobile view (< 768px)
   const MOBILE_SCALE_FACTOR = 0.6732
-  // iPad Pro 13" Portrait: Scale up character group & props prominently (+30% relative to desktop baseline 0.69 -> 0.897 ~ 0.89)
+  // iPad Pro 13" Portrait: Rebalanced scale (0.66 fraction) ensuring head is fully clear of top boundary and connected to room
   const heroDesiredFraction = isMobile
     ? 0.70
     : isIPadPro13Portrait
-    ? 0.89
+    ? 0.66
     : isTablet
     ? 0.62
     : 0.69
@@ -844,12 +844,12 @@ export default function HeroCharacter({
     CHARACTER_SCALE_TUNING *
     (isMobile ? MOBILE_SCALE_FACTOR : 1.0)
 
-  // Y-Elevation: Fine-tuned vertical elevation
-  // iPad Pro 13" Portrait: Elevate vertical position upward by 20% of viewport height (0.095 + 0.20 = 0.295)
+  // Y-Elevation: Grounded vertical elevation
+  // iPad Pro 13" Portrait: Grounded at 0.12 of viewport height, keeping feet resting on floor shadow with ample head clearance from top boundary
   const heroPosY = isMobile
     ? -viewport.height / 2 + viewport.height * 0.365
     : isIPadPro13Portrait
-    ? -viewport.height / 2 + viewport.height * 0.295
+    ? -viewport.height / 2 + viewport.height * 0.12
     : -viewport.height / 2 + viewport.height * (isTablet ? 0.095 : 0.11)
 
   // Desktop Hero composition: Re-centered with ~7% to 8% leftward shift
@@ -864,11 +864,11 @@ export default function HeroCharacter({
   // Desktop (min-width: 1024px): Balanced midpoint centering with left text block
   // Mobile (max-width: 768px): position.x = 0 strictly centers combined ensemble horizontally
   // Tablet (768px - 1180px): Shifted slightly right to clear left glass cards
-  // iPad Pro 13" Portrait: Positioned at 0.26 * viewport.width (~778px), perfectly centering character in open right half
+  // iPad Pro 13" Portrait: Positioned at 0.24 * viewport.width (~758px), perfectly centering character in open right half
   const heroPosX = isMobile
     ? 0
     : isIPadPro13Portrait
-    ? viewport.width * 0.26
+    ? viewport.width * 0.24
     : isTablet
     ? viewport.width * 0.25
     : desktopHeroPosX
@@ -880,7 +880,7 @@ export default function HeroCharacter({
   const contactPosX = isMobile
     ? 0
     : isIPadPro13Portrait
-    ? viewport.width * 0.25
+    ? viewport.width * 0.22
     : isTablet
     ? viewport.width * 0.24
     : desktopContactPosX
