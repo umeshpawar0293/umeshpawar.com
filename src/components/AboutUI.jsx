@@ -453,7 +453,7 @@ export default function AboutUI({ scrollProgress = 0, activePage = 'hero' }) {
           >
             <div ref={mobileCopyRef} className="about-mobile-copy-block flex flex-col items-center justify-center text-center mx-auto w-full">
               <p
-                className="about-mobile-paragraph text-[10.5px] font-bold leading-[1.4] text-zinc-100 text-center tracking-tight px-1 font-['Archivo'] text-balance"
+                className="about-mobile-paragraph text-[10.5px] font-bold leading-[1.4] text-zinc-100 text-center tracking-tight font-['Archivo'] text-balance"
                 style={{
                   fontSize: '10.5px',
                   fontWeight: 700,
@@ -463,8 +463,9 @@ export default function AboutUI({ scrollProgress = 0, activePage = 'hero' }) {
                   letterSpacing: '-0.02em',
                   textWrap: 'balance',
                   margin: '0 auto',
-                  paddingLeft: '0.25rem',
-                  paddingRight: '0.25rem',
+                  paddingLeft: 0,
+                  paddingRight: 0,
+                  width: '100%',
                 }}
               >
                 Currently at Cheil India. Earlier at DDB Mudra, Gozoop,<br className="block md:hidden" />
@@ -472,7 +473,7 @@ export default function AboutUI({ scrollProgress = 0, activePage = 'hero' }) {
                 tech, food, finance, hospitality, FMCG and entertainment.
               </p>
               <p
-                className="about-mobile-statement text-[10.5px] font-bold leading-[1.4] text-zinc-100 text-center tracking-tight px-1 mt-2 mb-2.5 font-['Archivo'] text-balance"
+                className="about-mobile-statement text-[10.5px] font-bold leading-[1.4] text-zinc-100 text-center tracking-tight mt-2 mb-2.5 font-['Archivo'] text-balance"
                 style={{
                   fontSize: '10.5px',
                   fontWeight: 700,
@@ -483,8 +484,9 @@ export default function AboutUI({ scrollProgress = 0, activePage = 'hero' }) {
                   textWrap: 'balance',
                   marginTop: '0.5rem',
                   marginBottom: '0.625rem',
-                  paddingLeft: '0.25rem',
-                  paddingRight: '0.25rem',
+                  paddingLeft: 0,
+                  paddingRight: 0,
+                  width: '100%',
                 }}
               >
                 Sketch first, overthink later. Fueled by chai, deadlines<br className="block md:hidden" />
@@ -494,15 +496,15 @@ export default function AboutUI({ scrollProgress = 0, activePage = 'hero' }) {
 
             {/* Mobile-Friendly Skills Grid (Sleek & Spaced 2-Column Component) */}
             <div
-              className="skills-mobile-grid grid grid-cols-2 gap-x-5 gap-y-2 mb-2 px-1 w-full text-left"
+              className="skills-mobile-grid grid grid-cols-2 gap-x-5 gap-y-2 mb-2 w-full text-left"
               style={{
                 display: 'grid',
                 gridTemplateColumns: 'repeat(2, minmax(0, 1fr))',
                 columnGap: '1.25rem',
                 rowGap: '0.5rem',
                 marginBottom: '0.5rem',
-                paddingLeft: '0.25rem',
-                paddingRight: '0.25rem',
+                paddingLeft: 0,
+                paddingRight: 0,
                 width: '100%',
                 boxSizing: 'border-box',
               }}

@@ -2756,10 +2756,9 @@ body.is-character-dragging * {
     color: #f4f4f5 !important;
     /* text-zinc-100 */
     margin: 0 auto !important;
-    padding: 0 0.25rem !important;
-    /* px-1 */
-    max-width: 340px;
-    width: 100%;
+    padding: 0 !important;
+    max-width: 100% !important;
+    width: 100% !important;
     text-align: center !important;
     text-wrap: balance !important;
     text-shadow: 0 1px 6px rgba(0, 0, 0, 0.9);
@@ -2779,11 +2778,10 @@ body.is-character-dragging * {
     /* text-zinc-100 */
     margin: 0.5rem auto 0.625rem auto !important;
     /* mt-2 mb-2.5 */
-    padding: 0 0.25rem !important;
-    /* px-1 */
+    padding: 0 !important;
     text-shadow: 0 1px 6px rgba(0, 0, 0, 0.9);
-    width: 100%;
-    max-width: 340px;
+    width: 100% !important;
+    max-width: 100% !important;
     text-align: center !important;
     text-wrap: balance !important;
   }
@@ -2798,9 +2796,10 @@ body.is-character-dragging * {
     margin-top: 0 !important;
     margin-bottom: 0.5rem !important;
     /* mb-2 */
-    padding-left: 0.25rem !important;
-    padding-right: 0.25rem !important;
+    padding-left: 0 !important;
+    padding-right: 0 !important;
     width: 100% !important;
+    max-width: 100% !important;
     box-sizing: border-box !important;
   }
 
@@ -2873,6 +2872,60 @@ body.is-character-dragging * {
     background: #d4ff00 !important;
     color: #0066ff !important;
     transform: scale(0.95);
+  }
+}
+
+/* ==========================================================================
+   MOBILE ABOUT ME: SKILLS GRID 100% WIDTH ALIGNMENT (< 768px)
+   Strictly aligns the combined width of the two-column skill bars container
+   to 100% of the intro and bio text blocks directly above it.
+   Tablet and Desktop layouts remain 100% untouched.
+   ========================================================================== */
+@media screen and (max-width: 767px) {
+  .about-mobile-copy-block {
+    width: 100% !important;
+    max-width: 100% !important;
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+    margin-left: auto !important;
+    margin-right: auto !important;
+    box-sizing: border-box !important;
+  }
+
+  .about-mobile-paragraph,
+  .about-mobile-statement {
+    width: 100% !important;
+    max-width: 100% !important;
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+    margin-left: auto !important;
+    margin-right: auto !important;
+    box-sizing: border-box !important;
+  }
+
+  .skills-mobile-grid,
+  .skills-progress-grid,
+  .about-mobile-stage .skills-mobile-grid,
+  .about-mobile-glass-container .skills-mobile-grid {
+    width: 100% !important;
+    max-width: 100% !important;
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+    margin-left: auto !important;
+    margin-right: auto !important;
+    box-sizing: border-box !important;
+  }
+
+  .skills-mobile-grid .skill-item,
+  .skills-progress-grid .skill-item {
+    width: 100% !important;
+    box-sizing: border-box !important;
+  }
+
+  .skills-mobile-grid .skill-progress-track,
+  .skills-progress-grid .skill-progress-track {
+    width: 100% !important;
+    box-sizing: border-box !important;
   }
 }
 
