@@ -8317,6 +8317,24 @@ html[data-ipad-portrait="true"] .contact-left-block {
   z-index: 20 !important;
 }
 
+html[data-ipad-portrait="true"] .hero-name,
+html[data-ipad-portrait="true"] .about-backdrop-heading,
+html[data-ipad-portrait="true"] .work-heading,
+html[data-ipad-portrait="true"] .contact-backdrop-heading {
+  position: relative !important;
+  top: auto !important;
+  left: auto !important;
+  transform: none !important;
+  font-size: clamp(2.8rem, 4.5vw, 3.8rem) !important;
+  line-height: 0.95 !important;
+  white-space: nowrap !important;
+  text-align: center !important;
+  width: 100% !important;
+  margin: 0 auto 0.6rem auto !important;
+  flex-shrink: 0 !important;
+  padding-bottom: 0 !important;
+}
+
 /* ==========================================================================
    FLOATING GLASSMORPHIC DOCKED FOOTER
    ========================================================================== */

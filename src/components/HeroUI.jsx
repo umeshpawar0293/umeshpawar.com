@@ -427,7 +427,7 @@ export default function HeroUI({ scrollProgress = 0 }) {
             style={{
               transform: `translateY(${-scrollProgress * 40 * 0.4}px)`,
               willChange: 'transform',
-              ...(applyCompactLandscape || applyCompactPortrait
+              ...(applyCompactLandscape
                 ? {
                     position: 'relative',
                     top: 'auto',
@@ -441,6 +441,21 @@ export default function HeroUI({ scrollProgress = 0 }) {
                     marginTop: 0,
                     marginBottom: '0.75rem',
                     paddingBottom: '0.2rem',
+                    flexShrink: 0,
+                    zIndex: 25,
+                  }
+                : applyCompactPortrait
+                ? {
+                    position: 'relative',
+                    top: 'auto',
+                    left: 'auto',
+                    transform: 'none',
+                    fontSize: 'clamp(2.8rem, 4.5vw, 3.8rem)',
+                    lineHeight: 0.95,
+                    whiteSpace: 'nowrap',
+                    textAlign: 'center',
+                    width: '100%',
+                    margin: '0 auto 0.6rem auto',
                     flexShrink: 0,
                     zIndex: 25,
                   }
