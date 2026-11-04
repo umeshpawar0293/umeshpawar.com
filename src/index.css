@@ -8335,6 +8335,47 @@ html[data-ipad-portrait="true"] .contact-backdrop-heading {
   padding-bottom: 0 !important;
 }
 
+html[data-ipad-portrait="true"] .work-left-pane {
+  transform: translateY(-50%) scale(0.92) !important;
+  width: 540px !important;
+  max-width: 540px !important;
+}
+
+html[data-ipad-portrait="true"] .work-glass-container {
+  width: 540px !important;
+  max-width: 540px !important;
+  margin: 0 !important;
+  margin-top: 0px !important;
+  position: relative !important;
+}
+
+html[data-ipad-portrait="true"] .work-unified-text-top p:first-child {
+  white-space: nowrap !important;
+  font-size: 0.75rem !important;
+}
+
+html[data-ipad-portrait="true"] .work-grid-tracker-wrapper {
+  max-height: 340px !important;
+  height: auto !important;
+}
+
+html[data-ipad-portrait="true"] .work-grid-3col {
+  display: grid !important;
+  grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+  grid-auto-rows: max-content !important;
+  align-content: start !important;
+  row-gap: 0.55rem !important;
+  column-gap: 0.55rem !important;
+  height: max-content !important;
+  min-height: 0px !important;
+  width: 100% !important;
+}
+
+html[data-ipad-portrait="true"] .work-project-card {
+  height: auto !important;
+  max-height: none !important;
+}
+
 /* ==========================================================================
    FLOATING GLASSMORPHIC DOCKED FOOTER
    ========================================================================== */

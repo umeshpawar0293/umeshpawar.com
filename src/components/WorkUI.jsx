@@ -498,14 +498,14 @@ export default function WorkUI({
                       position: 'fixed',
                       left: '18vw',
                       top: '50%',
-                      transform: 'translateY(-50%) scale(0.82)',
+                      transform: 'translateY(-50%) scale(0.92)',
                       transformOrigin: 'left center',
                       display: 'flex',
                       flexDirection: 'column',
                       alignItems: 'center',
                       justifyContent: 'center',
-                      width: '480px',
-                      maxWidth: '480px',
+                      width: '540px',
+                      maxWidth: '540px',
                       margin: 0,
                       padding: 0,
                       zIndex: 20,
@@ -567,7 +567,7 @@ export default function WorkUI({
                 className="work-glass-container work-unified-glass-box flex flex-col items-center pt-5 md:pt-6 px-6 md:px-8 pb-6 md:pb-7 mt-2 md:mt-3 rounded-3xl w-fit mx-auto relative z-30 select-text"
                 style={{
                   pointerEvents: isWorkActive ? 'auto' : 'none',
-                  ...(applyCompactLandscape || applyCompactPortrait
+                  ...(applyCompactLandscape
                     ? {
                         position: 'relative',
                         top: 'auto',
@@ -577,6 +577,27 @@ export default function WorkUI({
                         marginTop: '0px',
                         width: '480px',
                         maxWidth: '480px',
+                        padding: '0.85rem 1.15rem',
+                        height: 'fit-content',
+                        minHeight: 0,
+                        maxHeight: 'none',
+                        flex: 'none',
+                        display: 'flex',
+                        flexDirection: 'column',
+                        justifyContent: 'flex-start',
+                        alignItems: 'center',
+                        boxSizing: 'border-box',
+                      }
+                    : applyCompactPortrait
+                    ? {
+                        position: 'relative',
+                        top: 'auto',
+                        left: 'auto',
+                        transform: 'none',
+                        margin: 0,
+                        marginTop: '0px',
+                        width: '540px',
+                        maxWidth: '540px',
                         padding: '0.85rem 1.15rem',
                         height: 'fit-content',
                         minHeight: 0,
@@ -628,6 +649,12 @@ export default function WorkUI({
                             fontSize: 'clamp(10px, 0.8vw, 11.5px)',
                             letterSpacing: '-0.015em',
                           }
+                        : applyCompactPortrait
+                        ? {
+                            whiteSpace: 'nowrap',
+                            wordBreak: 'keep-all',
+                            fontSize: '0.75rem',
+                          }
                         : {}),
                     }}
                     onPointerDown={(e) => e.stopPropagation()}
@@ -663,7 +690,7 @@ export default function WorkUI({
                 <div
                   className="work-grid-tracker-wrapper flex flex-row items-stretch gap-4 md:gap-5 w-fit relative flex-1 min-h-0"
                   style={
-                    applyCompactLandscape || applyCompactPortrait
+                    applyCompactLandscape
                       ? {
                           height: 'auto',
                           maxHeight: '380px',
@@ -672,6 +699,22 @@ export default function WorkUI({
                           display: 'block',
                           paddingRight: '2px', // Eliminates right-side gap
                           // Custom scrollbar styling (WebKit & modern browsers):
+                          scrollbarWidth: 'thin',
+                          scrollbarColor: '#ccff00 rgba(255, 255, 255, 0.05)',
+                          overscrollBehavior: 'contain',
+                          overscrollBehaviorY: 'contain',
+                          WebkitOverflowScrolling: 'touch',
+                          touchAction: 'pan-y',
+                          width: '100%',
+                        }
+                      : applyCompactPortrait
+                      ? {
+                          height: 'auto',
+                          maxHeight: '340px',
+                          overflowY: 'auto',
+                          overflowX: 'hidden',
+                          display: 'block',
+                          paddingRight: '2px',
                           scrollbarWidth: 'thin',
                           scrollbarColor: '#ccff00 rgba(255, 255, 255, 0.05)',
                           overscrollBehavior: 'contain',
@@ -709,7 +752,7 @@ export default function WorkUI({
                       transform: gridSkewY !== 0 ? `skewY(${gridSkewY.toFixed(2)}deg)` : undefined,
                       transformOrigin: 'center center',
                       transition: gridSkewY === 0 ? 'transform 0.25s ease-out' : undefined,
-                      ...(applyCompactLandscape || applyCompactPortrait
+                      ...(applyCompactLandscape
                         ? {
                             display: 'grid',
                             alignContent: 'start',
@@ -724,6 +767,21 @@ export default function WorkUI({
                             height: 'auto',
                             maxHeight: 'none',
                             minHeight: 0,
+                            overflow: 'visible',
+                            padding: '2px',
+                            boxSizing: 'border-box',
+                          }
+                        : applyCompactPortrait
+                        ? {
+                            display: 'grid',
+                            gridTemplateColumns: 'repeat(3, minmax(0, 1fr))',
+                            gridAutoRows: 'max-content',
+                            alignContent: 'start',
+                            rowGap: '0.55rem',
+                            columnGap: '0.55rem',
+                            height: 'max-content',
+                            minHeight: '0px',
+                            width: '100%',
                             overflow: 'visible',
                             padding: '2px',
                             boxSizing: 'border-box',
@@ -744,13 +802,21 @@ export default function WorkUI({
                           className="work-project-card bg-white/[0.06] backdrop-blur-md border border-white/15 rounded-xl shadow-inner"
                           aria-label={project.title}
                           style={
-                            applyCompactLandscape || applyCompactPortrait
+                            applyCompactLandscape
                               ? {
                                   backdropFilter: 'none',
                                   WebkitBackdropFilter: 'none',
                                   backgroundColor: 'rgba(20, 20, 24, 0.85)',
                                   height: '120px',
                                   maxHeight: '120px',
+                                  aspectRatio: 'auto',
+                                }
+                              : applyCompactPortrait
+                              ? {
+                                  backdropFilter: 'none',
+                                  WebkitBackdropFilter: 'none',
+                                  backgroundColor: 'rgba(20, 20, 24, 0.85)',
+                                  height: 'auto',
                                   aspectRatio: 'auto',
                                 }
                               : undefined
