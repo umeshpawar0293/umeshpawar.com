@@ -52,4 +52,6 @@ export function useIPadLandscape() {
   return isIPadLandscape
 }
 
+export const useCompactLandscape = useIPadLandscape
 export default useIPadLandscape
+

@@ -12,6 +12,7 @@ import { useIPadLandscape } from '../hooks/useIPadLandscape'
  */
 export default function HeroUI({ scrollProgress = 0 }) {
   const isIPadLandscape = useIPadLandscape()
+  const applyCompactLandscape = isIPadLandscape
   const [mobileMenuOpen, setMobileMenuOpen] = React.useState(false)
   const [isQuickScrolling, setIsQuickScrolling] = React.useState(false)
   const heroCopyRef = useRef(null)
@@ -88,12 +89,12 @@ export default function HeroUI({ scrollProgress = 0 }) {
     display: isHeroVisible ? 'flex' : 'none',
     transformOrigin: 'top center',
     transition: 'transform 0.14s ease-out, opacity 0.14s ease-out',
-    ...(isIPadLandscape
+    ...(applyCompactLandscape
       ? {
-          position: 'absolute',
-          top: 'clamp(70px, 9vh, 85px)',
-          left: 'clamp(6.5rem, 8.5vw, 9rem)',
-          maxWidth: 'min(40vw, 490px)',
+          position: 'relative',
+          top: 0,
+          left: 0,
+          maxWidth: 'min(46vw, 560px)',
           width: '100%',
           alignItems: 'center',
           textAlign: 'center',
@@ -356,21 +357,48 @@ export default function HeroUI({ scrollProgress = 0 }) {
           display: isHeroVisible ? 'flex' : 'none',
           visibility: isHeroVisible ? 'visible' : 'hidden',
           pointerEvents: 'none',
-          ...(isIPadLandscape
+          ...(applyCompactLandscape
             ? {
                 position: 'absolute',
-                top: 0,
-                left: 0,
+                inset: 0,
                 width: '100%',
                 height: '100%',
-                transform: 'translate(-3%, -2%)',
+                display: 'flex',
+                flexDirection: 'column',
+                justifyContent: 'center',
+                alignItems: 'flex-start',
                 padding: 0,
                 margin: 0,
+                transform: 'none',
               }
             : {}),
         }}
       >
-        <div ref={heroCopyRef} className="hero-copy-container flex flex-col items-center justify-center text-center mx-auto w-full" style={copyStyle}>
+        <div
+          ref={heroCopyRef}
+          className="hero-copy-container flex flex-col items-center justify-center text-center mx-auto w-full"
+          style={{
+            ...copyStyle,
+            ...(applyCompactLandscape
+              ? {
+                  transform: `perspective(900px) rotateX(${scrollRotationX}deg) translate(4.5rem, 1.5rem) scale(0.82)`,
+                  transformOrigin: 'left center',
+                  marginTop: 'auto',
+                  marginBottom: 'auto',
+                  display: 'flex',
+                  flexDirection: 'column',
+                  justifyContent: 'center',
+                  zIndex: 20,
+                  position: 'relative',
+                  top: 0,
+                  left: 0,
+                  maxWidth: 'min(46vw, 560px)',
+                  width: '100%',
+                  paddingTop: 0,
+                }
+              : {}),
+          }}
+        >
           <h1
             ref={heroNameRef}
             className="hero-name has-transform-box sharp-isometric-shadow neon-long-shadow text-center mx-auto uppercase"

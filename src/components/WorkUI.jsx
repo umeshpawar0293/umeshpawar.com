@@ -34,6 +34,7 @@ import { useIPadLandscape } from '../hooks/useIPadLandscape'
  */
 export function WorkBackdropHeading({ scrollProgress = 0 }) {
   const isIPadLandscape = useIPadLandscape()
+  const applyCompactLandscape = isIPadLandscape
   // Enters around 0.46, fully visible during Work [0.58, 0.74], fades out cleanly [0.74, 0.88]
   let workT = 0
   if (scrollProgress >= 0.46 && scrollProgress <= 0.88) {
@@ -55,10 +56,13 @@ export function WorkBackdropHeading({ scrollProgress = 0 }) {
         transform: `translateY(${translateY}px)`,
         pointerEvents: 'none',
         zIndex: 1,
-        ...(isIPadLandscape
+        ...(applyCompactLandscape
           ? {
-              top: 'clamp(72px, 9.5vh, 88px)',
-              left: 'clamp(6.5rem, 8.5vw, 9rem)',
+              position: 'absolute',
+              top: 'calc(50% - 215px)',
+              left: 0,
+              transform: `translateY(${translateY}px) translate(4.5rem, 1.5rem) scale(0.82)`,
+              transformOrigin: 'left center',
             }
           : {}),
       }}
@@ -91,6 +95,7 @@ export default function WorkUI({
   onCharacterTouchEnd,
 }) {
   const isIPadLandscape = useIPadLandscape()
+  const applyCompactLandscape = isIPadLandscape
   const [previewProject, setPreviewProject] = useState(null)
   const [scrollProgressPct, setScrollProgressPct] = useState(0)
 
@@ -444,17 +449,20 @@ export default function WorkUI({
           <div
             className="work-content-stage"
             style={
-              isIPadLandscape
+              applyCompactLandscape
                 ? {
-                    top: 'clamp(72px, 9.5vh, 88px)',
-                    left: 'clamp(6.5rem, 8.5vw, 9rem)',
-                    bottom: 'auto',
-                    height: 'auto',
-                    minHeight: 0,
-                    maxHeight: 'fit-content',
-                    transform: 'none',
+                    position: 'absolute',
+                    inset: 0,
+                    width: '100%',
+                    height: '100%',
+                    display: 'flex',
+                    flexDirection: 'column',
+                    justifyContent: 'center',
+                    alignItems: 'flex-start',
+                    pointerEvents: 'none',
                     paddingTop: 0,
                     marginTop: 0,
+                    transform: 'none',
                   }
                 : undefined
             }
@@ -462,18 +470,21 @@ export default function WorkUI({
             <div
               className="work-left-pane flex flex-col items-center w-fit"
               style={
-                isIPadLandscape
+                applyCompactLandscape
                   ? {
+                      transform: 'translate(4.5rem, 1.5rem) scale(0.82)',
+                      transformOrigin: 'left center',
+                      marginTop: 'auto',
+                      marginBottom: 'auto',
+                      display: 'flex',
+                      flexDirection: 'column',
+                      justifyContent: 'center',
+                      zIndex: 20,
                       maxWidth: 'fit-content',
                       width: 'fit-content',
                       height: 'auto',
                       minHeight: 0,
-                      display: 'flex',
-                      flexDirection: 'column',
-                      alignItems: 'center',
-                      justifyContent: 'flex-start',
                       paddingTop: 0,
-                      marginTop: 0,
                     }
                   : undefined
               }
@@ -507,11 +518,11 @@ export default function WorkUI({
                 className="work-glass-container work-unified-glass-box flex flex-col items-center pt-5 md:pt-6 px-6 md:px-8 pb-6 md:pb-7 mt-2 md:mt-3 rounded-3xl w-fit mx-auto relative z-30 select-text"
                 style={{
                   pointerEvents: isWorkActive ? 'auto' : 'none',
-                  ...(isIPadLandscape
+                  ...(applyCompactLandscape
                     ? {
                         maxWidth: 'fit-content',
                         width: 'fit-content',
-                        padding: '0.65rem 0.85rem 0.75rem',
+                        padding: '0.75rem 1rem 0.85rem',
                         height: 'fit-content',
                         minHeight: 0,
                         maxHeight: 'none',
@@ -535,7 +546,7 @@ export default function WorkUI({
                     pointerEvents: isWorkActive ? 'auto' : 'none',
                     userSelect: 'text',
                     WebkitUserSelect: 'text',
-                    ...(isIPadLandscape
+                    ...(applyCompactLandscape
                       ? {
                           paddingTop: 0,
                           marginBottom: '0.3rem',
@@ -556,7 +567,7 @@ export default function WorkUI({
                       userSelect: 'text',
                       WebkitUserSelect: 'text',
                       margin: 0,
-                      ...(isIPadLandscape
+                      ...(applyCompactLandscape
                         ? {
                             whiteSpace: 'nowrap',
                             wordBreak: 'keep-all',
@@ -578,7 +589,7 @@ export default function WorkUI({
                       userSelect: 'text',
                       WebkitUserSelect: 'text',
                       margin: 0,
-                      ...(isIPadLandscape
+                      ...(applyCompactLandscape
                         ? {
                             fontSize: '9.5px',
                             lineHeight: 1.15,
@@ -598,12 +609,12 @@ export default function WorkUI({
                 <div
                   className="work-grid-tracker-wrapper flex flex-row items-stretch gap-4 md:gap-5 w-fit relative flex-1 min-h-0"
                   style={
-                    isIPadLandscape
+                    applyCompactLandscape
                       ? {
                           flex: 'none',
-                          height: 'calc(3 * (clamp(92px, 7.2vw, 102px) * 4.3 / 4) + 16px)',
-                          maxHeight: 'calc(3 * (clamp(92px, 7.2vw, 102px) * 4.3 / 4) + 16px)',
-                          minHeight: 'calc(3 * (clamp(92px, 7.2vw, 102px) * 4.3 / 4) + 16px)',
+                          height: 'calc(3 * (112px * 4.3 / 4) + 16px + 4px)',
+                          maxHeight: 'calc(3 * (112px * 4.3 / 4) + 16px + 4px)',
+                          minHeight: 'calc(3 * (112px * 4.3 / 4) + 16px + 4px)',
                           overflow: 'visible',
                         }
                       : undefined
@@ -618,19 +629,26 @@ export default function WorkUI({
                     style={{
                       pointerEvents: isInteractive ? 'auto' : 'none',
                       touchAction: 'pan-y',
+                      alignContent: 'start',
+                      alignItems: 'start',
                       transform: gridSkewY !== 0 ? `skewY(${gridSkewY.toFixed(2)}deg)` : undefined,
                       transformOrigin: 'center center',
                       transition: gridSkewY === 0 ? 'transform 0.25s ease-out' : undefined,
-                      ...(isIPadLandscape
+                      ...(applyCompactLandscape
                         ? {
                             display: 'grid',
-                            gap: '5px',
-                            gridTemplateColumns: 'repeat(3, clamp(92px, 7.2vw, 102px))',
-                            gridTemplateRows: 'repeat(3, calc(clamp(92px, 7.2vw, 102px) * 4.3 / 4))',
-                            width: 'calc(3 * clamp(92px, 7.2vw, 102px) + 14px)',
-                            height: 'calc(3 * (clamp(92px, 7.2vw, 102px) * 4.3 / 4) + 16px)',
-                            maxHeight: 'calc(3 * (clamp(92px, 7.2vw, 102px) * 4.3 / 4) + 16px)',
-                            minHeight: 'calc(3 * (clamp(92px, 7.2vw, 102px) * 4.3 / 4) + 16px)',
+                            alignContent: 'start',
+                            alignItems: 'start',
+                            gap: '8px',
+                            rowGap: '8px',
+                            columnGap: '8px',
+                            gridTemplateColumns: 'repeat(3, 112px)',
+                            gridTemplateRows: 'repeat(3, calc(112px * 4.3 / 4))',
+                            gridAutoRows: 'calc(112px * 4.3 / 4)',
+                            width: 'calc(3 * 112px + 16px + 4px)',
+                            height: 'calc(3 * (112px * 4.3 / 4) + 16px + 4px)',
+                            maxHeight: 'calc(3 * (112px * 4.3 / 4) + 16px + 4px)',
+                            minHeight: 'calc(3 * (112px * 4.3 / 4) + 16px + 4px)',
                             overflowY: 'auto',
                             overflowX: 'hidden',
                             overscrollBehaviorY: 'contain',

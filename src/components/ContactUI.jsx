@@ -12,6 +12,7 @@ import { useIPadLandscape } from '../hooks/useIPadLandscape'
  */
 export function ContactBackdropHeading({ scrollProgress = 0 }) {
   const isIPadLandscape = useIPadLandscape()
+  const applyCompactLandscape = isIPadLandscape
   // Enters at 0.76, fully visible 0.88 - 1.00
   let contactT = 0
   if (scrollProgress >= 0.76) {
@@ -75,12 +76,18 @@ export function ContactBackdropHeading({ scrollProgress = 0 }) {
         pointerEvents: isInteractive ? 'auto' : 'none',
         visibility: isContactVisible ? 'visible' : 'hidden',
         zIndex: 1,
-        ...(isIPadLandscape
+        ...(applyCompactLandscape
           ? {
-              top: 'clamp(72px, 9.5vh, 88px)',
-              left: 'clamp(6.5rem, 8.5vw, 9rem)',
-              width: 'clamp(320px, 26vw, 390px)',
-              maxWidth: '390px',
+              position: 'absolute',
+              top: 'calc(50% - 215px)',
+              left: 0,
+              transform: `translateY(${translateY}px) translate(4.5rem, 1.5rem) scale(0.82)`,
+              transformOrigin: 'left center',
+              width: 'clamp(320px, 26vw, 400px)',
+              maxWidth: '400px',
+              display: 'flex',
+              justifyContent: 'center',
+              textAlign: 'center',
               margin: 0,
               padding: 0,
             }
@@ -128,6 +135,7 @@ export default function ContactUI({
   onCharacterTouchEnd,
 }) {
   const isIPadLandscape = useIPadLandscape()
+  const applyCompactLandscape = isIPadLandscape
   let contactT = 0
   if (scrollProgress >= 0.76) {
     if (scrollProgress < 0.88) {
@@ -300,14 +308,21 @@ export default function ContactUI({
         <div
           className="contact-composition-wrapper"
           style={
-            isIPadLandscape
+            applyCompactLandscape
               ? {
+                  position: 'absolute',
+                  inset: 0,
+                  width: '100%',
                   height: '100%',
-                  maxHeight: '100dvh',
-                  paddingTop: 0,
-                  paddingBottom: 0,
+                  display: 'flex',
+                  flexDirection: 'column',
+                  justifyContent: 'center',
+                  alignItems: 'flex-start',
                   overflow: 'hidden',
                   boxSizing: 'border-box',
+                  pointerEvents: 'none',
+                  padding: 0,
+                  margin: 0,
                 }
               : undefined
           }
@@ -317,15 +332,21 @@ export default function ContactUI({
             className="contact-left-block md:mx-auto md:flex md:justify-center"
             style={{
               pointerEvents: isInteractive ? 'auto' : 'none',
-              ...(isIPadLandscape
+              ...(applyCompactLandscape
                 ? {
-                    position: 'absolute',
-                    top: 'calc(clamp(72px, 9.5vh, 88px) + clamp(46px, 4.2vw, 56px))',
-                    left: 'clamp(6.5rem, 8.5vw, 9rem)',
-                    width: 'clamp(320px, 26vw, 390px)',
-                    maxWidth: '390px',
-                    maxHeight: 'calc(100dvh - clamp(72px, 9.5vh, 88px) - clamp(46px, 4.2vw, 56px) - 55px)',
-                    margin: 0,
+                    transform: 'translate(4.5rem, 1.5rem) scale(0.82)',
+                    transformOrigin: 'left center',
+                    marginTop: 'auto',
+                    marginBottom: 'auto',
+                    display: 'flex',
+                    flexDirection: 'column',
+                    justifyContent: 'center',
+                    zIndex: 20,
+                    position: 'relative',
+                    left: 0,
+                    top: 0,
+                    width: 'clamp(320px, 26vw, 400px)',
+                    maxWidth: '400px',
                     paddingTop: 0,
                     paddingBottom: 0,
                   }
@@ -337,12 +358,13 @@ export default function ContactUI({
               ref={desktopCardsRef}
               className="contact-cards-stack"
               style={
-                isIPadLandscape
+                applyCompactLandscape
                   ? {
-                      gap: '0.35rem',
+                      gap: '0.45rem',
                       width: '100%',
                       paddingTop: 0,
                       marginTop: 0,
+                      maxHeight: 'none',
                     }
                   : undefined
               }

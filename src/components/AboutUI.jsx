@@ -11,6 +11,7 @@ import { useIPadLandscape } from '../hooks/useIPadLandscape'
  */
 export function AboutBackdropHeading({ scrollProgress = 0 }) {
   const isIPadLandscape = useIPadLandscape()
+  const applyCompactLandscape = isIPadLandscape
   // Enters around 0.14, full during About [0.26, 0.40], fades out cleanly [0.40, 0.54]
   let aboutT = 0
   if (scrollProgress >= 0.14 && scrollProgress <= 0.54) {
@@ -36,12 +37,18 @@ export function AboutBackdropHeading({ scrollProgress = 0 }) {
         pointerEvents: isInteractive ? 'auto' : 'none',
         visibility: isAboutVisible ? 'visible' : 'hidden',
         zIndex: 1,
-        ...(isIPadLandscape
+        ...(applyCompactLandscape
           ? {
-              top: 'clamp(72px, 9.5vh, 88px)',
-              left: 'clamp(6.5rem, 8.5vw, 9rem)',
-              maxWidth: '430px',
+              position: 'absolute',
+              top: 'calc(50% - 215px)',
+              left: 0,
+              transform: `translateY(${translateY}px) translate(4.5rem, 1.5rem) scale(0.82)`,
+              transformOrigin: 'left center',
+              maxWidth: '520px',
               width: '100%',
+              display: 'flex',
+              justifyContent: 'center',
+              textAlign: 'center',
               margin: 0,
               padding: 0,
             }
@@ -125,6 +132,7 @@ const SKILLS_DATA = [
  */
 export default function AboutUI({ scrollProgress = 0, activePage = 'hero' }) {
   const isIPadLandscape = useIPadLandscape()
+  const applyCompactLandscape = isIPadLandscape
   // Enters around 0.16, full during About [0.28, 0.40], fades out cleanly [0.40, 0.54]
   let aboutT = 0
   if (scrollProgress >= 0.16 && scrollProgress <= 0.54) {
@@ -301,21 +309,44 @@ export default function AboutUI({ scrollProgress = 0, activePage = 'hero' }) {
       aria-label="About Umesh Pawar"
     >
       {/* Desktop Stage: Preserved strictly for min-width: 769px */}
-      <div className="about-desktop-stage">
+      <div
+        className="about-desktop-stage"
+        style={
+          applyCompactLandscape
+            ? {
+                position: 'absolute',
+                inset: 0,
+                width: '100%',
+                height: '100%',
+                display: 'flex',
+                flexDirection: 'column',
+                justifyContent: 'center',
+                alignItems: 'flex-start',
+                pointerEvents: 'none',
+              }
+            : undefined
+        }
+      >
         {/* Unified Content Column: Left-aligned to balance with the 3D character on the right */}
         <div
           className="about-content-column w-full max-w-[460px] lg:max-w-[520px] mx-0"
           style={{
             pointerEvents: isInteractive ? 'auto' : 'none',
-            ...(isIPadLandscape
+            ...(applyCompactLandscape
               ? {
-                  position: 'absolute',
-                  top: 'calc(clamp(72px, 9.5vh, 88px) + clamp(46px, 4.2vw, 56px))',
-                  left: 'clamp(6.5rem, 8.5vw, 9rem)',
-                  maxWidth: '430px',
+                  transform: 'translate(4.5rem, 1.5rem) scale(0.82)',
+                  transformOrigin: 'left center',
+                  marginTop: 'auto',
+                  marginBottom: 'auto',
+                  display: 'flex',
+                  flexDirection: 'column',
+                  justifyContent: 'center',
+                  zIndex: 20,
+                  position: 'relative',
+                  left: 0,
+                  top: 0,
+                  maxWidth: '520px',
                   width: '100%',
-                  height: 'auto',
-                  margin: 0,
                   paddingTop: 0,
                 }
               : {}),

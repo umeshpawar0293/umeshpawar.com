@@ -3185,6 +3185,8 @@ body.is-character-dragging * {
 /* Restored Dominant 3x3 Grid (Full Scaled Footprint, Clean Contained Smooth Scroll) */
 .work-grid-3col {
   display: grid;
+  align-content: start;
+  align-items: start;
   grid-template-columns: repeat(3, var(--work-card-w));
   grid-template-rows: repeat(3, calc(var(--work-card-w) * 4.3 / 4));
   grid-auto-rows: calc(var(--work-card-w) * 4.3 / 4);
@@ -7465,7 +7467,11 @@ body.is-character-dragging * {
 
   .work-grid-3col {
     display: grid !important;
+    align-content: start !important;
+    align-items: start !important;
     gap: var(--work-card-gap) !important;
+    row-gap: var(--work-card-gap) !important;
+    column-gap: var(--work-card-gap) !important;
     grid-template-columns: repeat(3, var(--work-card-w)) !important;
     grid-template-rows: repeat(3, calc(var(--work-card-w) * 4.3 / 4)) !important;
     grid-auto-rows: calc(var(--work-card-w) * 4.3 / 4) !important;
@@ -7904,7 +7910,11 @@ html[data-ipad-landscape="true"] .contact-left-block {
 
   .work-grid-3col {
     display: grid !important;
+    align-content: start !important;
+    align-items: start !important;
     gap: var(--work-card-gap) !important;
+    row-gap: var(--work-card-gap) !important;
+    column-gap: var(--work-card-gap) !important;
     grid-template-columns: repeat(3, var(--work-card-w)) !important;
     grid-template-rows: repeat(3, calc(var(--work-card-w) * 4.3 / 4)) !important;
     grid-auto-rows: calc(var(--work-card-w) * 4.3 / 4) !important;
