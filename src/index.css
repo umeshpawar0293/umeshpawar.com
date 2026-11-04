@@ -8122,7 +8122,7 @@ html[data-ipad-landscape="true"] .about-content-column,
 html[data-ipad-landscape="true"] .contact-left-block {
   position: absolute !important;
   top: 50% !important;
-  left: 13.5vw !important;
+  left: 15.5vw !important;
   transform: translateY(-50%) scale(0.82) !important;
   transform-origin: left center !important;
   margin: 0 !important;
@@ -8140,7 +8140,7 @@ html[data-ipad-landscape="true"] .contact-left-block {
 html[data-ipad-landscape="true"] .work-left-pane {
   position: absolute !important;
   top: 50% !important;
-  left: 13.5vw !important;
+  left: 15.5vw !important;
   transform: translateY(-50%) scale(0.85) !important;
   transform-origin: left center !important;
   margin: 0 !important;
@@ -8163,8 +8163,11 @@ html[data-ipad-landscape="true"] .contact-backdrop-heading {
   top: auto !important;
   left: auto !important;
   transform: none !important;
-  margin: 0 auto 0.5rem auto !important;
-  font-size: 4.4rem !important;
+  margin: 0 auto 0.75rem auto !important;
+  padding-bottom: 0.2rem !important;
+  flex-shrink: 0 !important;
+  z-index: 25 !important;
+  font-size: 5.6rem !important;
   line-height: 0.95 !important;
   text-align: center !important;
   align-self: center !important;
@@ -8180,6 +8183,7 @@ html[data-ipad-landscape="true"] .contact-cards-stack {
   left: auto !important;
   transform: none !important;
   margin: 0 !important;
+  margin-top: 0px !important;
 }
 
 html[data-ipad-landscape="true"] .work-glass-container {
@@ -8188,6 +8192,7 @@ html[data-ipad-landscape="true"] .work-glass-container {
   left: auto !important;
   transform: none !important;
   margin: 0 !important;
+  margin-top: 0px !important;
   width: 505px !important;
   max-width: 505px !important;
   padding: 0.85rem 1.15rem !important;
@@ -8232,19 +8237,24 @@ html[data-ipad-landscape="true"] .work-grid-3col {
   column-gap: 8px !important;
   grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
   grid-auto-rows: 120px !important;
+  grid-template-rows: none !important;
   width: 100% !important;
-  height: 388px !important;
-  max-height: 388px !important;
+  height: auto !important;
+  max-height: none !important;
   min-height: 0 !important;
-  overflow-y: auto !important;
+  overflow: visible !important;
 }
 
 html[data-ipad-landscape="true"] .work-grid-tracker-wrapper {
   flex: none !important;
   width: 100% !important;
-  height: 388px !important;
-  max-height: 388px !important;
+  height: 330px !important;
+  max-height: 330px !important;
   min-height: 0 !important;
+  overflow-y: auto !important;
+  overflow-x: hidden !important;
+  display: block !important;
+  padding-right: 0.5rem !important;
 }
 
 /* ==========================================================================

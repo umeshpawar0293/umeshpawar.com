@@ -475,7 +475,7 @@ export default function WorkUI({
                   ? {
                       position: 'absolute',
                       top: '50%',
-                      left: '13.5vw',
+                      left: '15.5vw',
                       transform: 'translateY(-50%) scale(0.85)',
                       transformOrigin: 'left center',
                       margin: 0,
@@ -504,12 +504,16 @@ export default function WorkUI({
                         top: 'auto',
                         left: 'auto',
                         transform: 'none',
-                        margin: '0 auto 0.5rem auto',
-                        width: '100%',
-                        fontSize: '4.4rem',
+                        fontSize: '5.6rem',
                         lineHeight: 0.95,
-                        textAlign: 'center',
                         whiteSpace: 'nowrap',
+                        textAlign: 'center',
+                        width: '100%',
+                        marginTop: 0,
+                        marginBottom: '0.75rem',
+                        paddingBottom: '0.2rem',
+                        flexShrink: 0,
+                        zIndex: 25,
                         letterSpacing: '0.04em',
                       }
                     : {}),
@@ -532,6 +536,7 @@ export default function WorkUI({
                         left: 'auto',
                         transform: 'none',
                         margin: 0,
+                        marginTop: '0px',
                         width: '505px',
                         maxWidth: '505px',
                         padding: '0.85rem 1.15rem',
@@ -622,12 +627,13 @@ export default function WorkUI({
                   style={
                     applyCompactLandscape
                       ? {
-                          flex: 'none',
+                          height: '330px',
+                          maxHeight: '330px',
+                          overflowY: 'auto',
+                          overflowX: 'hidden',
+                          display: 'block', // Do NOT use flex/grid here, use block so child grid doesn't stretch!
+                          paddingRight: '0.5rem',
                           width: '100%',
-                          height: '388px',
-                          maxHeight: '388px',
-                          minHeight: 0,
-                          overflow: 'visible',
                         }
                       : undefined
                   }
@@ -656,17 +662,14 @@ export default function WorkUI({
                             columnGap: '8px',
                             gridTemplateColumns: 'repeat(3, minmax(0, 1fr))',
                             gridAutoRows: '120px',
+                            gridTemplateRows: 'none',
                             width: '100%',
-                            height: '388px',
-                            maxHeight: '388px',
+                            height: 'auto',
+                            maxHeight: 'none',
                             minHeight: 0,
-                            overflowY: 'auto',
-                            overflowX: 'hidden',
-                            overscrollBehaviorY: 'contain',
-                            WebkitOverflowScrolling: 'touch',
+                            overflow: 'visible',
                             padding: '2px',
                             boxSizing: 'border-box',
-                            scrollbarWidth: 'none',
                           }
                         : {}),
                     }}
