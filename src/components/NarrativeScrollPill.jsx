@@ -1,5 +1,6 @@
 import React, { useRef, useEffect } from 'react'
 import gsap from 'gsap'
+import { useIPadPortrait } from '../hooks/useIPadPortrait'
 
 /**
  * NarrativeScrollPill
@@ -25,6 +26,8 @@ import gsap from 'gsap'
 export default function NarrativeScrollPill({ scrollProgress = 0, activePage = 'hero' }) {
   const cueRef = useRef(null)
   const textGroupRef = useRef(null)
+  const isIPadPortrait = useIPadPortrait()
+  const applyCompactPortrait = isIPadPortrait
 
   const current = (activePage || (typeof location !== 'undefined' ? location?.pathname : '') || '').toLowerCase()
 
@@ -92,7 +95,7 @@ export default function NarrativeScrollPill({ scrollProgress = 0, activePage = '
 
   // Mobile-Only Anchoring & Clearance Buffer Engine (< 768px ONLY)
   useEffect(() => {
-    if (isContact) return
+    if (isContact || applyCompactPortrait) return
     const updatePosition = () => {
       const el = cueRef.current
       if (!el) return
@@ -172,13 +175,28 @@ export default function NarrativeScrollPill({ scrollProgress = 0, activePage = '
       id="persistent-scroll-indicator"
       data-scroll-badge="pill"
       className={`scroll-prompt-pill scroll-badge-wrapper z-40 ${sectionClass} left-5 md:left-[var(--scroll-pill-x)] -translate-y-[5%] md:translate-y-0 origin-left md:origin-center`}
-      style={{
-        position: 'fixed',
-        left: 'var(--scroll-pill-x, calc(var(--char-head-x, calc(50vw + (min(100vw, 1440px) * 0.235))) - 150px))',
-        top: 'var(--scroll-pill-y, 52%)',
-        zIndex: 40,
-        pointerEvents: 'none',
-      }}
+      style={
+        applyCompactPortrait
+          ? {
+              position: 'absolute',
+              bottom: '22%',
+              right: '25%',
+              top: 'auto',
+              left: 'auto',
+              transform: 'none',
+              whiteSpace: 'nowrap',
+              zIndex: 25,
+              pointerEvents: 'none',
+              margin: 0,
+            }
+          : {
+              position: 'fixed',
+              left: 'var(--scroll-pill-x, calc(var(--char-head-x, calc(50vw + (min(100vw, 1440px) * 0.235))) - 150px))',
+              top: 'var(--scroll-pill-y, 52%)',
+              zIndex: 40,
+              pointerEvents: 'none',
+            }
+      }
       aria-hidden="true"
     >
       <div
