@@ -360,7 +360,7 @@ export default function HeroUI({ scrollProgress = 0 }) {
           display: isHeroVisible ? 'flex' : 'none',
           visibility: isHeroVisible ? 'visible' : 'hidden',
           pointerEvents: 'none',
-          ...(applyCompactLandscape
+          ...(applyCompactLandscape || applyCompactPortrait
             ? {
                 position: 'absolute',
                 inset: 0,

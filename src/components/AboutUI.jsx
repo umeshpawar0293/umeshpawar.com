@@ -15,7 +15,6 @@ export function AboutBackdropHeading({ scrollProgress = 0 }) {
   const applyCompactLandscape = isIPadLandscape
   const isIPadPortrait = useIPadPortrait()
   const applyCompactPortrait = isIPadPortrait
-  if (applyCompactLandscape || applyCompactPortrait) return null
   // Enters around 0.14, full during About [0.26, 0.40], fades out cleanly [0.40, 0.54]
   let aboutT = 0
   if (scrollProgress >= 0.14 && scrollProgress <= 0.54) {
@@ -36,6 +35,7 @@ export function AboutBackdropHeading({ scrollProgress = 0 }) {
     <div
       className="about-backdrop-layer md:text-center md:mx-auto"
       style={{
+        display: (applyCompactLandscape || applyCompactPortrait) ? 'none' : (isAboutVisible ? 'block' : 'none'),
         opacity: aboutT,
         transform: `translateY(${translateY}px)`,
         pointerEvents: isInteractive ? 'auto' : 'none',
@@ -378,32 +378,31 @@ export default function AboutUI({ scrollProgress = 0, activePage = 'hero' }) {
           }}
         >
           {/* Inner Heading (ABOUT ME) when applyCompactLandscape or applyCompactPortrait is true */}
-          {(applyCompactLandscape || applyCompactPortrait) && (
-            <h2
-              className="about-backdrop-heading has-transform-box sharp-isometric-shadow neon-long-shadow"
-              style={{
-                position: 'relative',
-                top: 'auto',
-                left: 'auto',
-                transform: 'none',
-                fontSize: applyCompactPortrait
-                  ? 'clamp(5.5rem, 9vw, 8rem)'
-                  : '5.6rem',
-                lineHeight: applyCompactPortrait ? 0.90 : 0.95,
-                whiteSpace: 'nowrap',
-                textAlign: 'center',
-                width: '100%',
-                margin: '0 auto 0.75rem auto',
-                paddingBottom: applyCompactPortrait ? 0 : '0.2rem',
-                flexShrink: 0,
-                zIndex: 25,
-                letterSpacing: '0.04em',
-              }}
-            >
-              ABOUT ME
-              <TransformBoundingBox />
-            </h2>
-          )}
+          <h2
+            className="about-backdrop-heading has-transform-box sharp-isometric-shadow neon-long-shadow"
+            style={{
+              display: (applyCompactLandscape || applyCompactPortrait) ? 'block' : 'none',
+              position: 'relative',
+              top: 'auto',
+              left: 'auto',
+              transform: 'none',
+              fontSize: applyCompactPortrait
+                ? 'clamp(5.5rem, 9vw, 8rem)'
+                : '5.6rem',
+              lineHeight: applyCompactPortrait ? 0.90 : 0.95,
+              whiteSpace: 'nowrap',
+              textAlign: 'center',
+              width: '100%',
+              margin: '0 auto 0.75rem auto',
+              paddingBottom: applyCompactPortrait ? 0 : '0.2rem',
+              flexShrink: 0,
+              zIndex: 25,
+              letterSpacing: '0.04em',
+            }}
+          >
+            ABOUT ME
+            <TransformBoundingBox />
+          </h2>
 
           {/* ── Unified Luminous Glass Box Container (Shifted closer to ABOUT ME heading) ── */}
           <div

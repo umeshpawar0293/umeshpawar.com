@@ -8303,6 +8303,23 @@ html[data-ipad-portrait="true"] .contact-backdrop-layer {
   display: none !important;
 }
 
+html[data-ipad-portrait="true"] .hero-body,
+html[data-ipad-portrait="true"] .about-desktop-stage,
+html[data-ipad-portrait="true"] .work-content-stage,
+html[data-ipad-portrait="true"] .contact-composition-wrapper {
+  position: absolute !important;
+  inset: 0 !important;
+  width: 100% !important;
+  height: 100% !important;
+  display: flex !important;
+  flex-direction: column !important;
+  justify-content: center !important;
+  align-items: flex-start !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  transform: none !important;
+}
+
 html[data-ipad-portrait="true"] .hero-copy-container,
 html[data-ipad-portrait="true"] .about-content-column,
 html[data-ipad-portrait="true"] .work-left-pane,

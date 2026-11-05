@@ -16,7 +16,6 @@ export function ContactBackdropHeading({ scrollProgress = 0 }) {
   const applyCompactLandscape = isIPadLandscape
   const isIPadPortrait = useIPadPortrait()
   const applyCompactPortrait = isIPadPortrait
-  if (applyCompactLandscape || applyCompactPortrait) return null
   // Enters at 0.76, fully visible 0.88 - 1.00
   let contactT = 0
   if (scrollProgress >= 0.76) {
@@ -75,6 +74,7 @@ export function ContactBackdropHeading({ scrollProgress = 0 }) {
     <div
       className="contact-backdrop-layer md:text-center md:mx-auto"
       style={{
+        display: (applyCompactLandscape || applyCompactPortrait) ? 'none' : (isContactVisible ? 'block' : 'none'),
         opacity: contactT,
         transform: `translateY(${translateY}px)`,
         pointerEvents: isInteractive ? 'auto' : 'none',
@@ -376,33 +376,32 @@ export default function ContactUI({
             }}
           >
             {/* Inner Heading (LET'S TALK) when applyCompactLandscape or applyCompactPortrait is true */}
-            {(applyCompactLandscape || applyCompactPortrait) && (
-              <h2
-                className="contact-backdrop-heading has-transform-box sharp-isometric-shadow neon-long-shadow"
-                style={{
-                  position: 'relative',
-                  top: 'auto',
-                  left: 'auto',
-                  transform: 'none',
-                  fontSize: applyCompactPortrait
-                    ? 'clamp(5.5rem, 9vw, 8rem)'
-                    : '5.6rem',
-                  lineHeight: applyCompactPortrait ? 0.90 : 0.95,
-                  whiteSpace: 'nowrap',
-                  textAlign: 'center',
-                  width: '100%',
-                  margin: '0 auto 0.75rem auto',
-                  paddingBottom: applyCompactPortrait ? 0 : '0.2rem',
-                  flexShrink: 0,
-                  zIndex: 25,
-                  letterSpacing: '0.04em',
-                  alignSelf: 'center',
-                }}
-              >
-                LET'S TALK
-                <TransformBoundingBox />
-              </h2>
-            )}
+            <h2
+              className="contact-backdrop-heading has-transform-box sharp-isometric-shadow neon-long-shadow"
+              style={{
+                display: (applyCompactLandscape || applyCompactPortrait) ? 'block' : 'none',
+                position: 'relative',
+                top: 'auto',
+                left: 'auto',
+                transform: 'none',
+                fontSize: applyCompactPortrait
+                  ? 'clamp(5.5rem, 9vw, 8rem)'
+                  : '5.6rem',
+                lineHeight: applyCompactPortrait ? 0.90 : 0.95,
+                whiteSpace: 'nowrap',
+                textAlign: 'center',
+                width: '100%',
+                margin: '0 auto 0.75rem auto',
+                paddingBottom: applyCompactPortrait ? 0 : '0.2rem',
+                flexShrink: 0,
+                zIndex: 25,
+                letterSpacing: '0.04em',
+                alignSelf: 'center',
+              }}
+            >
+              LET&apos;S TALK
+              <TransformBoundingBox />
+            </h2>
 
             {/* All 3 Cards Vertically Stacked as a Unified Group on the Left Side */}
             <div

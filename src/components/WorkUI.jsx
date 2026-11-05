@@ -38,7 +38,7 @@ export function WorkBackdropHeading({ scrollProgress = 0 }) {
   const applyCompactLandscape = isIPadLandscape
   const isIPadPortrait = useIPadPortrait()
   const applyCompactPortrait = isIPadPortrait
-  if (applyCompactLandscape || applyCompactPortrait) return null
+  const isWorkActive = scrollProgress >= 0.46 && scrollProgress <= 0.88
   // Enters around 0.46, fully visible during Work [0.58, 0.74], fades out cleanly [0.74, 0.88]
   let workT = 0
   if (scrollProgress >= 0.46 && scrollProgress <= 0.88) {
@@ -56,6 +56,7 @@ export function WorkBackdropHeading({ scrollProgress = 0 }) {
     <div
       className="work-backdrop-layer"
       style={{
+        display: (applyCompactLandscape || applyCompactPortrait) ? 'none' : (isWorkActive ? 'block' : 'none'),
         opacity: workT,
         transform: `translateY(${translateY}px)`,
         pointerEvents: 'none',
@@ -455,7 +456,7 @@ export default function WorkUI({
           <div
             className="work-content-stage"
             style={
-              applyCompactLandscape
+              applyCompactLandscape || applyCompactPortrait
                 ? {
                     position: 'absolute',
                     inset: 0,

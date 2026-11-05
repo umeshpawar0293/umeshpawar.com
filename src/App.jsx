@@ -323,6 +323,27 @@ export default function App() {
   const animationFrameRef = useRef(null)
   const cooldownTimerRef = useRef(null)
 
+  // Orientation resize & state re-trigger to prevent blank screen during iPad rotation
+  useEffect(() => {
+    let t1 = null
+    let t2 = null
+    const triggerResize = () => {
+      window.dispatchEvent(new Event('resize'))
+    }
+    const handleOrientation = () => {
+      if (t1) clearTimeout(t1)
+      if (t2) clearTimeout(t2)
+      t1 = setTimeout(triggerResize, 50)
+      t2 = setTimeout(triggerResize, 200)
+    }
+    window.addEventListener('orientationchange', handleOrientation, { passive: true })
+    return () => {
+      if (t1) clearTimeout(t1)
+      if (t2) clearTimeout(t2)
+      window.removeEventListener('orientationchange', handleOrientation)
+    }
+  }, [])
+
   useEffect(() => {
     // Detect Android devices for device-specific tailoring
     if (typeof navigator !== 'undefined' && /android/i.test(navigator.userAgent)) {

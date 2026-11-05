@@ -32,12 +32,25 @@ export function useIPadPortrait() {
     }
 
     checkPortrait()
+
+    let t1 = null
+    let t2 = null
+    const handleOrientationChange = () => {
+      checkPortrait()
+      if (t1) clearTimeout(t1)
+      if (t2) clearTimeout(t2)
+      t1 = setTimeout(checkPortrait, 50)
+      t2 = setTimeout(checkPortrait, 200)
+    }
+
     window.addEventListener('resize', checkPortrait, { passive: true })
-    window.addEventListener('orientationchange', checkPortrait, { passive: true })
+    window.addEventListener('orientationchange', handleOrientationChange, { passive: true })
 
     return () => {
+      if (t1) clearTimeout(t1)
+      if (t2) clearTimeout(t2)
       window.removeEventListener('resize', checkPortrait)
-      window.removeEventListener('orientationchange', checkPortrait)
+      window.removeEventListener('orientationchange', handleOrientationChange)
     }
   }, [])
 

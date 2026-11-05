@@ -40,12 +40,25 @@ export function useIPadLandscape() {
     }
 
     checkIPadLandscape()
+
+    let t1 = null
+    let t2 = null
+    const handleOrientationChange = () => {
+      checkIPadLandscape()
+      if (t1) clearTimeout(t1)
+      if (t2) clearTimeout(t2)
+      t1 = setTimeout(checkIPadLandscape, 50)
+      t2 = setTimeout(checkIPadLandscape, 200)
+    }
+
     window.addEventListener('resize', checkIPadLandscape, { passive: true })
-    window.addEventListener('orientationchange', checkIPadLandscape, { passive: true })
+    window.addEventListener('orientationchange', handleOrientationChange, { passive: true })
 
     return () => {
+      if (t1) clearTimeout(t1)
+      if (t2) clearTimeout(t2)
       window.removeEventListener('resize', checkIPadLandscape)
-      window.removeEventListener('orientationchange', checkIPadLandscape)
+      window.removeEventListener('orientationchange', handleOrientationChange)
     }
   }, [])
 
