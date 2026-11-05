@@ -387,13 +387,13 @@ export default function AboutUI({ scrollProgress = 0, activePage = 'hero' }) {
                 left: 'auto',
                 transform: 'none',
                 fontSize: applyCompactPortrait
-                  ? 'clamp(2.8rem, 4.5vw, 3.8rem)'
+                  ? 'clamp(4.5rem, 7.5vw, 6.5rem)'
                   : '5.6rem',
-                lineHeight: 0.95,
+                lineHeight: applyCompactPortrait ? 0.90 : 0.95,
                 whiteSpace: 'nowrap',
                 textAlign: 'center',
                 width: '100%',
-                margin: applyCompactPortrait ? '0 auto 0.6rem auto' : '0 auto 0.75rem auto',
+                margin: '0 auto 0.75rem auto',
                 paddingBottom: applyCompactPortrait ? 0 : '0.2rem',
                 flexShrink: 0,
                 zIndex: 25,

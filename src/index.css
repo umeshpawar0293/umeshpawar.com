@@ -8325,12 +8325,12 @@ html[data-ipad-portrait="true"] .contact-backdrop-heading {
   top: auto !important;
   left: auto !important;
   transform: none !important;
-  font-size: clamp(2.8rem, 4.5vw, 3.8rem) !important;
-  line-height: 0.95 !important;
+  font-size: clamp(4.5rem, 7.5vw, 6.5rem) !important;
+  line-height: 0.90 !important;
   white-space: nowrap !important;
   text-align: center !important;
   width: 100% !important;
-  margin: 0 auto 0.6rem auto !important;
+  margin: 0 auto 0.75rem auto !important;
   flex-shrink: 0 !important;
   padding-bottom: 0 !important;
 }
