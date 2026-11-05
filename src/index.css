@@ -8365,8 +8365,8 @@ html[data-ipad-portrait="true"] .work-grid-3col {
   grid-template-rows: none !important;
   grid-auto-rows: max-content !important;
   align-content: start !important;
-  row-gap: 0.55rem !important;
-  column-gap: 0.55rem !important;
+  row-gap: 0.35rem !important;
+  column-gap: 0.35rem !important;
   height: max-content !important;
   min-height: 0px !important;
   width: 100% !important;
