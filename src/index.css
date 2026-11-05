@@ -8410,11 +8410,11 @@ html[data-ipad-portrait="true"] #persistent-scroll-indicator.is-about-section,
 html[data-ipad-portrait="true"] .scroll-prompt-pill.is-work-section,
 html[data-ipad-portrait="true"] #persistent-scroll-indicator.is-work-section {
   position: absolute !important;
-  bottom: 22% !important;
-  right: 25% !important;
-  top: auto !important;
-  left: auto !important;
-  transform: none !important;
+  bottom: auto !important;
+  top: 55% !important;
+  left: 30% !important;
+  right: auto !important;
+  transform: translate(-30%, -50%) !important;
   margin: 0 !important;
   margin-left: 0 !important;
   margin-right: 0 !important;

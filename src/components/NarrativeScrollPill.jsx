@@ -179,11 +179,11 @@ export default function NarrativeScrollPill({ scrollProgress = 0, activePage = '
         applyCompactPortrait
           ? {
               position: 'absolute',
-              bottom: '22%',
-              right: '25%',
-              top: 'auto',
-              left: 'auto',
-              transform: 'none',
+              bottom: 'auto',
+              top: '55%',
+              left: '30%',
+              right: 'auto',
+              transform: 'translate(-30%, -50%)',
               whiteSpace: 'nowrap',
               zIndex: 25,
               pointerEvents: 'none',
