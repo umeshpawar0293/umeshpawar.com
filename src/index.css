@@ -8303,9 +8303,9 @@ html[data-ipad-portrait="true"] .about-content-column,
 html[data-ipad-portrait="true"] .work-left-pane,
 html[data-ipad-portrait="true"] .contact-left-block {
   position: fixed !important;
-  left: 5vw !important;
+  left: 12vw !important;
   top: 50% !important;
-  transform: translateY(-50%) scale(0.82) !important;
+  transform: translateY(-50%) scale(0.78) !important;
   transform-origin: left center !important;
   display: flex !important;
   flex-direction: column !important;
@@ -8325,7 +8325,7 @@ html[data-ipad-portrait="true"] .contact-backdrop-heading {
   top: auto !important;
   left: auto !important;
   transform: none !important;
-  font-size: clamp(4.5rem, 7.5vw, 6.5rem) !important;
+  font-size: clamp(5.5rem, 9vw, 8rem) !important;
   line-height: 0.90 !important;
   white-space: nowrap !important;
   text-align: center !important;
@@ -8336,7 +8336,7 @@ html[data-ipad-portrait="true"] .contact-backdrop-heading {
 }
 
 html[data-ipad-portrait="true"] .work-left-pane {
-  transform: translateY(-50%) scale(0.92) !important;
+  transform: translateY(-50%) scale(0.78) !important;
   width: 540px !important;
   max-width: 540px !important;
 }
@@ -8355,7 +8355,7 @@ html[data-ipad-portrait="true"] .work-unified-text-top p:first-child {
 }
 
 html[data-ipad-portrait="true"] .work-grid-tracker-wrapper {
-  max-height: 340px !important;
+  max-height: 410px !important;
   height: auto !important;
 }
 
@@ -8365,8 +8365,8 @@ html[data-ipad-portrait="true"] .work-grid-3col {
   grid-template-rows: none !important;
   grid-auto-rows: max-content !important;
   align-content: start !important;
-  row-gap: 0.35rem !important;
-  column-gap: 0.35rem !important;
+  row-gap: 0.45rem !important;
+  column-gap: 0.45rem !important;
   height: max-content !important;
   min-height: 0px !important;
   width: 100% !important;

@@ -496,9 +496,9 @@ export default function WorkUI({
                   : applyCompactPortrait
                   ? {
                       position: 'fixed',
-                      left: '5vw',
+                      left: '12vw',
                       top: '50%',
-                      transform: 'translateY(-50%) scale(0.92)',
+                      transform: 'translateY(-50%) scale(0.78)',
                       transformOrigin: 'left center',
                       display: 'flex',
                       flexDirection: 'column',
@@ -544,7 +544,7 @@ export default function WorkUI({
                         top: 'auto',
                         left: 'auto',
                         transform: 'none',
-                        fontSize: 'clamp(4.5rem, 7.5vw, 6.5rem)',
+                        fontSize: 'clamp(5.5rem, 9vw, 8rem)',
                         lineHeight: 0.90,
                         whiteSpace: 'nowrap',
                         textAlign: 'center',
@@ -710,7 +710,7 @@ export default function WorkUI({
                       : applyCompactPortrait
                       ? {
                           height: 'auto',
-                          maxHeight: '340px',
+                          maxHeight: '410px',
                           overflowY: 'auto',
                           overflowX: 'hidden',
                           display: 'block',
@@ -778,8 +778,8 @@ export default function WorkUI({
                             gridAutoRows: 'max-content',
                             gridTemplateRows: 'none',
                             alignContent: 'start',
-                            rowGap: '0.35rem',
-                            columnGap: '0.35rem',
+                            rowGap: '0.45rem',
+                            columnGap: '0.45rem',
                             height: 'max-content',
                             minHeight: '0px',
                             width: '100%',

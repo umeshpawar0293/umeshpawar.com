@@ -403,9 +403,9 @@ export default function HeroUI({ scrollProgress = 0 }) {
               : applyCompactPortrait
               ? {
                   position: 'fixed',
-                  left: '5vw',
+                  left: '12vw',
                   top: '50%',
-                  transform: `perspective(900px) rotateX(${scrollRotationX}deg) translateY(-50%) scale(0.82)`,
+                  transform: `perspective(900px) rotateX(${scrollRotationX}deg) translateY(-50%) scale(0.78)`,
                   transformOrigin: 'left center',
                   display: 'flex',
                   flexDirection: 'column',
@@ -450,7 +450,7 @@ export default function HeroUI({ scrollProgress = 0 }) {
                     top: 'auto',
                     left: 'auto',
                     transform: 'none',
-                    fontSize: 'clamp(4.5rem, 7.5vw, 6.5rem)',
+                    fontSize: 'clamp(5.5rem, 9vw, 8rem)',
                     lineHeight: 0.90,
                     whiteSpace: 'nowrap',
                     textAlign: 'center',

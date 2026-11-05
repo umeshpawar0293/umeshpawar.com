@@ -358,9 +358,9 @@ export default function ContactUI({
                 : applyCompactPortrait
                 ? {
                     position: 'fixed',
-                    left: '5vw',
+                    left: '12vw',
                     top: '50%',
-                    transform: 'translateY(-50%) scale(0.82)',
+                    transform: 'translateY(-50%) scale(0.78)',
                     transformOrigin: 'left center',
                     display: 'flex',
                     flexDirection: 'column',
@@ -385,7 +385,7 @@ export default function ContactUI({
                   left: 'auto',
                   transform: 'none',
                   fontSize: applyCompactPortrait
-                    ? 'clamp(4.5rem, 7.5vw, 6.5rem)'
+                    ? 'clamp(5.5rem, 9vw, 8rem)'
                     : '5.6rem',
                   lineHeight: applyCompactPortrait ? 0.90 : 0.95,
                   whiteSpace: 'nowrap',
