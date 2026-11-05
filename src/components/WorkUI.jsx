@@ -496,7 +496,7 @@ export default function WorkUI({
                   : applyCompactPortrait
                   ? {
                       position: 'fixed',
-                      left: '18vw',
+                      left: '5vw',
                       top: '50%',
                       transform: 'translateY(-50%) scale(0.92)',
                       transformOrigin: 'left center',
@@ -776,6 +776,7 @@ export default function WorkUI({
                             display: 'grid',
                             gridTemplateColumns: 'repeat(3, minmax(0, 1fr))',
                             gridAutoRows: 'max-content',
+                            gridTemplateRows: 'none',
                             alignContent: 'start',
                             rowGap: '0.55rem',
                             columnGap: '0.55rem',

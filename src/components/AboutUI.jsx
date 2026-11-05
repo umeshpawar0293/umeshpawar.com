@@ -359,7 +359,7 @@ export default function AboutUI({ scrollProgress = 0, activePage = 'hero' }) {
               : applyCompactPortrait
               ? {
                   position: 'fixed',
-                  left: '18vw',
+                  left: '5vw',
                   top: '50%',
                   transform: 'translateY(-50%) scale(0.82)',
                   transformOrigin: 'left center',

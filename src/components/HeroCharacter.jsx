@@ -5,6 +5,7 @@ import * as THREE from 'three'
 import * as SkeletonUtils from 'three/examples/jsm/utils/SkeletonUtils.js'
 import { RubikAnimator, CUBE_CENTER } from '../utils/rubikAnimator'
 import useMediaQuery from '../hooks/useMediaQuery'
+import { useIPadPortrait } from '../hooks/useIPadPortrait'
 
 const MODEL_PATH = '/models/Character_Hero.glb'
 
@@ -103,6 +104,7 @@ export default function HeroCharacter({
   const { gl, viewport, size } = useThree()
   const isMobileQuery = useMediaQuery('(max-width: 768px)')
   const isMobile = isMobileQuery || (size?.width ? size.width <= 768 : false)
+  const isIPadPortrait = useIPadPortrait()
 
   // Dynamic reflection uniforms:
   // On mobile: steep vertical falloff (fadeEnd ~ 0.016) - only shoes & subtle lower legs visible, torso/jacket completely masked out
@@ -819,11 +821,12 @@ export default function HeroCharacter({
   // Responsive breakpoints
   const isIPadPro13Portrait =
     !isMobile &&
-    ((typeof window !== 'undefined' &&
-      window.innerWidth >= 1020 &&
-      window.innerWidth <= 1040 &&
-      window.innerHeight > window.innerWidth) ||
-     (size.width >= 1020 && size.width <= 1040 && size.height > size.width))
+    (isIPadPortrait ||
+      ((typeof window !== 'undefined' &&
+        window.innerHeight > window.innerWidth &&
+        window.innerWidth >= 768 &&
+        window.innerWidth <= 1300) ||
+       (size.width >= 768 && size.width <= 1300 && size.height > size.width)))
   const isTablet = !isMobile && !isIPadPro13Portrait && size.width <= 1180
   const BASE_CHARACTER_HEIGHT = 0.078
 
@@ -1052,7 +1055,7 @@ export default function HeroCharacter({
     let targetPosZ = 0
     const targetScale = heroScale // NEVER SCALED DOWN!
 
-    if (isMobile) {
+    if (isMobile || isIPadPortrait || isIPadPro13Portrait) {
       targetPosX = heroPosX
       targetPosY = heroPosY
       targetPosZ = 0
@@ -1317,7 +1320,9 @@ export default function HeroCharacter({
     if (groupRef.current) {
       // Subtle vertical parallax lag on scroll down:
       // Translates downward slightly during scroll, smoothly lerping/damping back to idle baseline
-      const parallaxLagY = isMobile
+      const parallaxLagY = (isIPadPortrait || isIPadPro13Portrait)
+        ? 0
+        : isMobile
         ? -THREE.MathUtils.clamp(smoothVelocityRef.current * 0.018, -0.025, 0.025)
         : -THREE.MathUtils.clamp(smoothVelocityRef.current * 0.032, -0.05, 0.05)
 

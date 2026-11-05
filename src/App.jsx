@@ -12,6 +12,7 @@ import ContactUI, { ContactBackdropHeading } from './components/ContactUI'
 import MobileConnectTab from './components/MobileConnectTab'
 import NarrativeScrollPill from './components/NarrativeScrollPill'
 import Footer from './components/Footer'
+import { useIPadPortrait } from './hooks/useIPadPortrait'
 
 /**
  * ResponsiveCamera Component
@@ -22,13 +23,15 @@ import Footer from './components/Footer'
 function ResponsiveCamera() {
   const { camera, size, gl } = useThree()
   const cameraTimelineRef = useRef(null)
+  const isIPadPortrait = useIPadPortrait()
 
   const isIPadPro13Portrait =
+    isIPadPortrait ||
     (typeof window !== 'undefined' &&
-      window.innerWidth >= 1020 &&
-      window.innerWidth <= 1040 &&
-      window.innerHeight > window.innerWidth) ||
-    (size?.width >= 1020 && size?.width <= 1040 && size?.height > size?.width)
+      window.innerHeight > window.innerWidth &&
+      window.innerWidth >= 768 &&
+      window.innerWidth <= 1300) ||
+    (size?.width >= 768 && size?.width <= 1300 && size?.height > size?.width)
 
   const isMobile = size.width <= 768
   const baseFov = 42
@@ -54,13 +57,19 @@ function ResponsiveCamera() {
 
   useEffect(() => {
     const handleTransition = () => {
-      const isIPadPro13PortraitNow =
-        typeof window !== 'undefined' &&
-        window.innerWidth >= 1020 &&
-        window.innerWidth <= 1040 &&
-        window.innerHeight > window.innerWidth
+      const isIPadPortraitNow =
+        isIPadPortrait ||
+        (typeof window !== 'undefined' &&
+          window.innerHeight > window.innerWidth &&
+          window.innerWidth >= 768 &&
+          window.innerWidth <= 1300) ||
+        (size?.width >= 768 && size?.width <= 1300 && size?.height > size?.width)
+
+      // Lock 3D Camera strictly in Portrait mode identical to landing page: zero dolly or warp
+      if (isIPadPortraitNow) return
+
       const isMobileNow = window.innerWidth <= 768
-      const currentBaseZ = isMobileNow ? 3.35 : isIPadPro13PortraitNow ? 3.2 : 3.0
+      const currentBaseZ = isMobileNow ? 3.35 : 3.0
       const currentBaseFov = 42
 
       if (cameraTimelineRef.current) {
@@ -1025,9 +1034,9 @@ export default function App() {
                 0,
                 0,
                 typeof window !== 'undefined' &&
-                window.innerWidth >= 1020 &&
-                window.innerWidth <= 1040 &&
-                window.innerHeight > window.innerWidth
+                window.innerHeight > window.innerWidth &&
+                window.innerWidth >= 768 &&
+                window.innerWidth <= 1300
                   ? 3.2
                   : 3,
               ],
