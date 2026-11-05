@@ -836,10 +836,10 @@ export default function WorkUI({
                         >
                           {/* Inner Thumbnail / Media Window (Upper ~75%) */}
                           <div className={`work-card-media-window has-transform-box ${project.thumbnailClass ? 'is-aspect-video' : ''}`}>
-                            {project.thumbnail ? (
-                              checkIsVideo(project.thumbnail) ? (
+                            {project.thumbnail || project.image ? (
+                              checkIsVideo(project.thumbnail || project.image) ? (
                                 <video
-                                  src={cleanAssetUrl(project.thumbnail)}
+                                  src={cleanAssetUrl(project.thumbnail || project.image)}
                                   autoPlay
                                   loop
                                   muted
@@ -852,12 +852,17 @@ export default function WorkUI({
                                 />
                               ) : (
                                 <img
-                                  src={cleanAssetUrl(project.thumbnail)}
+                                  src={cleanAssetUrl(project.thumbnail || project.image)}
                                   alt={project.title}
                                   className={`work-card-thumbnail ${project.thumbnailClass || ''}`}
                                   loading="lazy"
                                   decoding="async"
                                   draggable={false}
+                                  onError={(e) => {
+                                    if (project.isBehance || project.id?.includes('behance')) {
+                                      e.currentTarget.src = '/behance/Behance-Thumbnail.webp'
+                                    }
+                                  }}
                                 />
                               )
                             ) : (
@@ -1153,10 +1158,10 @@ export default function WorkUI({
                     className={`work-card-media-window has-transform-box ${project.thumbnailClass ? 'is-aspect-video' : ''}`}
                     style={{ overflow: 'hidden' }}
                   >
-                    {project.thumbnail ? (
-                      checkIsVideo(project.thumbnail) ? (
+                    {project.thumbnail || project.image ? (
+                      checkIsVideo(project.thumbnail || project.image) ? (
                         <video
-                          src={cleanAssetUrl(project.thumbnail)}
+                          src={cleanAssetUrl(project.thumbnail || project.image)}
                           autoPlay
                           loop
                           muted
@@ -1173,7 +1178,7 @@ export default function WorkUI({
                         />
                       ) : (
                         <img
-                          src={cleanAssetUrl(project.thumbnail)}
+                          src={cleanAssetUrl(project.thumbnail || project.image)}
                           alt={project.title}
                           className={`work-card-thumbnail ${project.thumbnailClass || ''}`}
                           style={{
@@ -1183,6 +1188,11 @@ export default function WorkUI({
                           loading="eager"
                           decoding="async"
                           draggable={false}
+                          onError={(e) => {
+                            if (project.isBehance || project.id?.includes('behance')) {
+                              e.currentTarget.src = '/behance/Behance-Thumbnail.webp'
+                            }
+                          }}
                         />
                       )
                     ) : (

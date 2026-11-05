@@ -202,8 +202,9 @@ const PROJECT_METADATA_MAP = {
     role: 'Creative Director / Lead Designer',
     tools: ['Creative Direction', 'Visual Systems', 'Packaging', 'Editorial'],
     accentColor: '#0057ff',
-    thumbnail: '/projects/behance/Behance-Thumbnail.webp',
-    heroMedia: '/projects/behance/Behance-Thumbnail.webp',
+    thumbnail: '/behance/Behance-Thumbnail.webp',
+    heroMedia: '/behance/Behance-Thumbnail.webp',
+    image: '/behance/Behance-Thumbnail.webp',
     summary:
       'Direct portal to the primary Behance portfolio archive featuring full case studies, process sketches, client work, and selected creative experiments.',
     description:
@@ -232,8 +233,9 @@ export const BEHANCE_PROJECT = {
   behanceUrl: 'https://www.behance.net/umeshpawar',
   behanceEmbedUrl: 'https://www.behance.net/embed/project/216335191?ilo0=1',
   accentColor: '#ff5722',
-  thumbnail: '/projects/behance/Behance-Thumbnail.webp',
-  heroMedia: '/projects/behance/Behance-Thumbnail.webp',
+  thumbnail: '/behance/Behance-Thumbnail.webp',
+  heroMedia: '/behance/Behance-Thumbnail.webp',
+  image: '/behance/Behance-Thumbnail.webp',
   gallery: [],
   assets: [],
   media: [],
@@ -688,6 +690,9 @@ export function parseExistingProjectFolders(folders = scannedFolders) {
 
       // Thumbnail is first image, or first asset
       let thumbnail = imageAssets[0] || assets[0] || null
+      if (item.folder.toLowerCase().includes('behance')) {
+        thumbnail = '/behance/Behance-Thumbnail.webp'
+      }
 
       // Match custom metadata by folder name or clean title
       const folderKey = item.folder.toLowerCase()
@@ -1132,6 +1137,7 @@ export function parseExistingProjectFolders(folders = scannedFolders) {
         folderPath: cleanAssetUrl(`/projects/${item.folder}`),
         thumbnail,
         heroMedia: thumbnail,
+        image: thumbnail,
         thumbnailClass: metadata?.thumbnailClass || (isPresentation ? 'aspect-video object-cover' : ''),
         isPresentation: isPresentation,
         isPresentationDeck: isPresentation,
@@ -1533,19 +1539,17 @@ export function parseProjectFolders(folders = scannedFolders) {
     (a, b) => a.order - b.order
   )
 
-  const finalBehance =
-    behanceExisting ||
-    (folders.some((f) => f.folder.toLowerCase().includes('behance'))
-      ? {
-          ...BEHANCE_PROJECT,
-          id: 'behance-portfolio',
-          isBehance: true,
-          title: 'BEHANCE PORTFOLIO',
-          cleanTitle: 'Behance Portfolio',
-          thumbnail: '/projects/behance/Behance-Thumbnail.webp',
-          heroMedia: '/projects/behance/Behance-Thumbnail.webp',
-        }
-      : BEHANCE_PROJECT)
+  const finalBehance = {
+    ...(behanceExisting || BEHANCE_PROJECT),
+    ...BEHANCE_PROJECT,
+    id: 'behance-portfolio',
+    isBehance: true,
+    title: 'BEHANCE PORTFOLIO',
+    cleanTitle: 'Behance Portfolio',
+    thumbnail: '/behance/Behance-Thumbnail.webp',
+    heroMedia: '/behance/Behance-Thumbnail.webp',
+    image: '/behance/Behance-Thumbnail.webp',
+  }
 
   // Ensure consecutive numbering for Behance
   finalBehance.number = String(combined.length + 1).padStart(2, '0')
