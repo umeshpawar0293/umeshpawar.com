@@ -8428,7 +8428,7 @@ html[data-ipad-portrait="true"] #persistent-scroll-indicator.is-work-section {
   position: absolute !important;
   bottom: auto !important;
   top: 55% !important;
-  left: 105% !important;
+  left: 45% !important;
   right: auto !important;
   transform: translate(-50%, -50%) !important;
   margin: 0 !important;
