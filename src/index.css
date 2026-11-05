@@ -3712,15 +3712,21 @@ body.is-character-dragging * {
   padding: 1rem;
 }
 
-@media (max-width: 900px) and (min-width: 600px) {
+@media (max-width: 900px) and (min-width: 769px) {
   .behance-grid-3x3 {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 }
 
-@media (max-width: 599px) {
+@media (max-width: 768px) {
   .behance-grid-3x3 {
-    grid-template-columns: 1fr;
+    display: grid !important;
+    grid-template-columns: 1fr !important;
+    gap: 1rem !important;
+    max-height: 65vh !important;
+    overflow-y: auto !important;
+    padding: 1rem !important;
+    width: 100% !important;
   }
 
   .behance-profile-banner {
@@ -3731,6 +3737,16 @@ body.is-character-dragging * {
 
   .behance-btn-primary {
     width: 100%;
+  }
+
+  .behance-project-tile {
+    width: 100% !important;
+    display: flex !important;
+    flex-direction: column !important;
+    background-color: rgba(255, 255, 255, 0.03) !important;
+    border-radius: 12px !important;
+    overflow: hidden !important;
+    padding: 0.75rem !important;
   }
 }
 

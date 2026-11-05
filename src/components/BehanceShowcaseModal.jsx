@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 import { cleanAssetUrl } from '../data/portfolioData'
 
 /**
@@ -125,6 +125,24 @@ export const BEHANCE_SHOWCASE_PROJECTS = behanceProjects
  * - Bottom CTA: "Check more work on Behance"
  */
 export const BehanceShowcaseModal = ({ onClose }) => {
+  const [isMobile, setIsMobile] = useState(() => {
+    if (typeof window === 'undefined') return false
+    return window.innerWidth < 768
+  })
+
+  useEffect(() => {
+    if (typeof window === 'undefined') return
+    const handleResize = () => {
+      setIsMobile(window.innerWidth < 768)
+    }
+    window.addEventListener('resize', handleResize, { passive: true })
+    window.addEventListener('orientationchange', handleResize, { passive: true })
+    return () => {
+      window.removeEventListener('resize', handleResize)
+      window.removeEventListener('orientationchange', handleResize)
+    }
+  }, [])
+
   return (
     <div className="behance-showcase-hub w-full max-w-5xl mx-auto py-4 px-3 md:px-6 text-white select-none">
       {/* 1. BEHANCE HEADER PROFILE BANNER (HORIZONTAL REFINED LAYOUT) */}
@@ -176,17 +194,29 @@ export const BehanceShowcaseModal = ({ onClose }) => {
         </a>
       </div>
 
-      {/* 2. 12-PROJECT GRID (3 COLUMNS x 4 ROWS) */}
+      {/* 2. 12-PROJECT GRID (Single column on mobile, 3 columns on tablet/desktop) */}
       <div
         className="behance-grid-3x3"
-        style={{
-          display: 'grid',
-          gridTemplateColumns: 'repeat(3, minmax(0, 1fr))',
-          gap: '1rem',
-          maxHeight: '65vh',
-          overflowY: 'auto',
-          padding: '1rem',
-        }}
+        style={
+          isMobile
+            ? {
+                display: 'grid',
+                gridTemplateColumns: '1fr', // Stacks thumbnails one below the other on mobile view
+                gap: '1rem',
+                maxHeight: '65vh',
+                overflowY: 'auto',
+                padding: '1rem',
+                width: '100%',
+              }
+            : {
+                display: 'grid',
+                gridTemplateColumns: 'repeat(3, minmax(0, 1fr))',
+                gap: '1rem',
+                maxHeight: '65vh',
+                overflowY: 'auto',
+                padding: '1rem',
+              }
+        }
       >
         {behanceProjects.map((item, idx) => (
           <a
@@ -195,6 +225,19 @@ export const BehanceShowcaseModal = ({ onClose }) => {
             target="_blank"
             rel="noopener noreferrer"
             className="behance-project-tile group"
+            style={
+              isMobile
+                ? {
+                    width: '100%',
+                    display: 'flex',
+                    flexDirection: 'column',
+                    backgroundColor: 'rgba(255, 255, 255, 0.03)',
+                    borderRadius: '12px',
+                    overflow: 'hidden',
+                    padding: '0.75rem',
+                  }
+                : undefined
+            }
           >
             {/* THUMBNAIL CONTAINER */}
             <div
