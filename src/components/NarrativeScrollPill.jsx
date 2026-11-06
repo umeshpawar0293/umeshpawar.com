@@ -181,7 +181,7 @@ export default function NarrativeScrollPill({ scrollProgress = 0, activePage = '
               position: 'absolute',
               bottom: 'auto',
               top: '55%',
-              left: '45%',
+              left: '25%',
               right: 'auto',
               transform: 'translate(-50%, -50%)',
               whiteSpace: 'nowrap',
