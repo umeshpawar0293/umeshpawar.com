@@ -13,6 +13,7 @@ import MobileConnectTab from './components/MobileConnectTab'
 import NarrativeScrollPill from './components/NarrativeScrollPill'
 import Footer from './components/Footer'
 import { useIPadPortrait } from './hooks/useIPadPortrait'
+import { useIPadLandscape } from './hooks/useIPadLandscape'
 
 /**
  * ResponsiveCamera Component
@@ -24,6 +25,7 @@ function ResponsiveCamera() {
   const { camera, size, gl } = useThree()
   const cameraTimelineRef = useRef(null)
   const isIPadPortrait = useIPadPortrait()
+  const isIPadLandscape = useIPadLandscape()
 
   const isIPadPro13Portrait =
     isIPadPortrait ||
@@ -65,8 +67,8 @@ function ResponsiveCamera() {
           window.innerWidth <= 1300) ||
         (size?.width >= 768 && size?.width <= 1300 && size?.height > size?.width)
 
-      // Lock 3D Camera strictly in Portrait mode identical to landing page: zero dolly or warp
-      if (isIPadPortraitNow) return
+      // Lock 3D Camera strictly in Portrait mode and Landscape tablet mode identical to landing page: zero dolly or warp
+      if (isIPadPortraitNow || isIPadLandscape) return
 
       const isMobileNow = window.innerWidth <= 768
       const currentBaseZ = isMobileNow ? 3.35 : 3.0

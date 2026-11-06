@@ -1,6 +1,7 @@
 import React, { useRef, useEffect } from 'react'
 import gsap from 'gsap'
 import { useIPadPortrait } from '../hooks/useIPadPortrait'
+import { useIPadLandscape } from '../hooks/useIPadLandscape'
 
 /**
  * NarrativeScrollPill
@@ -28,6 +29,8 @@ export default function NarrativeScrollPill({ scrollProgress = 0, activePage = '
   const textGroupRef = useRef(null)
   const isIPadPortrait = useIPadPortrait()
   const applyCompactPortrait = isIPadPortrait
+  const isIPadLandscape = useIPadLandscape()
+  const applyCompactLandscape = isIPadLandscape
 
   const current = (activePage || (typeof location !== 'undefined' ? location?.pathname : '') || '').toLowerCase()
 
@@ -95,7 +98,7 @@ export default function NarrativeScrollPill({ scrollProgress = 0, activePage = '
 
   // Mobile-Only Anchoring & Clearance Buffer Engine (< 768px ONLY)
   useEffect(() => {
-    if (isContact || applyCompactPortrait) return
+    if (isContact || applyCompactPortrait || applyCompactLandscape) return
     const updatePosition = () => {
       const el = cueRef.current
       if (!el) return
@@ -176,7 +179,7 @@ export default function NarrativeScrollPill({ scrollProgress = 0, activePage = '
       data-scroll-badge="pill"
       className={`scroll-prompt-pill scroll-badge-wrapper z-40 ${sectionClass} left-5 md:left-[var(--scroll-pill-x)] -translate-y-[5%] md:translate-y-0 origin-left md:origin-center`}
       style={
-        applyCompactPortrait
+        applyCompactPortrait || applyCompactLandscape
           ? {
               position: 'absolute',
               bottom: 'auto',

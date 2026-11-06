@@ -482,7 +482,7 @@ export default function WorkUI({
                       position: 'absolute',
                       top: '50%',
                       left: '15.5vw',
-                      transform: 'translateY(-50%) scale(0.85)',
+                      transform: 'translateY(-50%) scale(0.82)',
                       transformOrigin: 'left center',
                       margin: 0,
                       padding: 0,

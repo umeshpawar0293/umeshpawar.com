@@ -6,6 +6,7 @@ import * as SkeletonUtils from 'three/examples/jsm/utils/SkeletonUtils.js'
 import { RubikAnimator, CUBE_CENTER } from '../utils/rubikAnimator'
 import useMediaQuery from '../hooks/useMediaQuery'
 import { useIPadPortrait } from '../hooks/useIPadPortrait'
+import { useIPadLandscape } from '../hooks/useIPadLandscape'
 
 const MODEL_PATH = '/models/Character_Hero.glb'
 
@@ -105,6 +106,7 @@ export default function HeroCharacter({
   const isMobileQuery = useMediaQuery('(max-width: 768px)')
   const isMobile = isMobileQuery || (size?.width ? size.width <= 768 : false)
   const isIPadPortrait = useIPadPortrait()
+  const isIPadLandscape = useIPadLandscape()
 
   // Dynamic reflection uniforms:
   // On mobile: steep vertical falloff (fadeEnd ~ 0.016) - only shoes & subtle lower legs visible, torso/jacket completely masked out
@@ -1055,7 +1057,7 @@ export default function HeroCharacter({
     let targetPosZ = 0
     const targetScale = heroScale // NEVER SCALED DOWN!
 
-    if (isMobile || isIPadPortrait || isIPadPro13Portrait) {
+    if (isMobile || isIPadPortrait || isIPadPro13Portrait || isIPadLandscape) {
       targetPosX = heroPosX
       targetPosY = heroPosY
       targetPosZ = 0
@@ -1320,7 +1322,7 @@ export default function HeroCharacter({
     if (groupRef.current) {
       // Subtle vertical parallax lag on scroll down:
       // Translates downward slightly during scroll, smoothly lerping/damping back to idle baseline
-      const parallaxLagY = (isIPadPortrait || isIPadPro13Portrait)
+      const parallaxLagY = (isIPadPortrait || isIPadPro13Portrait || isIPadLandscape)
         ? 0
         : isMobile
         ? -THREE.MathUtils.clamp(smoothVelocityRef.current * 0.018, -0.025, 0.025)
