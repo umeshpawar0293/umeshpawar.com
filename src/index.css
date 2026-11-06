@@ -8139,8 +8139,7 @@ html[data-ipad-landscape="true"] .hero-body {
 }
 
 html[data-ipad-landscape="true"] .hero-copy-container,
-html[data-ipad-landscape="true"] .about-content-column,
-html[data-ipad-landscape="true"] .contact-left-block {
+html[data-ipad-landscape="true"] .about-content-column {
   position: absolute !important;
   top: 50% !important;
   left: 15.5vw !important;
@@ -8155,6 +8154,24 @@ html[data-ipad-landscape="true"] .contact-left-block {
   z-index: 20 !important;
   width: fit-content !important;
   max-width: min(46vw, 540px) !important;
+  text-align: center !important;
+}
+
+html[data-ipad-landscape="true"] .contact-left-block {
+  position: absolute !important;
+  top: 50% !important;
+  left: 25.5vw !important;
+  transform: translateY(-50%) scale(0.82) !important;
+  transform-origin: left center !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: center !important;
+  justify-content: center !important;
+  z-index: 20 !important;
+  width: clamp(320px, 26vw, 400px) !important;
+  max-width: 400px !important;
   text-align: center !important;
 }
 

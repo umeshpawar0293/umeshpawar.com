@@ -342,7 +342,7 @@ export default function ContactUI({
                 ? {
                     position: 'absolute',
                     top: '50%',
-                    left: '15.5vw',
+                    left: '25.5vw',
                     transform: 'translateY(-50%) scale(0.82)',
                     transformOrigin: 'left center',
                     margin: 0,
