@@ -161,6 +161,7 @@ export default function AboutUI({ scrollProgress = 0, activePage = 'hero' }) {
   // Dynamic counter for Experience / Stats numbers (0 -> 12+)
   const [yearsCount, setYearsCount] = useState(12)
   const [animateBars, setAnimateBars] = useState(false)
+  const [filled, setFilled] = useState(false)
   const hasAnimatedRef = useRef(false)
   const headlineLockupRef = useRef(null)
   const copyBlockRef = useRef(null)
@@ -169,9 +170,16 @@ export default function AboutUI({ scrollProgress = 0, activePage = 'hero' }) {
   const mobileCopyRef = useRef(null)
   const mobileActionRef = useRef(null)
 
+  // Ensure mobile skill bars always trigger fill animation on mount / page landing
+  useEffect(() => {
+    const timer = setTimeout(() => setFilled(true), 100)
+    return () => clearTimeout(timer)
+  }, [])
+
   useEffect(() => {
     if (isAboutActive) {
       const timer = setTimeout(() => {
+        setFilled(true)
         setAnimateBars(true)
       }, 60)
       return () => clearTimeout(timer)
@@ -753,28 +761,34 @@ export default function AboutUI({ scrollProgress = 0, activePage = 'hero' }) {
                     </div>
                     {/* Skill Track Container (Static, visible immediately): */}
                     <div
-                      className="skill-progress-track w-full h-[6px] bg-white/10 rounded-full overflow-hidden relative"
+                      className="mobile-skill-track w-full h-[6px] bg-white/10 rounded-full overflow-hidden relative"
                       style={{
                         width: '100%',
                         height: '6px',
+                        minHeight: '6px',
                         backgroundColor: 'rgba(255, 255, 255, 0.1)',
                         borderRadius: '999px',
+                        border: 'none',
+                        padding: 0,
                         overflow: 'hidden',
                         position: 'relative',
                         opacity: 1,
                         transform: 'none',
+                        boxSizing: 'border-box',
                       }}
                     >
                       {/* Inner Progress Fill Bar (Animates like a loader from 0% to target percentage): */}
                       <div
-                        className="skill-progress-fill h-full rounded-full"
+                        className="mobile-skill-fill h-full rounded-full"
                         style={{
                           height: '100%',
-                          width: isVisible ? `${skill.percentage}%` : '0%',
-                          backgroundColor: fillColor, // Keep existing brand accent color
+                          minHeight: '100%',
+                          width: (filled || animateBars || isAboutActive) ? `${skill.percentage}%` : '0%',
+                          backgroundColor: skill.color || fillColor, // Keep existing brand accent color
                           borderRadius: '999px',
                           transition: 'width 1.1s cubic-bezier(0.22, 1, 0.36, 1)',
                           transformOrigin: 'left center',
+                          display: 'block',
                         }}
                       />
                     </div>
