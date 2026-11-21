@@ -243,8 +243,8 @@ export default function AboutUI({ scrollProgress = 0, activePage = 'hero' }) {
         )
       }
 
-      // 4. Skills Breakdown Rows: Crisp stagger on label, percentage & progress fill
-      const skillRows = document.querySelectorAll('.skill-item, .skills-mobile-grid > div')
+      // 4. Skills Breakdown Rows: Crisp stagger on label, percentage & progress fill (Desktop / iPad only)
+      const skillRows = document.querySelectorAll('.skill-item')
       if (skillRows.length > 0) {
         gsap.fromTo(
           skillRows,
@@ -705,17 +705,38 @@ export default function AboutUI({ scrollProgress = 0, activePage = 'hero' }) {
                 marginLeft: 'auto',
                 marginRight: 'auto',
                 boxSizing: 'border-box',
+                opacity: 1,
+                transform: 'none',
               }}
             >
               {SKILLS_DATA.map((skill, idx) => {
                 const isLeft = idx % 2 === 0
                 const fillColor = isLeft ? '#ccff00' : '#0066ff'
+                const isVisible = animateBars
                 return (
-                  <div key={skill.name} className="flex flex-col w-full min-w-0" style={{ width: '100%', minWidth: 0 }}>
+                  <div
+                    key={skill.name}
+                    className="flex flex-col w-full min-w-0"
+                    style={{
+                      width: '100%',
+                      minWidth: 0,
+                      opacity: 1,
+                      transform: 'none',
+                    }}
+                  >
                     {/* Label & Percentage row */}
                     <div
                       className="flex justify-between items-center mb-0.5 w-full min-w-0"
-                      style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.125rem', width: '100%', minWidth: 0 }}
+                      style={{
+                        display: 'flex',
+                        justifyContent: 'space-between',
+                        alignItems: 'center',
+                        marginBottom: '0.125rem',
+                        width: '100%',
+                        minWidth: 0,
+                        opacity: 1,
+                        transform: 'none',
+                      }}
                     >
                       <span
                         className="text-[7px] sm:text-[7.5px] font-bold tracking-tight text-white uppercase font-['Archivo'] whitespace-nowrap"
@@ -730,27 +751,30 @@ export default function AboutUI({ scrollProgress = 0, activePage = 'hero' }) {
                         {skill.percentage}%
                       </span>
                     </div>
-                    {/* Progress Bar Track: h-[3px] bg-white/10 rounded-full overflow-hidden */}
+                    {/* Skill Track Container (Static, visible immediately): */}
                     <div
-                      className="w-full h-[3px] bg-white/10 rounded-full overflow-hidden relative"
+                      className="skill-progress-track w-full h-[6px] bg-white/10 rounded-full overflow-hidden relative"
                       style={{
                         width: '100%',
-                        height: '3px',
-                        backgroundColor: 'rgba(255, 255, 255, 0.10)',
-                        borderRadius: '9999px',
+                        height: '6px',
+                        backgroundColor: 'rgba(255, 255, 255, 0.1)',
+                        borderRadius: '999px',
                         overflow: 'hidden',
                         position: 'relative',
+                        opacity: 1,
+                        transform: 'none',
                       }}
                     >
-                      {/* Progress Fill */}
+                      {/* Inner Progress Fill Bar (Animates like a loader from 0% to target percentage): */}
                       <div
-                        className="h-full rounded-full transition-all duration-1000 ease-out"
+                        className="skill-progress-fill h-full rounded-full"
                         style={{
                           height: '100%',
-                          width: animateBars ? `${skill.percentage}%` : '0%',
-                          backgroundColor: fillColor,
-                          borderRadius: '9999px',
-                          transition: 'width 1.1s cubic-bezier(0.16, 1, 0.3, 1)',
+                          width: isVisible ? `${skill.percentage}%` : '0%',
+                          backgroundColor: fillColor, // Keep existing brand accent color
+                          borderRadius: '999px',
+                          transition: 'width 1.1s cubic-bezier(0.22, 1, 0.36, 1)',
+                          transformOrigin: 'left center',
                         }}
                       />
                     </div>

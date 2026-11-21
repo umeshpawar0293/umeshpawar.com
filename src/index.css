@@ -2931,12 +2931,29 @@ body.is-character-dragging * {
     width: 100% !important;
     min-width: 0 !important;
     box-sizing: border-box !important;
+    opacity: 1 !important;
+    transform: none !important;
   }
 
   .skills-mobile-grid .skill-progress-track,
+  .skills-mobile-grid .w-full.h-\[6px\],
   .skills-mobile-grid .w-full.h-\[3px\] {
     width: 100% !important;
+    height: 6px !important;
+    min-height: 6px !important;
+    background-color: rgba(255, 255, 255, 0.1) !important;
+    border-radius: 999px !important;
+    overflow: hidden !important;
+    opacity: 1 !important;
+    transform: none !important;
     box-sizing: border-box !important;
+  }
+
+  .skills-mobile-grid .skill-progress-fill {
+    height: 100% !important;
+    border-radius: 999px !important;
+    transition: width 1.1s cubic-bezier(0.22, 1, 0.36, 1) !important;
+    transform-origin: left center !important;
   }
 
   .skills-mobile-grid span {
