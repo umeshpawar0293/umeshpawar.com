@@ -717,10 +717,7 @@ export default function AboutUI({ scrollProgress = 0, activePage = 'hero' }) {
                 transform: 'none',
               }}
             >
-              {SKILLS_DATA.map((skill, idx) => {
-                const isLeft = idx % 2 === 0
-                const fillColor = isLeft ? '#ccff00' : '#0066ff'
-                const isVisible = animateBars
+              {SKILLS_DATA.map((skill) => {
                 return (
                   <div
                     key={skill.name}
@@ -777,18 +774,20 @@ export default function AboutUI({ scrollProgress = 0, activePage = 'hero' }) {
                         boxSizing: 'border-box',
                       }}
                     >
-                      {/* Inner Progress Fill Bar (Animates like a loader from 0% to target percentage): */}
+                      {/* Inner Progress Fill Bar (Animates via CSS keyframes from 0% to target percentage): */}
                       <div
                         className="mobile-skill-fill h-full rounded-full"
                         style={{
                           height: '100%',
                           minHeight: '100%',
-                          width: (filled || animateBars || isAboutActive) ? `${skill.percentage}%` : '0%',
-                          backgroundColor: skill.color || fillColor, // Keep existing brand accent color
+                          width: `${skill.percentage}%`,
+                          backgroundColor: '#ccff00',
+                          background: 'linear-gradient(90deg, #ccff00, #a3e635)',
                           borderRadius: '999px',
-                          transition: 'width 1.1s cubic-bezier(0.22, 1, 0.36, 1)',
                           transformOrigin: 'left center',
+                          animation: 'skillBarLoad 1.1s cubic-bezier(0.22, 1, 0.36, 1) forwards',
                           display: 'block',
+                          boxShadow: '0 0 8px rgba(204, 255, 0, 0.45)',
                         }}
                       />
                     </div>
