@@ -2966,12 +2966,21 @@ body.is-character-dragging * {
     height: 100% !important;
     min-height: 100% !important;
     border-radius: 999px !important;
-    background: linear-gradient(90deg, #ccff00, #a3e635) !important;
-    background-color: #ccff00 !important;
     transform-origin: left center !important;
     animation: skillBarLoad 1.1s cubic-bezier(0.22, 1, 0.36, 1) forwards !important;
     display: block !important;
+  }
+
+  .skills-mobile-grid .mobile-skill-fill-left {
+    background: linear-gradient(90deg, #ccff00, #a3e635) !important;
+    background-color: #ccff00 !important;
     box-shadow: 0 0 8px rgba(204, 255, 0, 0.45) !important;
+  }
+
+  .skills-mobile-grid .mobile-skill-fill-right {
+    background: linear-gradient(90deg, #2563eb, #3b82f6) !important;
+    background-color: #2563eb !important;
+    box-shadow: 0 0 8px rgba(37, 99, 235, 0.45) !important;
   }
 
   .skills-mobile-grid span {

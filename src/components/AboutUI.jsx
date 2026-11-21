@@ -717,7 +717,10 @@ export default function AboutUI({ scrollProgress = 0, activePage = 'hero' }) {
                 transform: 'none',
               }}
             >
-              {SKILLS_DATA.map((skill) => {
+              {SKILLS_DATA.map((skill, idx) => {
+                const isLeft = idx % 2 === 0
+                const blueColor = '#2563eb'
+                const blueGradient = 'linear-gradient(90deg, #2563eb, #3b82f6)'
                 return (
                   <div
                     key={skill.name}
@@ -750,8 +753,8 @@ export default function AboutUI({ scrollProgress = 0, activePage = 'hero' }) {
                         {skill.name}
                       </span>
                       <span
-                        className="text-[7px] sm:text-[7.5px] font-bold tracking-tight text-[#ccff00] font-['Archivo'] shrink-0 ml-1 whitespace-nowrap"
-                        style={{ fontSize: 'clamp(6.8px, 1.9vw, 7.5px)', fontWeight: 700, color: '#ccff00', lineHeight: 1, flexShrink: 0, marginLeft: '4px', whiteSpace: 'nowrap' }}
+                        className={`text-[7px] sm:text-[7.5px] font-bold tracking-tight font-['Archivo'] shrink-0 ml-1 whitespace-nowrap ${isLeft ? 'text-[#ccff00]' : 'text-[#3b82f6]'}`}
+                        style={{ fontSize: 'clamp(6.8px, 1.9vw, 7.5px)', fontWeight: 700, color: isLeft ? '#ccff00' : '#3b82f6', lineHeight: 1, flexShrink: 0, marginLeft: '4px', whiteSpace: 'nowrap' }}
                       >
                         {skill.percentage}%
                       </span>
@@ -776,18 +779,22 @@ export default function AboutUI({ scrollProgress = 0, activePage = 'hero' }) {
                     >
                       {/* Inner Progress Fill Bar (Animates via CSS keyframes from 0% to target percentage): */}
                       <div
-                        className="mobile-skill-fill h-full rounded-full"
+                        className={`mobile-skill-fill ${isLeft ? 'mobile-skill-fill-left' : 'mobile-skill-fill-right'} h-full rounded-full`}
                         style={{
                           height: '100%',
                           minHeight: '100%',
                           width: `${skill.percentage}%`,
-                          backgroundColor: '#ccff00',
-                          background: 'linear-gradient(90deg, #ccff00, #a3e635)',
+                          backgroundColor: isLeft ? '#ccff00' : blueColor,
+                          background: isLeft
+                            ? 'linear-gradient(90deg, #ccff00, #a3e635)'
+                            : blueGradient,
                           borderRadius: '999px',
                           transformOrigin: 'left center',
                           animation: 'skillBarLoad 1.1s cubic-bezier(0.22, 1, 0.36, 1) forwards',
                           display: 'block',
-                          boxShadow: '0 0 8px rgba(204, 255, 0, 0.45)',
+                          boxShadow: isLeft
+                            ? '0 0 8px rgba(204, 255, 0, 0.45)'
+                            : '0 0 8px rgba(37, 99, 235, 0.45)',
                         }}
                       />
                     </div>
