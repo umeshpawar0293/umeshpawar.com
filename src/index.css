@@ -5064,7 +5064,7 @@ body.is-character-dragging * {
 /* Left Block: Shifted UPWARD to occupy the cleared space of the removed paragraph */
 .contact-left-block {
   position: absolute;
-  top: calc(var(--display-heading-top) + clamp(135px, 12.5vw, 210px));
+  top: calc(var(--display-heading-top) + calc(clamp(6.82rem, 11.55vw, 12.65rem) * 0.88 + 0.75rem));
   left: var(--shared-grid-left);
   display: flex;
   flex-direction: column;
@@ -5099,6 +5099,7 @@ body.is-character-dragging * {
   flex-direction: column;
   gap: clamp(0.55rem, 0.9vh, 0.8rem);
   width: 100%;
+  margin-top: 0.5rem;
 }
 
 /* Reusable Contact Card: Clean Architectural Luxury Rectangles */

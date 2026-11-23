@@ -111,7 +111,9 @@ export function ContactBackdropHeading({ scrollProgress = 0 }) {
                 margin: 0,
                 padding: 0,
               }
-            : undefined
+            : {
+                marginBottom: '0.75rem',
+              }
         }
       >
         LET'S TALK
@@ -420,7 +422,9 @@ export default function ContactUI({
                       width: '100%',
                       maxHeight: 'none',
                     }
-                  : undefined
+                  : {
+                      marginTop: '0.5rem',
+                    }
               }
             >
               {/* Card 1: DIRECT LINES */}
