@@ -2293,7 +2293,7 @@ body.is-character-dragging * {
   --about-left-anchor: max(2.5rem, calc(var(--shared-grid-left) - var(--about-desktop-shift-x)));
   --contact-left-anchor: var(--shared-grid-left);
   --display-heading-top: clamp(255px, 34.5vh, 375px);
-  --display-heading-clearance: clamp(155px, 13.5vw, 215px);
+  --display-heading-clearance: calc(clamp(6.82rem, 11.55vw, 12.65rem) * 0.88 + 0.75rem);
 }
 
 /* Safety isolation: Mobile-specific components are hidden by default on desktop (min-width: 769px) */
@@ -10015,8 +10015,8 @@ html[data-ipad-portrait="true"] #persistent-scroll-indicator.is-work-section {
   .about-glass-box {
     padding: 2.5rem !important;
     /* md:p-10 */
-    margin-top: 0.75rem !important;
-    /* md:mt-3 (tight proximity to ABOUT ME) */
+    margin-top: 0.5rem !important;
+    /* md:mt-2 (tight proximity to ABOUT ME) */
   }
 }
 

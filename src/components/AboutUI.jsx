@@ -71,7 +71,9 @@ export function AboutBackdropHeading({ scrollProgress = 0 }) {
                 margin: 0,
                 padding: 0,
               }
-            : undefined
+            : {
+                marginBottom: '0.75rem',
+              }
         }
       >
         ABOUT ME
@@ -433,7 +435,9 @@ export default function AboutUI({ scrollProgress = 0, activePage = 'hero' }) {
                     padding: '0.95rem 1.35rem',
                     boxSizing: 'border-box',
                   }
-                : {}),
+                : {
+                    marginTop: '0.5rem',
+                  }),
             }}
           >
             {/* Hero Stat: 12+ YEARS (Neon green & 56px scale) */}
