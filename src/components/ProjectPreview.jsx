@@ -5,6 +5,7 @@ import SafeProjectGallery, { getAssetUrl, checkIsVideo, cleanAssetUrl, DIMENSION
 import BehanceShowcaseModal from './BehanceShowcaseModal'
 import { scanProjectSubfolders } from '../data/portfolioData'
 import pptData from '../data/pptData.json'
+import { ProjectTextBlockCard, ProjectTextContent } from '../utils/projectTextParser'
 
 export { SafeProjectGallery, getAssetUrl, checkIsVideo, cleanAssetUrl } from './BehanceStyleGallery'
 export { scanProjectSubfolders, formatSectionLabel, parseProjectSections } from '../data/portfolioData'
@@ -14,13 +15,25 @@ export { PreviewVideo } from './ProjectModal'
 /**
  * Adaptive Modal Grid Item:
  * Strictly obeys Behance dynamic ratio grid rules:
+ * - Structured Text Block (type === 'text') -> col-span-6 full width context card
  * - Horizontal (ratio >= 1.25) -> col-span-6 (1 per row, 16:9)
  * - Square (0.85 <= ratio < 1.25) -> col-span-3 (2 per row, 1:1)
  * - Vertical (ratio < 0.85) -> col-span-2 (3 per row, 4:5)
  * - Presentation Decks (type === 'ppt') -> col-span-6 (1 per row, 16:9 widescreen)
  * - Videos -> native <video autoPlay loop muted playsInline preload="auto" controls={false} />
  */
-export function AdaptiveModalGridItem({
+export function AdaptiveModalGridItem(props) {
+  if (props.item?.type === 'text') {
+    return (
+      <div className="behance-col-horizontal col-span-1 sm:col-span-2 md:col-span-6 w-full my-2">
+        <ProjectTextBlockCard block={props.item.textBlock || props.item} />
+      </div>
+    )
+  }
+  return <AdaptiveModalMediaItem {...props} />
+}
+
+export function AdaptiveModalMediaItem({
   item,
   index,
   onOpenItem,
@@ -564,6 +577,11 @@ export function UniversalProjectPreviewContent({
         pointerEvents: 'auto',
       }}
     >
+      {/* Optional Structured Text Blocks */}
+      {project?.textBlocks && !project?.modalItems?.some((i) => i.type === 'text') && (
+        <ProjectTextContent blocks={project.textBlocks} />
+      )}
+
       {/* Standard Assets / Concept Boards */}
       {assets && assets.length > 0 && (
         <div className="general-assets-section w-full">
@@ -1825,6 +1843,7 @@ export default function ProjectPreview({
       const items = modalItems || project?.modalItems
       if (!items || !items[index]) return
       const item = items[index]
+      if (item.type === 'text') return
       setCurrentImageIndex(index)
 
       if (item.type === 'ppt') {
@@ -2002,8 +2021,15 @@ export default function ProjectPreview({
     (e) => {
       e?.stopPropagation()
       if (modalItems && modalItems.length > 1) {
-        const nextIdx = currentImageIndex > 0 ? currentImageIndex - 1 : modalItems.length - 1
-        openModalItem(nextIdx)
+        let nextIdx = currentImageIndex > 0 ? currentImageIndex - 1 : modalItems.length - 1
+        let attempts = 0
+        while (modalItems[nextIdx]?.type === 'text' && attempts < modalItems.length) {
+          nextIdx = nextIdx > 0 ? nextIdx - 1 : modalItems.length - 1
+          attempts++
+        }
+        if (modalItems[nextIdx]?.type !== 'text') {
+          openModalItem(nextIdx)
+        }
         return
       }
       if (currentAssetList.length <= 1) return
@@ -2021,8 +2047,15 @@ export default function ProjectPreview({
     (e) => {
       e?.stopPropagation()
       if (modalItems && modalItems.length > 1) {
-        const nextIdx = currentImageIndex < modalItems.length - 1 ? currentImageIndex + 1 : 0
-        openModalItem(nextIdx)
+        let nextIdx = currentImageIndex < modalItems.length - 1 ? currentImageIndex + 1 : 0
+        let attempts = 0
+        while (modalItems[nextIdx]?.type === 'text' && attempts < modalItems.length) {
+          nextIdx = nextIdx < modalItems.length - 1 ? nextIdx + 1 : 0
+          attempts++
+        }
+        if (modalItems[nextIdx]?.type !== 'text') {
+          openModalItem(nextIdx)
+        }
         return
       }
       if (currentAssetList.length <= 1) return
@@ -2579,6 +2612,9 @@ export default function ProjectPreview({
               />
             ) : isPresentationProject ? (
               <div style={{ width: '100%', display: 'flex', flexDirection: 'column', gap: '20px', padding: '16px 0' }}>
+                {project?.textBlocks && !project?.modalItems?.some((i) => i.type === 'text') && (
+                  <ProjectTextContent blocks={project.textBlocks} />
+                )}
                 {/* Case 1: Multiple presentation decks inside one project (e.g. Hero XOOM Fix & Games) */}
                 {Array.isArray(project?.presentationDecks) && project.presentationDecks.length > 1 ? (
                   project.presentationDecks.map((deck, dIdx) => (

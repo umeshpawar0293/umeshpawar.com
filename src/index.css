@@ -10909,3 +10909,95 @@ html[data-ipad-portrait="true"] #persistent-scroll-indicator.is-work-section {
     margin-bottom: 0 !important;
   }
 }
+
+/* ==========================================================================
+   UNIVERSAL PROJECT STRUCTURED TEXT CARDS (.TXT PIPELINE)
+   Architectural glass context cards for headlines, copy paragraphs,
+   bullet points, and hyperlinks inside project modals.
+   ========================================================================== */
+.project-text-card {
+  position: relative;
+  width: 100%;
+  box-sizing: border-box;
+  background: rgba(255, 255, 255, 0.035);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 14px;
+  padding: 1.25rem 1.5rem;
+  transition: border-color 0.25s ease, background-color 0.25s ease;
+}
+
+.project-text-card:hover {
+  border-color: rgba(204, 255, 0, 0.35);
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.project-text-headline {
+  font-family: 'Archivo', sans-serif;
+  font-weight: 800;
+  font-size: 1.15rem;
+  letter-spacing: -0.01em;
+  text-transform: uppercase;
+  color: #ccff00;
+  margin-top: 0;
+  margin-bottom: 0.75rem;
+  line-height: 1.3;
+}
+
+@media (min-width: 640px) {
+  .project-text-headline {
+    font-size: 1.35rem;
+  }
+}
+
+.project-text-paragraph {
+  font-family: inherit;
+  font-size: 0.925rem;
+  line-height: 1.65;
+  color: rgba(255, 255, 255, 0.88);
+  margin: 0;
+}
+
+.project-text-bullet {
+  font-family: inherit;
+  font-size: 0.925rem;
+  line-height: 1.65;
+  color: rgba(255, 255, 255, 0.88);
+}
+
+.project-text-inline-link {
+  color: #ccff00;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  transition: color 0.2s ease, opacity 0.2s ease;
+}
+
+.project-text-inline-link:hover {
+  color: #ffffff;
+}
+
+.project-text-standalone-link a {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.4rem 0.9rem;
+  border-radius: 9999px;
+  background: rgba(204, 255, 0, 0.1);
+  color: #ccff00;
+  border: 1px solid rgba(204, 255, 0, 0.3);
+  font-family: monospace;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  text-decoration: none;
+  transition: all 0.25s ease;
+}
+
+.project-text-standalone-link a:hover {
+  background: #ccff00;
+  color: #000000;
+  border-color: #ccff00;
+  transform: translateY(-1px);
+}

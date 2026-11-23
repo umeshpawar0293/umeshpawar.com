@@ -4,6 +4,90 @@
  * to the Work grid and preview modal, keeping Behance explicitly at the end.
  */
 import scannedFolders from './scannedProjectFolders.json'
+import { parseStructuredText, sortTextFiles } from '../utils/projectTextParser'
+
+/**
+ * Vite eager text module import for project text files
+ */
+const rawTextModules =
+  typeof import.meta !== 'undefined' && import.meta.glob
+    ? import.meta.glob('/public/projects/**/*.txt', {
+        query: '?raw',
+        import: 'default',
+        eager: true,
+      })
+    : {}
+
+/**
+ * Universal text blocks loader for any project folder.
+ * Discovers .txt files from scanned media list and Vite modules,
+ * sorts them by leading numeric prefix (e.g., '01-context.txt'),
+ * and parses structured headline, body paragraphs, bullets, and hyperlinks.
+ */
+export function loadTextBlocksForFolder(folderName, rawMediaList = []) {
+  if (!folderName) return []
+
+  const discoveredFiles = new Set()
+
+  // 1. Check rawMediaList for .txt files
+  if (Array.isArray(rawMediaList)) {
+    rawMediaList.forEach((file) => {
+      if (typeof file === 'string' && /\.txt$/i.test(file)) {
+        const baseName = file.split('/').pop()
+        discoveredFiles.add(baseName)
+      }
+    })
+  }
+
+  // 2. Discover from rawTextModules keys matching this folder
+  const normFolder = folderName.trim().toLowerCase()
+  Object.keys(rawTextModules).forEach((modPath) => {
+    const normPath = modPath.toLowerCase()
+    if (
+      normPath.includes(`/projects/${normFolder}/`) ||
+      normPath.includes(`projects/${normFolder}/`)
+    ) {
+      const baseName = modPath.split('/').pop()
+      discoveredFiles.add(baseName)
+    }
+  })
+
+  if (discoveredFiles.size === 0) return []
+
+  // 3. Sort files ascending by leading numeric prefix (^(\d+))
+  const sortedFileNames = sortTextFiles(Array.from(discoveredFiles))
+
+  // 4. Parse each structured text file
+  return sortedFileNames.map((filename, idx) => {
+    const directKey1 = `/public/projects/${folderName}/${filename}`
+    const directKey2 = `public/projects/${folderName}/${filename}`
+    let rawContent = rawTextModules[directKey1] || rawTextModules[directKey2]
+
+    if (!rawContent) {
+      const foundKey = Object.keys(rawTextModules).find((k) => {
+        const lk = k.toLowerCase()
+        return (
+          (lk.includes(`/projects/${normFolder}/`) || lk.includes(`projects/${normFolder}/`)) &&
+          lk.endsWith(`/${filename.toLowerCase()}`)
+        )
+      })
+      if (foundKey) {
+        rawContent = rawTextModules[foundKey]
+      }
+    }
+
+    const publicUrl = cleanAssetUrl(`/projects/${folderName}/${filename}`)
+    const parsed = parseStructuredText(rawContent || '', filename, publicUrl)
+
+    const numMatch = filename.match(/^(\d+)/)
+    const order = numMatch ? parseInt(numMatch[1], 10) : idx + 1
+
+    return {
+      ...parsed,
+      order,
+    }
+  })
+}
 
 /**
  * Robust URL cleaner helper (Vite public directory rule)
@@ -740,6 +824,9 @@ export function parseExistingProjectFolders(folders = scannedFolders) {
       let presentationDecks = []
       let modalItems = null
 
+      // Discover and parse structured text blocks (.txt) for this folder
+      const textBlocks = loadTextBlocksForFolder(item.folder, item.media)
+
       if (isXoom) {
         // Enforce the exact 4-step sequence for Hero XOOM:
         // 1. Concept Board: Xoom Games (Single 16:9 widescreen card, opens in lightbox)
@@ -1124,6 +1211,25 @@ export function parseExistingProjectFolders(folders = scannedFolders) {
         }
       }
 
+      // Interleave any discovered structured text blocks into finalModalItems
+      if (textBlocks.length > 0) {
+        if (!finalModalItems) {
+          finalModalItems = []
+        }
+        textBlocks.forEach((tb, tIdx) => {
+          finalModalItems.push({
+            type: 'text',
+            id: `txt-${item.folder}-${tb.id || tIdx}`,
+            order: tb.order || (50 + tIdx),
+            title: tb.headline || tb.title || `${cleanTitle} — Context`,
+            cleanTitle: tb.headline || tb.title || 'Context',
+            label: tb.headline || 'Project Context',
+            textBlock: tb,
+          })
+        })
+        finalModalItems.sort((a, b) => (a.order || 99) - (b.order || 99))
+      }
+
       return {
         id: metadata?.id || item.folder
           .toLowerCase()
@@ -1147,6 +1253,7 @@ export function parseExistingProjectFolders(folders = scannedFolders) {
         previewAssets,
         sections: projectSections.length > 0 ? projectSections : [],
         modalItems: finalModalItems,
+        textBlocks: textBlocks.length > 0 ? textBlocks : undefined,
         presentationDecks: presentationDecks.length > 0 ? presentationDecks : undefined,
         presentationSlides: allSectionSlides,
         fullPresentationSlides: allSectionSlides,
@@ -1253,6 +1360,20 @@ export const parseUniversalProjectFolder = (folderName, rawFiles = [], orderInde
 
   // 3. Build structured modalItems combining standalone media (concept boards, videos, PDFs) and presentation decks
   const modalItems = []
+
+  // Add structured text blocks (.txt)
+  const textBlocks = loadTextBlocksForFolder(folderName, rawFiles)
+  textBlocks.forEach((tb, tIdx) => {
+    modalItems.push({
+      type: 'text',
+      id: `text-${folderName}-${tb.id || tIdx}`,
+      order: tb.order || (tIdx + 1),
+      title: tb.headline || tb.title || `${cleanProjectTitle(folderName)} — Context`,
+      cleanTitle: tb.headline || tb.title || 'Context',
+      label: tb.headline || 'Project Context',
+      textBlock: tb,
+    })
+  })
 
   // Add images
   imageFiles.forEach((f, idx) => {
@@ -1450,6 +1571,7 @@ export const parseUniversalProjectFolder = (folderName, rawFiles = [], orderInde
     pdfFiles: pdfUrls,
     sections: projectSections.length > 0 ? projectSections : [],
     modalItems: finalModalItems,
+    textBlocks: textBlocks.length > 0 ? textBlocks : undefined,
     thumbnail,
     heroMedia: thumbnail,
     thumbnailClass: hasSlides ? 'aspect-video object-cover' : '',

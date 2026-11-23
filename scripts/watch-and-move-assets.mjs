@@ -362,6 +362,15 @@ function startWatcher() {
       processImage(filePath);
     } else if (['.mp4', '.mov', '.webm'].includes(ext)) {
       processVideo(filePath);
+    } else if (ext === '.txt') {
+      const rel = path.relative(WATCH_DIR, filePath);
+      const parts = rel.split(path.sep);
+      const folderName = parts[0];
+      const relInFolder = parts.slice(1).join('/');
+      if (folderName && relInFolder) {
+        updateScannedFolders(folderName, relInFolder);
+        console.log(`[Auto-Asset-Pipeline] Discovered structured text file: ${rel}`);
+      }
     }
   });
 
