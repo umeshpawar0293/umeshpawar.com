@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef, useCallback } from 'react'
+import React, { useState, useEffect, useRef, useCallback, useMemo } from 'react'
 import gsap from 'gsap'
 import { PROJECTS_DATA, checkIsVideo, cleanAssetUrl } from '../data/projectsData'
 import ProjectPreview from './ProjectPreview'
@@ -27,7 +27,7 @@ import { useIPadPortrait } from '../hooks/useIPadPortrait'
  *    - Native scrollbar hidden; orange indicator pill acts as active tracker.
  *    - Smooth internal vertical scrolling & touchpad/mousewheel through 20+ projects without breaking page layout.
  */
-export const isBehanceProject = (p) =>
+const isBehanceProject = (p) =>
   Boolean(
     p?.isBehance ||
     p?.id === 'behance-portfolio' ||
