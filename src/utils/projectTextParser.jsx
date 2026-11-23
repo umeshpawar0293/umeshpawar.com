@@ -115,12 +115,16 @@ export function parseStructuredText(rawContent = '', filename = '', url = null) 
   const numMatch = basename.match(/^(\d+)/)
   const order = numMatch ? parseInt(numMatch[1], 10) : 999
 
-  const normalized = (rawContent || '').replace(/\r\n/g, '\n').replace(/\r/g, '\n')
+  const normalized = (rawContent || '')
+    .replace(/\u00a0/g, ' ')
+    .replace(/\r\n/g, '\n')
+    .replace(/\r/g, '\n')
   const lines = normalized.split('\n')
 
   let headline = null
   const remainingLines = []
-  const headlineRegex = /^(?:#\s*|(?:Headline|H1)\s*:\s*)(.*)$/i
+  // Matches "# Headline: ...", "Headline: ...", "H1: ...", or "# ..."
+  const headlineRegex = /^(?:#\s*)?(?:(?:Headline|H1)\s*:\s*|#\s+)(.*)$/i
 
   for (const line of lines) {
     if (headline === null && headlineRegex.test(line)) {

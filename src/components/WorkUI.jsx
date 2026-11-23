@@ -100,6 +100,165 @@ export function WorkBackdropHeading({ scrollProgress = 0 }) {
   )
 }
 
+/**
+ * Social Media Megaphone Icon for "More Work" Showcase Card
+ * High-res vector artwork with angled megaphone, sound broadcast waves,
+ * thumbs-up circle badge, hashtag circle badge, heart, and sparkle accents.
+ */
+function SocialMegaphoneIcon({ className = '', style = {} }) {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      viewBox="0 0 100 100"
+      fill="none"
+      className={className}
+      style={{
+        display: 'block',
+        overflow: 'visible',
+        ...style,
+      }}
+      aria-hidden="true"
+    >
+      {/* Megaphone Horn / Body */}
+      <path
+        d="M26 53 L36 47 L60 33 C63 31.5 67 33 67 37 L67 59 C67 63 63 64.5 60 63 L36 49 L26 43 Z"
+        fill="rgba(204, 255, 0, 0.08)"
+        stroke="#ccff00"
+        strokeWidth="2.5"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        vectorEffect="non-scaling-stroke"
+      />
+      {/* Megaphone Mouth Rim */}
+      <ellipse
+        cx="67"
+        cy="48"
+        rx="3.5"
+        ry="13"
+        fill="rgba(204, 255, 0, 0.15)"
+        stroke="#ccff00"
+        strokeWidth="2.5"
+        vectorEffect="non-scaling-stroke"
+      />
+      {/* Middle Accent Band */}
+      <path
+        d="M42 43.5 L42 52.5"
+        stroke="#ccff00"
+        strokeWidth="2"
+        strokeLinecap="round"
+        vectorEffect="non-scaling-stroke"
+      />
+      {/* End Cap / Mouthpiece */}
+      <path
+        d="M26 43 C23 43 21 45 21 48 C21 51 23 53 26 53"
+        fill="rgba(204, 255, 0, 0.15)"
+        stroke="#ccff00"
+        strokeWidth="2.5"
+        strokeLinecap="round"
+        vectorEffect="non-scaling-stroke"
+      />
+      {/* Megaphone Handle */}
+      <path
+        d="M34 50 L30 68 C29.5 70.5 31.5 72.5 34 72 C35.5 71.7 36.5 70.5 37 69 L40 54"
+        fill="rgba(204, 255, 0, 0.08)"
+        stroke="#ccff00"
+        strokeWidth="2.5"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        vectorEffect="non-scaling-stroke"
+      />
+
+      {/* Broadcast Sound Waves */}
+      <path
+        d="M75 40 C78 44 78 52 75 56"
+        stroke="#ccff00"
+        strokeWidth="2.2"
+        strokeLinecap="round"
+        vectorEffect="non-scaling-stroke"
+      />
+      <path
+        d="M81 35 C86 42 86 54 81 61"
+        stroke="#ccff00"
+        strokeWidth="2.2"
+        strokeLinecap="round"
+        vectorEffect="non-scaling-stroke"
+      />
+      <path
+        d="M87 30 C94 40 94 56 87 66"
+        stroke="#ccff00"
+        strokeWidth="2.2"
+        strokeLinecap="round"
+        vectorEffect="non-scaling-stroke"
+      />
+
+      {/* Thumbs-Up Circle Badge (Upper-Left) */}
+      <circle
+        cx="25"
+        cy="24"
+        r="11"
+        fill="#004af2"
+        stroke="#ccff00"
+        strokeWidth="2"
+        vectorEffect="non-scaling-stroke"
+      />
+      <path
+        d="M23 28 L21 28 L21 23 L23 23 Z M23 25 L25 21 C25.8 19.8 27.2 20.2 27 21.8 L26.6 23.5 L29 23.5 C29.8 23.5 30.2 24.2 30 25 L28.8 28 C28.6 28.5 28 28.8 27.5 28.8 L23 28.8"
+        fill="#ccff00"
+        stroke="#ccff00"
+        strokeWidth="0.8"
+        strokeLinejoin="round"
+      />
+
+      {/* Hashtag # Circle Badge (Lower-Right) */}
+      <circle
+        cx="71"
+        cy="74"
+        r="11"
+        fill="#004af2"
+        stroke="#ccff00"
+        strokeWidth="2"
+        vectorEffect="non-scaling-stroke"
+      />
+      <path
+        d="M68 69 L67 79 M73 69 L72 79 M65 72 L76 72 M64 76 L75 76"
+        stroke="#ccff00"
+        strokeWidth="1.8"
+        strokeLinecap="round"
+        vectorEffect="non-scaling-stroke"
+      />
+
+      {/* Floating Heart (Top) */}
+      <path
+        d="M50 17 C50 14 47 12 44.5 14 C42 16 42 18.5 45 21.5 L50 26 L55 21.5 C58 18.5 58 16 55.5 14 C53 12 50 14 50 17 Z"
+        fill="#ccff00"
+      />
+
+      {/* Floating Sparkles / Plus signs */}
+      <path
+        d="M12 42 L16 42 M14 40 L14 44"
+        stroke="#ccff00"
+        strokeWidth="1.8"
+        strokeLinecap="round"
+        vectorEffect="non-scaling-stroke"
+      />
+      <path
+        d="M88 20 L92 20 M90 18 L90 22"
+        stroke="#ccff00"
+        strokeWidth="1.8"
+        strokeLinecap="round"
+        vectorEffect="non-scaling-stroke"
+      />
+      <path
+        d="M46 76 L50 76 M48 74 L48 78"
+        stroke="#ccff00"
+        strokeWidth="1.6"
+        strokeLinecap="round"
+        vectorEffect="non-scaling-stroke"
+      />
+    </svg>
+  )
+}
+
 export default function WorkUI({
   scrollProgress = 0,
   onPreviewOpenChange,
@@ -444,7 +603,7 @@ export default function WorkUI({
       setDragOffset(0)
     } else if (offset === 0) {
       if (isBehanceProject(project)) {
-        window.open('https://www.behance.net/umeshpawar', '_blank', 'noopener,noreferrer')
+        window.open('https://www.behance.net/umesh_pawar', '_blank', 'noopener,noreferrer')
         return
       }
       console.log("Opening project:", project.id, "(from mobile deck click)")
@@ -827,7 +986,7 @@ export default function WorkUI({
                         return (
                           <a
                             key={project.id || 'more-work-tile'}
-                            href="https://www.behance.net/umeshpawar"
+                            href="https://www.behance.net/umesh_pawar"
                             target="_blank"
                             rel="noopener noreferrer"
                             className="work-project-card work-more-work-card group bg-white/[0.06] backdrop-blur-md border border-white/15 rounded-xl shadow-inner no-underline cursor-pointer flex flex-col justify-between"
@@ -865,22 +1024,17 @@ export default function WorkUI({
                             }}
                           >
                             {/* Inner Media Window (Upper ~75%) */}
-                            <div
-                              className="work-card-media-window work-more-work-media-window has-transform-box flex flex-col items-center justify-center relative overflow-hidden bg-black/60 border border-white/10 rounded-lg group-hover:border-[#ccff00]/40 transition-colors w-full flex-1"
-                              style={{
-                                background: 'radial-gradient(circle at center, rgba(204, 255, 0, 0.08) 0%, rgba(10, 10, 14, 0.85) 100%)',
-                              }}
-                            >
-                              <div className="flex flex-col items-center justify-center gap-1 sm:gap-1.5 p-2 text-center select-none pointer-events-none">
-                                <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-white/[0.08] border border-white/20 flex items-center justify-center text-[#ccff00] text-sm sm:text-base font-bold shadow-md transition-transform duration-300 group-hover:scale-110 group-hover:bg-[#ccff00] group-hover:text-black">
-                                  ↗
+                            <div className="work-card-media-window work-more-work-media-window has-transform-box flex flex-col items-center justify-center relative overflow-hidden rounded-lg w-full flex-1">
+                              <div className="flex flex-col items-center justify-center gap-1 sm:gap-1.5 p-2 text-center select-none pointer-events-none w-full h-full">
+                                <SocialMegaphoneIcon className="work-more-work-megaphone-icon" />
+                                <div className="flex flex-col items-center gap-0.5">
+                                  <span className="work-more-work-label uppercase tracking-wider text-[11px] sm:text-[12px] leading-tight">
+                                    MORE WORK
+                                  </span>
+                                  <span className="work-more-work-sub text-[7.5px] sm:text-[8.5px] uppercase leading-none">
+                                    BEHANCE ARCHIVE
+                                  </span>
                                 </div>
-                                <span className="font-['Archivo'] font-bold uppercase tracking-wider text-[11px] sm:text-[12px] text-white group-hover:text-[#ccff00] transition-colors leading-tight">
-                                  MORE WORK
-                                </span>
-                                <span className="font-mono text-[7.5px] sm:text-[8.5px] tracking-widest text-white/60 uppercase leading-none">
-                                  BEHANCE ARCHIVE
-                                </span>
                               </div>
                               <TransformBoundingBox />
                             </div>
@@ -1271,22 +1425,21 @@ export default function WorkUI({
                     aria-label="More Work on Behance"
                   >
                     <div
-                      className="work-card-media-window work-more-work-media-window has-transform-box flex flex-col items-center justify-center relative overflow-hidden bg-black/60 border border-white/10 rounded-lg w-full flex-1"
+                      className="work-card-media-window work-more-work-media-window has-transform-box flex flex-col items-center justify-center relative overflow-hidden rounded-lg w-full flex-1"
                       style={{
                         overflow: 'hidden',
-                        background: 'radial-gradient(circle at center, rgba(204, 255, 0, 0.08) 0%, rgba(10, 10, 14, 0.85) 100%)',
                       }}
                     >
-                      <div className="flex flex-col items-center justify-center gap-1.5 p-2 text-center select-none pointer-events-none">
-                        <div className="w-10 h-10 rounded-full bg-white/[0.08] border border-white/20 flex items-center justify-center text-[#ccff00] text-base font-bold shadow-md">
-                          ↗
+                      <div className="flex flex-col items-center justify-center gap-1.5 p-2 text-center select-none pointer-events-none w-full h-full">
+                        <SocialMegaphoneIcon className="work-more-work-megaphone-icon" />
+                        <div className="flex flex-col items-center gap-0.5">
+                          <span className="work-more-work-label uppercase tracking-wider text-[12px] sm:text-[13px] leading-tight">
+                            MORE WORK
+                          </span>
+                          <span className="work-more-work-sub text-[8px] sm:text-[9px] uppercase leading-none">
+                            BEHANCE ARCHIVE
+                          </span>
                         </div>
-                        <span className="font-['Archivo'] font-bold uppercase tracking-wider text-[12px] sm:text-[13px] text-white leading-tight">
-                          MORE WORK
-                        </span>
-                        <span className="font-mono text-[8px] sm:text-[9px] tracking-widest text-white/60 uppercase leading-none">
-                          BEHANCE ARCHIVE
-                        </span>
                       </div>
                       <TransformBoundingBox />
                     </div>
@@ -1308,7 +1461,7 @@ export default function WorkUI({
                           onClick={(e) => {
                             e.stopPropagation?.()
                             if (isCenter) {
-                              window.open('https://www.behance.net/umeshpawar', '_blank', 'noopener,noreferrer')
+                              window.open('https://www.behance.net/umesh_pawar', '_blank', 'noopener,noreferrer')
                             } else {
                               handleCardClick(offset, project, e)
                             }

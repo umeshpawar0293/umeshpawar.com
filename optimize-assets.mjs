@@ -252,7 +252,7 @@ async function syncProjectFolders() {
                 continue
               }
               res.push(...getFiles(itemFull, itemRel))
-            } else if (/\.(jpe?g|png|webp|gif|svg|mp4|webm|mov|pdf)$/i.test(item.name)) {
+            } else if (/\.(jpe?g|png|webp|gif|svg|mp4|webm|mov|pdf|txt)$/i.test(item.name)) {
               res.push(itemRel)
             }
           }

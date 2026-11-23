@@ -33,7 +33,7 @@ function getProjectMediaFiles(dirPath, relativePrefix = '') {
         continue
       }
       results.push(...getProjectMediaFiles(fullPath, relPath))
-    } else if (/\.(jpe?g|png|webp|gif|svg|mp4|webm|mov|pdf)$/i.test(entry.name)) {
+    } else if (/\.(jpe?g|png|webp|gif|svg|mp4|webm|mov|pdf|txt)$/i.test(entry.name)) {
       results.push(relPath)
     }
   }

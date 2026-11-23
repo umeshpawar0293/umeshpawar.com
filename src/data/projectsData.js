@@ -8,85 +8,130 @@ import { parseStructuredText, sortTextFiles } from '../utils/projectTextParser'
 
 /**
  * Vite eager text module import for project text files
+ * Scans both project root folders and inner subfolders
  */
 const rawTextModules =
   typeof import.meta !== 'undefined' && import.meta.glob
-    ? import.meta.glob('/public/projects/**/*.txt', {
-        query: '?raw',
-        import: 'default',
-        eager: true,
-      })
+    ? import.meta.glob(
+        [
+          '/public/projects/**/*.txt',
+          '/public/projects/*/*.txt',
+          '/public/projects/*/*/*.txt',
+        ],
+        {
+          query: '?raw',
+          import: 'default',
+          eager: true,
+        }
+      )
     : {}
 
 /**
+ * Retrieves the raw text content for a text file inside a project folder.
+ * Matches direct path, normalized case-insensitive path, or basename fallback.
+ */
+export function getRawTextContent(folderName, relPath) {
+  if (!folderName || !relPath) return ''
+
+  // 1. Direct keys
+  const directKey1 = `/public/projects/${folderName}/${relPath}`
+  const directKey2 = `public/projects/${folderName}/${relPath}`
+  if (rawTextModules[directKey1]) return rawTextModules[directKey1]
+  if (rawTextModules[directKey2]) return rawTextModules[directKey2]
+
+  // 2. Case-insensitive path match
+  const normFolder = folderName.trim().toLowerCase()
+  const normRel = relPath.trim().toLowerCase()
+
+  const foundKey = Object.keys(rawTextModules).find((k) => {
+    const lk = k.toLowerCase()
+    return (
+      (lk.includes(`/projects/${normFolder}/`) || lk.includes(`projects/${normFolder}/`)) &&
+      lk.endsWith(`/${normRel}`)
+    )
+  })
+  if (foundKey && rawTextModules[foundKey]) return rawTextModules[foundKey]
+
+  // 3. Fallback matching basename
+  const baseName = relPath.split('/').pop().toLowerCase()
+  const foundByBase = Object.keys(rawTextModules).find((k) => {
+    const lk = k.toLowerCase()
+    return (
+      (lk.includes(`/projects/${normFolder}/`) || lk.includes(`projects/${normFolder}/`)) &&
+      lk.endsWith(`/${baseName}`)
+    )
+  })
+  return foundByBase && rawTextModules[foundByBase] ? rawTextModules[foundByBase] : ''
+}
+
+/**
+ * Loads and parses a single text block for a project by relative path.
+ */
+export function loadSingleTextBlock(folderName, relPath) {
+  const rawContent = getRawTextContent(folderName, relPath)
+  const baseName = relPath.split('/').pop()
+  const publicUrl = cleanAssetUrl(`/projects/${folderName}/${relPath}`)
+  const parsed = parseStructuredText(rawContent, baseName, publicUrl)
+
+  const numMatch = baseName.match(/^(\d+)/)
+  const order = numMatch ? parseInt(numMatch[1], 10) : 99
+
+  return {
+    ...parsed,
+    order,
+    relPath,
+    filename: baseName,
+  }
+}
+
+/**
  * Universal text blocks loader for any project folder.
- * Discovers .txt files from scanned media list and Vite modules,
- * sorts them by leading numeric prefix (e.g., '01-context.txt'),
- * and parses structured headline, body paragraphs, bullets, and hyperlinks.
+ * Discovers .txt files from both project root and inner subfolders,
+ * sorts them by leading numeric prefix (e.g., '01.txt', '05.txt'),
+ * deduplicates across matching rules, and parses structured headline, body paragraphs, bullets, and hyperlinks.
  */
 export function loadTextBlocksForFolder(folderName, rawMediaList = []) {
   if (!folderName) return []
 
-  const discoveredFiles = new Set()
+  const discoveredFilesMap = new Map()
 
-  // 1. Check rawMediaList for .txt files
+  // 1. Check rawMediaList for .txt files (both root files and subfolder files)
   if (Array.isArray(rawMediaList)) {
     rawMediaList.forEach((file) => {
       if (typeof file === 'string' && /\.txt$/i.test(file)) {
-        const baseName = file.split('/').pop()
-        discoveredFiles.add(baseName)
+        discoveredFilesMap.set(file.toLowerCase(), file)
       }
     })
   }
 
   // 2. Discover from rawTextModules keys matching this folder
   const normFolder = folderName.trim().toLowerCase()
+  const searchStr1 = `/projects/${normFolder}/`
+  const searchStr2 = `projects/${normFolder}/`
+
   Object.keys(rawTextModules).forEach((modPath) => {
     const normPath = modPath.toLowerCase()
-    if (
-      normPath.includes(`/projects/${normFolder}/`) ||
-      normPath.includes(`projects/${normFolder}/`)
-    ) {
-      const baseName = modPath.split('/').pop()
-      discoveredFiles.add(baseName)
+    let idx = normPath.indexOf(searchStr1)
+    let pLen = searchStr1.length
+    if (idx === -1) {
+      idx = normPath.indexOf(searchStr2)
+      pLen = searchStr2.length
     }
-  })
-
-  if (discoveredFiles.size === 0) return []
-
-  // 3. Sort files ascending by leading numeric prefix (^(\d+))
-  const sortedFileNames = sortTextFiles(Array.from(discoveredFiles))
-
-  // 4. Parse each structured text file
-  return sortedFileNames.map((filename, idx) => {
-    const directKey1 = `/public/projects/${folderName}/${filename}`
-    const directKey2 = `public/projects/${folderName}/${filename}`
-    let rawContent = rawTextModules[directKey1] || rawTextModules[directKey2]
-
-    if (!rawContent) {
-      const foundKey = Object.keys(rawTextModules).find((k) => {
-        const lk = k.toLowerCase()
-        return (
-          (lk.includes(`/projects/${normFolder}/`) || lk.includes(`projects/${normFolder}/`)) &&
-          lk.endsWith(`/${filename.toLowerCase()}`)
-        )
-      })
-      if (foundKey) {
-        rawContent = rawTextModules[foundKey]
+    if (idx !== -1) {
+      const relPath = modPath.slice(idx + pLen)
+      if (relPath && /\.txt$/i.test(relPath)) {
+        discoveredFilesMap.set(relPath.toLowerCase(), relPath)
       }
     }
-
-    const publicUrl = cleanAssetUrl(`/projects/${folderName}/${filename}`)
-    const parsed = parseStructuredText(rawContent || '', filename, publicUrl)
-
-    const numMatch = filename.match(/^(\d+)/)
-    const order = numMatch ? parseInt(numMatch[1], 10) : idx + 1
-
-    return {
-      ...parsed,
-      order,
-    }
   })
+
+  if (discoveredFilesMap.size === 0) return []
+
+  // 3. Sort files ascending by leading numeric prefix (^(\d+)), non-numbered after
+  const sortedRelPaths = sortTextFiles(Array.from(discoveredFilesMap.values()))
+
+  // 4. Parse each structured text file
+  return sortedRelPaths.map((relPath) => loadSingleTextBlock(folderName, relPath))
 }
 
 /**
@@ -313,8 +358,8 @@ export const BEHANCE_PROJECT = {
   role: 'Creative Director / Lead Designer',
   tools: ['Creative Direction', 'Visual Systems', 'Packaging', 'Editorial'],
   isBehance: true,
-  projectUrl: 'https://www.behance.net/umeshpawar',
-  behanceUrl: 'https://www.behance.net/umeshpawar',
+  projectUrl: 'https://www.behance.net/umesh_pawar',
+  behanceUrl: 'https://www.behance.net/umesh_pawar',
   behanceEmbedUrl: 'https://www.behance.net/embed/project/216335191?ilo0=1',
   accentColor: '#ff5722',
   thumbnail: '/behance/Behance-Thumbnail.webp',
@@ -577,15 +622,32 @@ export function parseProjectSections(folderName, allFiles = []) {
           .replace(/concept[\s_-]*board/gi, '')
           .replace(/_+/g, ' ')
           .trim()
+        const hasOnlyText = files.every((f) => /\.txt$/i.test(f))
         const rawTitle = formatSectionLabel(stripped)
         const isConceptBoard = isConcept || /concept[\s_-]*board/i.test(firstBase) || /concept[\s_-]*board/i.test(rawTitle)
-        // If concept board or empty, set title to '' so badge is omitted completely
-        const title = isConceptBoard ? '' : (rawTitle || 'KEY VISUALS')
+        // If concept board or text block, omit the badge title so headline/card renders cleanly
+        const title = isConceptBoard || hasOnlyText ? '' : (rawTitle || 'KEY VISUALS')
 
         const items = files.map((f, idx) => {
           const url = cleanAssetUrl(`/projects/${folderName}/${f}`)
           const isVid = checkIsVideo(f)
           const isPdf = /\.pdf$/i.test(f)
+          const isTxt = /\.txt$/i.test(f)
+
+          if (isTxt) {
+            const tb = loadSingleTextBlock(folderName, f)
+            return {
+              type: 'text',
+              id: `root-${num}-txt-${idx + 1}`,
+              globalIndex: globalItemIndex++,
+              order: num,
+              title: tb.headline || tb.title || `${cleanProjectTitle(folderName)} — Context`,
+              cleanTitle: tb.headline || tb.title || 'Context',
+              label: tb.headline || 'Project Context',
+              textBlock: tb,
+            }
+          }
+
           return {
             type: isVid ? 'video' : isPdf ? 'pdf' : 'image',
             id: `root-${num}-item-${idx + 1}`,
@@ -615,10 +677,27 @@ export function parseProjectSections(folderName, allFiles = []) {
 
     if (unnumbered.length > 0) {
       const isConcept = unnumbered.some((f) => /concept|board/i.test(f))
+      const hasOnlyText = unnumbered.every((f) => /\.txt$/i.test(f))
       const items = unnumbered.map((f, idx) => {
         const url = cleanAssetUrl(`/projects/${folderName}/${f}`)
         const isVid = checkIsVideo(f)
         const isPdf = /\.pdf$/i.test(f)
+        const isTxt = /\.txt$/i.test(f)
+
+        if (isTxt) {
+          const tb = loadSingleTextBlock(folderName, f)
+          return {
+            type: 'text',
+            id: `root-extra-txt-${idx + 1}`,
+            globalIndex: globalItemIndex++,
+            order: 99,
+            title: tb.headline || tb.title || `${cleanProjectTitle(folderName)} — Context`,
+            cleanTitle: tb.headline || tb.title || 'Context',
+            label: tb.headline || 'Project Context',
+            textBlock: tb,
+          }
+        }
+
         return {
           type: isVid ? 'video' : isPdf ? 'pdf' : 'image',
           id: `root-extra-item-${idx + 1}`,
@@ -638,7 +717,7 @@ export function parseProjectSections(folderName, allFiles = []) {
         id: 'section-root-extra',
         order: isConcept ? 1 : 99,
         rawName: 'Root',
-        title: isConcept ? '' : 'KEY VISUALS',
+        title: isConcept || hasOnlyText ? '' : 'KEY VISUALS',
         isPresentation: false,
         items,
         files: unnumbered,
@@ -680,13 +759,14 @@ export function parseProjectSections(folderName, allFiles = []) {
       })
     } else {
       const mediaFiles = files
-        .filter((f) => /\.(webp|jpe?g|png|gif|mp4|webm|mov|pdf)$/i.test(f))
+        .filter((f) => /\.(webp|jpe?g|png|gif|mp4|webm|mov|pdf|txt)$/i.test(f))
         .sort((a, b) => a.localeCompare(b, undefined, { numeric: true, sensitivity: 'base' }))
 
       const items = mediaFiles.map((f, idx) => {
         const url = cleanAssetUrl(`/projects/${folderName}/${f}`)
         const isVid = checkIsVideo(f)
         const isPdf = /\.pdf$/i.test(f)
+        const isTxt = /\.txt$/i.test(f)
         const isConcept = /concept|board/i.test(f)
         const baseName = f.split('/').pop().replace(/\.[^/.]+$/, '')
         const cleanName = baseName
@@ -694,6 +774,20 @@ export function parseProjectSections(folderName, allFiles = []) {
           .replace(/concept[\s_-]*board/gi, '')
           .replace(/_+/g, ' ')
           .trim()
+
+        if (isTxt) {
+          const tb = loadSingleTextBlock(folderName, f)
+          return {
+            type: 'text',
+            id: `sec-${order}-txt-${idx + 1}`,
+            globalIndex: globalItemIndex++,
+            order,
+            title: tb.headline || tb.title || `${cleanProjectTitle(folderName)} — Context`,
+            cleanTitle: tb.headline || tb.title || 'Context',
+            label: tb.headline || 'Project Context',
+            textBlock: tb,
+          }
+        }
 
         return {
           type: isVid ? 'video' : isPdf ? 'pdf' : 'image',
@@ -772,8 +866,8 @@ export function parseExistingProjectFolders(folders = scannedFolders) {
       const videoAsset = assets.find((a) => /\.(mp4|webm|mov)$/i.test(a))
       const imageAssets = assets.filter((a) => /\.(jpe?g|png|webp|gif|svg)$/i.test(a))
 
-      // Thumbnail is first image, or first asset
-      let thumbnail = imageAssets[0] || assets[0] || null
+      // Thumbnail is first image, or first visual asset (never a .txt file)
+      let thumbnail = imageAssets[0] || assets.find((a) => !/\.txt$/i.test(a)) || null
       if (item.folder.toLowerCase().includes('behance')) {
         thumbnail = '/behance/Behance-Thumbnail.webp'
       }
@@ -1211,21 +1305,30 @@ export function parseExistingProjectFolders(folders = scannedFolders) {
         }
       }
 
-      // Interleave any discovered structured text blocks into finalModalItems
+      // Interleave any discovered structured text blocks into finalModalItems (deduplicated)
       if (textBlocks.length > 0) {
         if (!finalModalItems) {
           finalModalItems = []
         }
         textBlocks.forEach((tb, tIdx) => {
-          finalModalItems.push({
-            type: 'text',
-            id: `txt-${item.folder}-${tb.id || tIdx}`,
-            order: tb.order || (50 + tIdx),
-            title: tb.headline || tb.title || `${cleanTitle} — Context`,
-            cleanTitle: tb.headline || tb.title || 'Context',
-            label: tb.headline || 'Project Context',
-            textBlock: tb,
-          })
+          const alreadyExists = finalModalItems.some(
+            (m) =>
+              m.type === 'text' &&
+              (m.textBlock?.filename === tb.filename ||
+                m.textBlock?.relPath === tb.relPath ||
+                m.textBlock?.id === tb.id)
+          )
+          if (!alreadyExists) {
+            finalModalItems.push({
+              type: 'text',
+              id: `txt-${item.folder}-${tb.id || tIdx}`,
+              order: tb.order || (50 + tIdx),
+              title: tb.headline || tb.title || `${cleanTitle} — Context`,
+              cleanTitle: tb.headline || tb.title || 'Context',
+              label: tb.headline || 'Project Context',
+              textBlock: tb,
+            })
+          }
         })
         finalModalItems.sort((a, b) => (a.order || 99) - (b.order || 99))
       }
