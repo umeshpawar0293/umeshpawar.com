@@ -6082,6 +6082,16 @@ body.is-character-dragging * {
     color: #004af2;
   }
 
+  .work-deck-btn:disabled,
+  .work-deck-btn[aria-disabled="true"] {
+    opacity: 0.35 !important;
+    cursor: not-allowed !important;
+    pointer-events: none !important;
+    background: rgba(255, 255, 255, 0.04) !important;
+    border-color: rgba(255, 255, 255, 0.08) !important;
+    color: rgba(255, 255, 255, 0.4) !important;
+  }
+
   .work-deck-pagination-group {
     display: flex;
     flex-direction: column;

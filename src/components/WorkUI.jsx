@@ -336,15 +336,15 @@ export default function WorkUI({
     }, 60)
   }
 
-  // Advance to next project in 3D coverflow
+  // Advance to next project in 3D coverflow (bounded strictly within [0, PROJECTS_DATA.length - 1])
   const handleNextCard = useCallback(() => {
-    setActiveDeckIndex((prev) => (prev + 1) % PROJECTS_DATA.length)
+    setActiveDeckIndex((prev) => Math.min(PROJECTS_DATA.length - 1, prev + 1))
     setDragOffset(0)
   }, [])
 
-  // Go to previous project in 3D coverflow
+  // Go to previous project in 3D coverflow (bounded strictly within [0, PROJECTS_DATA.length - 1])
   const handlePrevCard = useCallback(() => {
-    setActiveDeckIndex((prev) => (prev - 1 + PROJECTS_DATA.length) % PROJECTS_DATA.length)
+    setActiveDeckIndex((prev) => Math.max(0, prev - 1))
     setDragOffset(0)
   }, [])
 
@@ -390,10 +390,17 @@ export default function WorkUI({
       if (Math.abs(dx) > 8) {
         hasDraggedCardRef.current = true
       }
-      dragOffsetRef.current = dx
-      setDragOffset(dx)
+      let clampedDx = dx
+      if (
+        (activeDeckIndex === 0 && dx > 0) ||
+        (activeDeckIndex === PROJECTS_DATA.length - 1 && dx < 0)
+      ) {
+        clampedDx = dx * 0.28 // Subtle boundary resistance at carousel edges
+      }
+      dragOffsetRef.current = clampedDx
+      setDragOffset(clampedDx)
     }
-  }, [])
+  }, [activeDeckIndex])
 
   const handleDeckTouchEnd = useCallback((e) => {
     if (touchDirectionRef.current === 'horizontal') {
@@ -405,11 +412,11 @@ export default function WorkUI({
       const VELOCITY_THRESHOLD = 0.18 // px/ms
 
       if (currentOffset < -SWIPE_DIST_THRESHOLD || velocityX < -VELOCITY_THRESHOLD) {
-        // Swiping LEFT moves Next card to center
-        setActiveDeckIndex((prev) => (prev + 1) % PROJECTS_DATA.length)
+        // Swiping LEFT moves Next card to center (bounded at max index)
+        setActiveDeckIndex((prev) => Math.min(PROJECTS_DATA.length - 1, prev + 1))
       } else if (currentOffset > SWIPE_DIST_THRESHOLD || velocityX > VELOCITY_THRESHOLD) {
-        // Swiping RIGHT moves Previous card to center
-        setActiveDeckIndex((prev) => (prev - 1 + PROJECTS_DATA.length) % PROJECTS_DATA.length)
+        // Swiping RIGHT moves Previous card to center (bounded at index 0)
+        setActiveDeckIndex((prev) => Math.max(0, prev - 1))
       }
       setTimeout(() => {
         hasDraggedCardRef.current = false
@@ -432,11 +439,8 @@ export default function WorkUI({
       e.stopPropagation()
     }
     if (hasDraggedCardRef.current) return
-    if (offset < 0) {
-      setActiveDeckIndex((prev) => (prev + offset + PROJECTS_DATA.length) % PROJECTS_DATA.length)
-      setDragOffset(0)
-    } else if (offset > 0) {
-      setActiveDeckIndex((prev) => (prev + offset) % PROJECTS_DATA.length)
+    if (offset !== 0) {
+      setActiveDeckIndex((prev) => Math.max(0, Math.min(PROJECTS_DATA.length - 1, prev + offset)))
       setDragOffset(0)
     } else if (offset === 0) {
       if (isBehanceProject(project)) {
@@ -1133,8 +1137,10 @@ export default function WorkUI({
             onTouchCancel={handleDeckTouchEnd}
           >
             {[-2, 2, -1, 1, 0].map((offset) => {
-              const projectIndex =
-                (activeDeckIndex + offset + PROJECTS_DATA.length) % PROJECTS_DATA.length
+              const projectIndex = activeDeckIndex + offset
+              if (projectIndex < 0 || projectIndex >= PROJECTS_DATA.length) {
+                return null
+              }
               const project = PROJECTS_DATA[projectIndex]
               const isCenter = offset === 0
               const isLeftFlank = offset === -1
@@ -1433,6 +1439,13 @@ export default function WorkUI({
               type="button"
               className="work-deck-btn"
               onClick={handlePrevCard}
+              disabled={activeDeckIndex === 0}
+              aria-disabled={activeDeckIndex === 0}
+              style={{
+                opacity: activeDeckIndex === 0 ? 0.35 : 1,
+                cursor: activeDeckIndex === 0 ? 'not-allowed' : 'pointer',
+                pointerEvents: activeDeckIndex === 0 ? 'none' : 'auto',
+              }}
               aria-label="Previous Project"
             >
               ‹
@@ -1475,6 +1488,13 @@ export default function WorkUI({
               type="button"
               className="work-deck-btn"
               onClick={handleNextCard}
+              disabled={activeDeckIndex === PROJECTS_DATA.length - 1}
+              aria-disabled={activeDeckIndex === PROJECTS_DATA.length - 1}
+              style={{
+                opacity: activeDeckIndex === PROJECTS_DATA.length - 1 ? 0.35 : 1,
+                cursor: activeDeckIndex === PROJECTS_DATA.length - 1 ? 'not-allowed' : 'pointer',
+                pointerEvents: activeDeckIndex === PROJECTS_DATA.length - 1 ? 'none' : 'auto',
+              }}
               aria-label="Next Project"
             >
               ›
