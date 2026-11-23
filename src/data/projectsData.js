@@ -219,9 +219,9 @@ const PROJECT_METADATA_MAP = {
 export const BEHANCE_PROJECT = {
   id: 'behance-portfolio',
   order: 9999,
-  number: '07',
-  title: 'BEHANCE PORTFOLIO',
-  cleanTitle: 'Behance Portfolio',
+  number: '09',
+  title: 'MORE WORK',
+  cleanTitle: 'More Work',
   category: 'Creative Portfolio & Archive',
   year: '2024',
   description:
@@ -1544,8 +1544,8 @@ export function parseProjectFolders(folders = scannedFolders) {
     ...BEHANCE_PROJECT,
     id: 'behance-portfolio',
     isBehance: true,
-    title: 'BEHANCE PORTFOLIO',
-    cleanTitle: 'Behance Portfolio',
+    title: 'MORE WORK',
+    cleanTitle: 'More Work',
     thumbnail: '/behance/Behance-Thumbnail.webp',
     heroMedia: '/behance/Behance-Thumbnail.webp',
     image: '/behance/Behance-Thumbnail.webp',

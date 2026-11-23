@@ -1654,8 +1654,11 @@ export default function ProjectPreview({
   const isBehanceCard =
     Boolean(project?.isBehance) ||
     project?.id === 'behance' ||
+    project?.id === 'behance-portfolio' ||
     (project?.title || '').toLowerCase().includes('behance') ||
-    (project?.cleanTitle || '').toLowerCase().includes('behance')
+    (project?.cleanTitle || '').toLowerCase().includes('behance') ||
+    (project?.title || '').toLowerCase().includes('more work') ||
+    (project?.cleanTitle || '').toLowerCase().includes('more work')
 
   const isAmazonOnly =
     project?.id === 'amazon-project' ||

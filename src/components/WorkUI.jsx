@@ -27,6 +27,15 @@ import { useIPadPortrait } from '../hooks/useIPadPortrait'
  *    - Native scrollbar hidden; orange indicator pill acts as active tracker.
  *    - Smooth internal vertical scrolling & touchpad/mousewheel through 20+ projects without breaking page layout.
  */
+export const isBehanceProject = (p) =>
+  Boolean(
+    p?.isBehance ||
+    p?.id === 'behance-portfolio' ||
+    (p?.id && String(p.id).toLowerCase().includes('behance')) ||
+    (p?.title && String(p.title).toLowerCase().includes('behance')) ||
+    (p?.title && String(p.title).toLowerCase().includes('more work'))
+  )
+
 /**
  * WorkBackdropHeading Component
  * Renders the giant "WORK" heading in Layer 1 (BEHIND the 3D Canvas).
@@ -137,6 +146,12 @@ export default function WorkUI({
   const lastGridScrollTop = useRef(0)
   const skewTweenRef = useRef(null)
   const hasAnimatedWorkRef = useRef(false)
+
+  // Filter out external Behance / More Work link from the fullscreen modal carousel
+  const filteredProjectsForPreview = useMemo(
+    () => PROJECTS_DATA.filter((p) => !isBehanceProject(p)),
+    []
+  )
 
   // Preload project thumbnail images for instant mobile carousel display without blanks
   useEffect(() => {
@@ -424,6 +439,10 @@ export default function WorkUI({
       setActiveDeckIndex((prev) => (prev + offset) % PROJECTS_DATA.length)
       setDragOffset(0)
     } else if (offset === 0) {
+      if (isBehanceProject(project)) {
+        window.open('https://www.behance.net/umeshpawar', '_blank', 'noopener,noreferrer')
+        return
+      }
       console.log("Opening project:", project.id, "(from mobile deck click)")
       setPreviewProject(project)
     }
@@ -798,6 +817,93 @@ export default function WorkUI({
                     onPointerLeave={handleGridPointerUp}
                   >
                     {PROJECTS_DATA.map((project, i) => {
+                      const isBehance = isBehanceProject(project)
+
+                      if (isBehance) {
+                        return (
+                          <a
+                            key={project.id || 'more-work-tile'}
+                            href="https://www.behance.net/umeshpawar"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="work-project-card work-more-work-card group bg-white/[0.06] backdrop-blur-md border border-white/15 rounded-xl shadow-inner no-underline cursor-pointer flex flex-col justify-between"
+                            aria-label="More Work on Behance"
+                            style={{
+                              textDecoration: 'none',
+                              ...(applyCompactLandscape
+                                ? {
+                                    backdropFilter: 'none',
+                                    WebkitBackdropFilter: 'none',
+                                    backgroundColor: 'rgba(20, 20, 24, 0.85)',
+                                    height: '120px',
+                                    maxHeight: '120px',
+                                    aspectRatio: 'auto',
+                                  }
+                                : applyCompactPortrait
+                                ? {
+                                    backdropFilter: 'none',
+                                    WebkitBackdropFilter: 'none',
+                                    backgroundColor: 'rgba(20, 20, 24, 0.85)',
+                                    height: 'auto',
+                                    aspectRatio: 'auto',
+                                  }
+                                : undefined),
+                            }}
+                            onPointerDown={(e) => {
+                              e.stopPropagation?.()
+                            }}
+                            onClick={(e) => {
+                              if (hasDraggedGrid.current) {
+                                e.preventDefault?.()
+                                e.stopPropagation?.()
+                                return
+                              }
+                            }}
+                          >
+                            {/* Inner Media Window (Upper ~75%) */}
+                            <div
+                              className="work-card-media-window work-more-work-media-window has-transform-box flex flex-col items-center justify-center relative overflow-hidden bg-black/60 border border-white/10 rounded-lg group-hover:border-[#ccff00]/40 transition-colors w-full flex-1"
+                              style={{
+                                background: 'radial-gradient(circle at center, rgba(204, 255, 0, 0.08) 0%, rgba(10, 10, 14, 0.85) 100%)',
+                              }}
+                            >
+                              <div className="flex flex-col items-center justify-center gap-1 sm:gap-1.5 p-2 text-center select-none pointer-events-none">
+                                <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-white/[0.08] border border-white/20 flex items-center justify-center text-[#ccff00] text-sm sm:text-base font-bold shadow-md transition-transform duration-300 group-hover:scale-110 group-hover:bg-[#ccff00] group-hover:text-black">
+                                  ↗
+                                </div>
+                                <span className="font-['Archivo'] font-bold uppercase tracking-wider text-[11px] sm:text-[12px] text-white group-hover:text-[#ccff00] transition-colors leading-tight">
+                                  MORE WORK
+                                </span>
+                                <span className="font-mono text-[7.5px] sm:text-[8.5px] tracking-widest text-white/60 uppercase leading-none">
+                                  BEHANCE ARCHIVE
+                                </span>
+                              </div>
+                              <TransformBoundingBox />
+                            </div>
+
+                            {/* Bottom Header Bar (Lower ~25%) */}
+                            <div className="work-card-bottom-bar flex items-center justify-between w-full pt-2 pb-1 px-1 gap-1.5 min-h-[38px]">
+                              <div className="flex-1 min-w-0 pr-1 min-h-[30px] flex items-center">
+                                <h3
+                                  className="work-card-name font-['Archivo'] font-bold uppercase tracking-tight text-[11.5px] leading-[1.2] text-[#ccff00] line-clamp-2 text-wrap break-words m-0"
+                                  title="MORE WORK"
+                                >
+                                  MORE WORK
+                                </h3>
+                              </div>
+                              <div className="shrink-0 self-center">
+                                <div
+                                  className="work-card-arrow-btn shrink-0 w-6 h-6 rounded-full flex items-center justify-center border-none p-0 shadow-sm bg-black text-[#ccff00] group-hover:bg-[#ccff00] group-hover:text-black transition-colors"
+                                  aria-hidden="true"
+                                >
+                                  <span className="text-xs font-bold leading-none select-none" aria-hidden="true">↗</span>
+                                </div>
+                              </div>
+                            </div>
+                          </a>
+                        )
+                      }
+
                       return (
                         <article
                           key={project.id}
@@ -1137,6 +1243,80 @@ export default function WorkUI({
                 ? -8
                 : 0
 
+              const isBehance = isBehanceProject(project)
+
+              if (isBehance) {
+                return (
+                  <article
+                    key={`coverflow-${project.id}`}
+                    className={`work-coverflow-card work-more-work-coverflow group rounded-2xl bg-white/[0.05] border border-white/10 backdrop-blur-md p-2.5 sm:p-3 shadow-lg transform-gpu will-change-transform flex flex-col justify-between ${
+                      isCenter ? 'is-center' : isLeftFlank || isRightFlank ? 'is-flank' : 'is-buffer'
+                    } ${isDeckDragging ? 'is-dragging' : ''} ${isEven ? 'card-type-a' : 'card-type-b'}`}
+                    style={{
+                      transform: cardTransform,
+                      opacity: cardOpacity,
+                      zIndex,
+                      pointerEvents: (isCenter || isLeftFlank || isRightFlank) && !isDeckDragging ? 'auto' : 'none',
+                      touchAction: 'pan-y',
+                      cursor: 'pointer',
+                    }}
+                    onClick={(e) => handleCardClick(offset, project, e)}
+                    onPointerDown={(e) => e.stopPropagation()}
+                    aria-label="More Work on Behance"
+                  >
+                    <div
+                      className="work-card-media-window work-more-work-media-window has-transform-box flex flex-col items-center justify-center relative overflow-hidden bg-black/60 border border-white/10 rounded-lg w-full flex-1"
+                      style={{
+                        overflow: 'hidden',
+                        background: 'radial-gradient(circle at center, rgba(204, 255, 0, 0.08) 0%, rgba(10, 10, 14, 0.85) 100%)',
+                      }}
+                    >
+                      <div className="flex flex-col items-center justify-center gap-1.5 p-2 text-center select-none pointer-events-none">
+                        <div className="w-10 h-10 rounded-full bg-white/[0.08] border border-white/20 flex items-center justify-center text-[#ccff00] text-base font-bold shadow-md">
+                          ↗
+                        </div>
+                        <span className="font-['Archivo'] font-bold uppercase tracking-wider text-[12px] sm:text-[13px] text-white leading-tight">
+                          MORE WORK
+                        </span>
+                        <span className="font-mono text-[8px] sm:text-[9px] tracking-widest text-white/60 uppercase leading-none">
+                          BEHANCE ARCHIVE
+                        </span>
+                      </div>
+                      <TransformBoundingBox />
+                    </div>
+
+                    {/* Bottom Header Bar (Lower ~25%) */}
+                    <div className="work-card-bottom-bar flex items-center justify-between w-full pt-2 pb-1 px-1 gap-1.5 min-h-[38px]">
+                      <div className="flex-1 min-w-0 pr-1 min-h-[30px] flex items-center">
+                        <h3
+                          className="work-card-name font-['Archivo'] font-bold uppercase tracking-tight text-[11.5px] leading-[1.2] text-[#ccff00] line-clamp-2 text-wrap break-words m-0"
+                          title="MORE WORK"
+                        >
+                          MORE WORK
+                        </h3>
+                      </div>
+                      <div className="shrink-0 self-center">
+                        <button
+                          type="button"
+                          className="work-card-arrow-btn shrink-0 w-6 h-6 rounded-full flex items-center justify-center border-none cursor-pointer p-0 transition-transform active:scale-95 shadow-sm bg-black text-[#ccff00]"
+                          onClick={(e) => {
+                            e.stopPropagation?.()
+                            if (isCenter) {
+                              window.open('https://www.behance.net/umeshpawar', '_blank', 'noopener,noreferrer')
+                            } else {
+                              handleCardClick(offset, project, e)
+                            }
+                          }}
+                          aria-label="Open More Work on Behance"
+                        >
+                          <span className="text-xs font-bold leading-none select-none" aria-hidden="true">↗</span>
+                        </button>
+                      </div>
+                    </div>
+                  </article>
+                )
+              }
+
               return (
                 <article
                   key={`coverflow-${project.id}`}
@@ -1308,7 +1488,7 @@ export default function WorkUI({
         <ProjectPreview
           key={previewProject.id}
           project={previewProject}
-          projects={PROJECTS_DATA}
+          projects={filteredProjectsForPreview}
           onClose={handleClosePreview}
           onSelectProject={handleSelectProject}
         />

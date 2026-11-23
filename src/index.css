@@ -3335,6 +3335,27 @@ body.is-character-dragging * {
   color: #000000 !important;
 }
 
+/* More Work Action Tile in Work Grid */
+.work-project-card.work-more-work-card {
+  text-decoration: none !important;
+  color: inherit;
+}
+
+.work-project-card.work-more-work-card:hover {
+  transform: translateY(-4px);
+  border-color: rgba(204, 255, 0, 0.5) !important;
+  box-shadow: inset 0 1px 2px 0 rgba(255, 255, 255, 0.15), 0 16px 36px rgba(0, 0, 0, 0.65) !important;
+}
+
+.work-project-card.work-more-work-card:hover .work-card-arrow-btn {
+  background-color: #ccff00 !important;
+  color: #000000 !important;
+}
+
+.work-project-card.work-more-work-card:hover .work-card-arrow-btn span {
+  color: #000000 !important;
+}
+
 /* Alternating Logic: Checkerboard Pattern based on index i (Mobile / default) */
 /* Even / Type A: Background #004af2, Text #d8ff00, Inner Media Frame bg-black */
 .card-type-a {
