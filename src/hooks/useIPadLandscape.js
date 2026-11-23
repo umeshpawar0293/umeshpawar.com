@@ -9,27 +9,25 @@ import { useState, useEffect } from 'react'
 export function useIPadLandscape() {
   const [isIPadLandscape, setIsIPadLandscape] = useState(() => {
     if (typeof window === 'undefined') return false
-    const isTouchDevice =
-      (navigator.maxTouchPoints && navigator.maxTouchPoints > 1) ||
-      'ontouchstart' in window ||
+    const isTouchTablet =
+      (Boolean(navigator.maxTouchPoints && navigator.maxTouchPoints > 0)) ||
       window.matchMedia('(pointer: coarse)').matches
     const isLandscape = window.innerWidth > window.innerHeight
-    const isTabletWidth = window.innerWidth >= 1024 && window.innerWidth <= 1700
-    return Boolean(isTouchDevice && isLandscape && isTabletWidth)
+    const width = window.innerWidth
+    return Boolean(isTouchTablet && isLandscape && width >= 1024 && width <= 1440)
   })
 
   useEffect(() => {
     if (typeof window === 'undefined') return
 
     const checkIPadLandscape = () => {
-      const isTouchDevice =
-        (navigator.maxTouchPoints && navigator.maxTouchPoints > 1) ||
-        'ontouchstart' in window ||
+      const isTouchTablet =
+        (Boolean(navigator.maxTouchPoints && navigator.maxTouchPoints > 0)) ||
         window.matchMedia('(pointer: coarse)').matches
       const isLandscape = window.innerWidth > window.innerHeight
-      const isTabletWidth = window.innerWidth >= 1024 && window.innerWidth <= 1700
+      const width = window.innerWidth
 
-      const matched = Boolean(isTouchDevice && isLandscape && isTabletWidth)
+      const matched = Boolean(isTouchTablet && isLandscape && width >= 1024 && width <= 1440)
       setIsIPadLandscape(matched)
 
       if (matched) {

@@ -9,19 +9,25 @@ import { useState, useEffect } from 'react'
 export function useIPadPortrait() {
   const [isIPadPortrait, setIsIPadPortrait] = useState(() => {
     if (typeof window === 'undefined') return false
-    const isPortrait = window.innerHeight > window.innerWidth
-    const isTabletPortraitWidth = window.innerWidth >= 768 && window.innerWidth <= 1300
-    return Boolean(isPortrait && isTabletPortraitWidth)
+    const isTouchTablet =
+      (Boolean(navigator.maxTouchPoints && navigator.maxTouchPoints > 0)) ||
+      window.matchMedia('(pointer: coarse)').matches
+    const isLandscape = window.innerWidth > window.innerHeight
+    const width = window.innerWidth
+    return Boolean(isTouchTablet && !isLandscape && width >= 768 && width <= 1100)
   })
 
   useEffect(() => {
     if (typeof window === 'undefined') return
 
     const checkPortrait = () => {
-      const isPortrait = window.innerHeight > window.innerWidth
-      const isTabletPortraitWidth = window.innerWidth >= 768 && window.innerWidth <= 1300
+      const isTouchTablet =
+        (Boolean(navigator.maxTouchPoints && navigator.maxTouchPoints > 0)) ||
+        window.matchMedia('(pointer: coarse)').matches
+      const isLandscape = window.innerWidth > window.innerHeight
+      const width = window.innerWidth
 
-      const matched = Boolean(isPortrait && isTabletPortraitWidth)
+      const matched = Boolean(isTouchTablet && !isLandscape && width >= 768 && width <= 1100)
       setIsIPadPortrait(matched)
 
       if (matched) {
