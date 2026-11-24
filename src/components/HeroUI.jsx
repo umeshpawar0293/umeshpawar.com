@@ -4,6 +4,7 @@ import gsap from 'gsap'
 import TransformBoundingBox from './TransformBoundingBox'
 import { useIPadLandscape } from '../hooks/useIPadLandscape'
 import { useIPadPortrait } from '../hooks/useIPadPortrait'
+import { useMediaQuery } from '../hooks/useMediaQuery'
 
 /**
  * HeroUI Component
@@ -12,10 +13,13 @@ import { useIPadPortrait } from '../hooks/useIPadPortrait'
  * Nav active indicator transitions cleanly between HOME and ABOUT.
  */
 export default function HeroUI({ scrollProgress = 0 }) {
+  const isMobile = useMediaQuery('(max-width: 768px)')
   const isIPadLandscape = useIPadLandscape()
   const applyCompactLandscape = isIPadLandscape
   const isIPadPortrait = useIPadPortrait()
   const applyCompactPortrait = isIPadPortrait
+  const isTouchTablet = applyCompactLandscape || applyCompactPortrait
+  const isDesktop = !isMobile && !isTouchTablet
   const [mobileMenuOpen, setMobileMenuOpen] = React.useState(false)
   const [isQuickScrolling, setIsQuickScrolling] = React.useState(false)
   const heroCopyRef = useRef(null)
@@ -84,8 +88,9 @@ export default function HeroUI({ scrollProgress = 0 }) {
   const isHeroVisible = isHeroActive && copyOpacity > 0.01
 
   const scrollRotationX = Math.min(25, scrollProgress * 140)
+  const desktopTranslate = isDesktop ? 'translateX(-10%) ' : ''
   const copyStyle = {
-    transform: `perspective(900px) rotateX(${scrollRotationX}deg) translateY(calc(var(--hero-text-shift-y, 0%) - ${scrollProgress * 54}px))`,
+    transform: `${desktopTranslate}perspective(900px) rotateX(${scrollRotationX}deg) translateY(calc(var(--hero-text-shift-y, 0%) - ${scrollProgress * 54}px))`,
     opacity: copyOpacity,
     pointerEvents: isHeroVisible && copyOpacity >= 0.08 ? 'auto' : 'none',
     visibility: isHeroVisible ? 'visible' : 'hidden',

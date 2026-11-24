@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef, useCallback, useMemo } from 'react'
 import gsap from 'gsap'
-import { PROJECTS_DATA, checkIsVideo, cleanAssetUrl } from '../data/projectsData'
+import { PROJECTS_DATA, BEHANCE_PROJECT, checkIsVideo, cleanAssetUrl } from '../data/projectsData'
 import ProjectPreview from './ProjectPreview'
 import TransformBoundingBox from './TransformBoundingBox'
 import { useIPadLandscape } from '../hooks/useIPadLandscape'
@@ -47,57 +47,8 @@ export function WorkBackdropHeading({ scrollProgress = 0 }) {
   const applyCompactLandscape = isIPadLandscape
   const isIPadPortrait = useIPadPortrait()
   const applyCompactPortrait = isIPadPortrait
-  const isWorkActive = scrollProgress >= 0.46 && scrollProgress <= 0.88
-  // Enters around 0.46, fully visible during Work [0.58, 0.74], fades out cleanly [0.74, 0.88]
-  let workT = 0
-  if (scrollProgress >= 0.46 && scrollProgress <= 0.88) {
-    if (scrollProgress < 0.58) {
-      workT = (scrollProgress - 0.46) / 0.12
-    } else if (scrollProgress <= 0.74) {
-      workT = 1
-    } else {
-      workT = 1 - (scrollProgress - 0.74) / 0.14
-    }
-  }
-  const translateY = (1 - workT) * 24
-
-  return (
-    <div
-      className="work-backdrop-layer"
-      style={{
-        display: (applyCompactLandscape || applyCompactPortrait) ? 'none' : (isWorkActive ? 'block' : 'none'),
-        opacity: workT,
-        transform: `translateY(${translateY}px)`,
-        pointerEvents: 'none',
-        zIndex: 1,
-        ...(applyCompactLandscape
-          ? {
-              position: 'absolute',
-              top: 'calc(50% - 215px)',
-              left: 0,
-              transform: `translateY(${translateY}px) translate(4.5rem, 1.5rem) scale(0.82)`,
-              transformOrigin: 'left center',
-            }
-          : {}),
-      }}
-      aria-hidden="true"
-    >
-      <h2
-        className="work-backdrop-heading sharp-isometric-shadow neon-long-shadow"
-        style={
-          isIPadLandscape
-            ? {
-                fontSize: 'clamp(3.2rem, 4.5vw, 4.0rem)',
-                lineHeight: 0.88,
-                letterSpacing: '0.04em',
-              }
-            : undefined
-        }
-      >
-        WORK
-      </h2>
-    </div>
-  )
+  // On Desktop, Tablet & Mobile, heading is unified inside the foreground content stage
+  return null
 }
 
 /**
@@ -631,8 +582,26 @@ export default function WorkUI({
       >
         {/* Desktop View: Preserved strictly for min-width: 1024px */}
         <div
-          className="work-composition-wrapper work-desktop-stage"
-          style={{ pointerEvents: isInteractive ? 'auto' : 'none' }}
+          className="work-desktop-stage"
+          style={{
+            pointerEvents: isInteractive ? 'auto' : 'none',
+            ...(applyCompactLandscape || applyCompactPortrait
+              ? {}
+              : {
+                  position: 'absolute',
+                  inset: 0,
+                  width: '100%',
+                  height: '100dvh',
+                  minHeight: '100vh',
+                  display: 'flex',
+                  flexDirection: 'column',
+                  justifyContent: 'center',
+                  alignItems: 'flex-start',
+                  paddingTop: 'var(--safe-top-clearance)',
+                  paddingBottom: 'var(--safe-bottom-clearance)',
+                  boxSizing: 'border-box',
+                }),
+          }}
         >
           {/* Main Content Stage: Left-anchored position, clear of the 3D character on the right */}
           <div
@@ -653,7 +622,23 @@ export default function WorkUI({
                     marginTop: 0,
                     transform: 'none',
                   }
-                : undefined
+                : {
+                    position: 'fixed',
+                    top: 'calc(50% + 10px)',
+                    left: 'var(--work-grid-left)',
+                    transform: 'translateY(-50%)',
+                    display: 'flex',
+                    flexDirection: 'column',
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    width: 'fit-content',
+                    maxHeight: 'calc(100dvh - 170px)',
+                    padding: 0,
+                    margin: 0,
+                    pointerEvents: 'none',
+                    boxSizing: 'border-box',
+                    zIndex: 30,
+                  }
             }
           >
             <div
@@ -693,7 +678,21 @@ export default function WorkUI({
                       padding: 0,
                       zIndex: 20,
                     }
-                  : undefined
+                  : {
+                      position: 'relative',
+                      top: 'auto',
+                      bottom: 'auto',
+                      display: 'flex',
+                      flexDirection: 'column',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      width: 'fit-content',
+                      height: 'auto',
+                      margin: '0 auto',
+                      padding: 0,
+                      transform: 'none',
+                      zIndex: 30,
+                    }
               }
             >
               {/* WORK heading: Horizontally centered relative to the single glass box below */}
@@ -970,7 +969,7 @@ export default function WorkUI({
                             padding: '2px',
                             boxSizing: 'border-box',
                           }
-                        : {}),
+                        : undefined),
                     }}
                     onScroll={handleGridScroll}
                     onWheel={handleGridWheel}

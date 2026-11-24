@@ -15,72 +15,8 @@ export function AboutBackdropHeading({ scrollProgress = 0 }) {
   const applyCompactLandscape = isIPadLandscape
   const isIPadPortrait = useIPadPortrait()
   const applyCompactPortrait = isIPadPortrait
-  // Enters around 0.14, full during About [0.26, 0.40], fades out cleanly [0.40, 0.54]
-  let aboutT = 0
-  if (scrollProgress >= 0.14 && scrollProgress <= 0.54) {
-    if (scrollProgress < 0.26) {
-      aboutT = (scrollProgress - 0.14) / 0.12
-    } else if (scrollProgress <= 0.40) {
-      aboutT = 1
-    } else {
-      aboutT = 1 - (scrollProgress - 0.40) / 0.14
-    }
-  }
-  const translateY = (1 - aboutT) * 24
-  const isAboutActive = scrollProgress >= 0.12 && scrollProgress <= 0.54
-  const isInteractive = isAboutActive && aboutT > 0.65
-  const isAboutVisible = isAboutActive && aboutT > 0.01
-
-  return (
-    <div
-      className="about-backdrop-layer md:text-center md:mx-auto"
-      style={{
-        display: (applyCompactLandscape || applyCompactPortrait) ? 'none' : (isAboutVisible ? 'block' : 'none'),
-        opacity: aboutT,
-        transform: `translateY(${translateY}px)`,
-        pointerEvents: isInteractive ? 'auto' : 'none',
-        visibility: isAboutVisible ? 'visible' : 'hidden',
-        zIndex: 1,
-        ...(applyCompactLandscape
-          ? {
-              position: 'absolute',
-              top: 'calc(50% - 215px)',
-              left: 0,
-              transform: `translateY(${translateY}px) translate(4.5rem, 1.5rem) scale(0.82)`,
-              transformOrigin: 'left center',
-              maxWidth: '520px',
-              width: '100%',
-              display: 'flex',
-              justifyContent: 'center',
-              textAlign: 'center',
-              margin: 0,
-              padding: 0,
-            }
-          : {}),
-      }}
-      aria-hidden={!isAboutActive}
-    >
-      <h2
-        className="about-backdrop-heading has-transform-box sharp-isometric-shadow neon-long-shadow md:text-center md:mx-auto"
-        style={
-          isIPadLandscape
-            ? {
-                fontSize: 'clamp(3.2rem, 4.5vw, 4.0rem)',
-                lineHeight: 0.88,
-                letterSpacing: '0.04em',
-                margin: 0,
-                padding: 0,
-              }
-            : {
-                marginBottom: '0.75rem',
-              }
-        }
-      >
-        ABOUT ME
-        <TransformBoundingBox />
-      </h2>
-    </div>
-  )
+  // On Desktop, Tablet & Mobile, heading is unified inside the foreground content column
+  return null
 }
 
 const SKILLS_DATA = [
@@ -387,27 +323,31 @@ export default function AboutUI({ scrollProgress = 0, activePage = 'hero' }) {
               : {}),
           }}
         >
-          {/* Inner Heading (ABOUT ME) when applyCompactLandscape or applyCompactPortrait is true */}
+          {/* Unified Heading (ABOUT ME) */}
           <h2
             className="about-backdrop-heading has-transform-box sharp-isometric-shadow neon-long-shadow"
             style={{
-              display: (applyCompactLandscape || applyCompactPortrait) ? 'block' : 'none',
+              display: (applyCompactLandscape || applyCompactPortrait) ? 'block' : 'inline-block',
               position: 'relative',
               top: 'auto',
               left: 'auto',
               transform: 'none',
               fontSize: applyCompactPortrait
                 ? 'clamp(5.5rem, 9vw, 8rem)'
-                : '5.6rem',
-              lineHeight: applyCompactPortrait ? 0.90 : 0.95,
+                : applyCompactLandscape
+                ? '5.6rem'
+                : undefined,
+              lineHeight: applyCompactPortrait ? 0.90 : 0.88,
               whiteSpace: 'nowrap',
               textAlign: 'center',
-              width: '100%',
-              margin: '0 auto 0.75rem auto',
+              width: (applyCompactLandscape || applyCompactPortrait) ? '100%' : 'fit-content',
+              maxWidth: '100%',
+              margin: '0 auto var(--desktop-heading-gap, 0.75rem) auto',
               paddingBottom: applyCompactPortrait ? 0 : '0.2rem',
               flexShrink: 0,
               zIndex: 25,
               letterSpacing: '0.04em',
+              boxSizing: 'border-box',
             }}
           >
             ABOUT ME
@@ -436,7 +376,7 @@ export default function AboutUI({ scrollProgress = 0, activePage = 'hero' }) {
                     boxSizing: 'border-box',
                   }
                 : {
-                    marginTop: '0.5rem',
+                    marginTop: '0px',
                   }),
             }}
           >
@@ -522,13 +462,17 @@ export default function AboutUI({ scrollProgress = 0, activePage = 'hero' }) {
                     </span>
                   </div>
 
-                  {/* b) Progress Bar Track: Thick capsule bar with sky-blue border */}
+                  {/* b) Progress Bar Track: Clean track without blue outline on desktop */}
                   <div
-                    className="skill-progress-track h-3 md:h-3.5 w-full bg-black/40 rounded-full border border-sky-400/80 p-[1.5px] overflow-hidden relative"
+                    className={`skill-progress-track h-3 md:h-3.5 w-full bg-black/40 rounded-full p-[1.5px] overflow-hidden relative ${(applyCompactLandscape || applyCompactPortrait) ? 'border border-sky-400/80' : ''}`}
                     style={{
                       width: '100%',
                       backgroundColor: 'rgba(0, 0, 0, 0.40)',
-                      border: '1.5px solid rgba(56, 189, 248, 0.80)',
+                      border: (applyCompactLandscape || applyCompactPortrait)
+                        ? '1.5px solid rgba(56, 189, 248, 0.80)'
+                        : 'none',
+                      outline: 'none',
+                      boxShadow: 'none',
                       borderRadius: '9999px',
                       padding: '1.5px',
                       overflow: 'hidden',

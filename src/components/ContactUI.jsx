@@ -16,111 +16,8 @@ export function ContactBackdropHeading({ scrollProgress = 0 }) {
   const applyCompactLandscape = isIPadLandscape
   const isIPadPortrait = useIPadPortrait()
   const applyCompactPortrait = isIPadPortrait
-  // Enters at 0.76, fully visible 0.88 - 1.00
-  let contactT = 0
-  if (scrollProgress >= 0.76) {
-    if (scrollProgress < 0.88) {
-      contactT = (scrollProgress - 0.76) / 0.12
-    } else {
-      contactT = 1
-    }
-  }
-  const translateY = (1 - contactT) * 24
-  const isContactActive = scrollProgress >= 0.74
-  const isInteractive = isContactActive && contactT > 0.65
-  const isContactVisible = isContactActive && contactT > 0.01
-
-  const headingRef = useRef(null)
-  const hasAnimatedRef = useRef(false)
-
-  const triggerHeadingAnimation = () => {
-    if (headingRef.current) {
-      gsap.fromTo(
-        headingRef.current,
-        { y: 60, scale: 0.9, opacity: 0 },
-        {
-          y: 0,
-          scale: 1,
-          opacity: 1,
-          duration: 0.9,
-          ease: 'expo.out',
-          clearProps: 'transform',
-        }
-      )
-    }
-  }
-
-  useEffect(() => {
-    if (isContactActive && !hasAnimatedRef.current) {
-      hasAnimatedRef.current = true
-      triggerHeadingAnimation()
-    } else if (scrollProgress < 0.70) {
-      hasAnimatedRef.current = false
-    }
-  }, [isContactActive, scrollProgress])
-
-  useEffect(() => {
-    const handleTransition = (e) => {
-      if (e.detail?.toIndex === 3) {
-        hasAnimatedRef.current = true
-        triggerHeadingAnimation()
-      }
-    }
-    window.addEventListener('sectiontransitionstart', handleTransition)
-    return () => window.removeEventListener('sectiontransitionstart', handleTransition)
-  }, [])
-
-  return (
-    <div
-      className="contact-backdrop-layer md:text-center md:mx-auto"
-      style={{
-        display: (applyCompactLandscape || applyCompactPortrait) ? 'none' : (isContactVisible ? 'block' : 'none'),
-        opacity: contactT,
-        transform: `translateY(${translateY}px)`,
-        pointerEvents: isInteractive ? 'auto' : 'none',
-        visibility: isContactVisible ? 'visible' : 'hidden',
-        zIndex: 1,
-        ...(applyCompactLandscape
-          ? {
-              position: 'absolute',
-              top: 'calc(50% - 215px)',
-              left: 0,
-              transform: `translateY(${translateY}px) translate(4.5rem, 1.5rem) scale(0.82)`,
-              transformOrigin: 'left center',
-              width: 'clamp(320px, 26vw, 400px)',
-              maxWidth: '400px',
-              display: 'flex',
-              justifyContent: 'center',
-              textAlign: 'center',
-              margin: 0,
-              padding: 0,
-            }
-          : {}),
-      }}
-      aria-hidden={!isContactActive}
-    >
-      <h2
-        ref={headingRef}
-        className="contact-backdrop-heading has-transform-box sharp-isometric-shadow neon-long-shadow md:text-center md:mx-auto"
-        style={
-          isIPadLandscape
-            ? {
-                fontSize: 'clamp(3.2rem, 4.5vw, 4.0rem)',
-                lineHeight: 0.88,
-                letterSpacing: '0.04em',
-                margin: 0,
-                padding: 0,
-              }
-            : {
-                marginBottom: '0.75rem',
-              }
-        }
-      >
-        LET'S TALK
-        <TransformBoundingBox />
-      </h2>
-    </div>
-  )
+  // On Desktop, Tablet & Mobile, heading is unified inside the foreground content block
+  return null
 }
 
 /**
@@ -377,28 +274,34 @@ export default function ContactUI({
                 : {}),
             }}
           >
-            {/* Inner Heading (LET'S TALK) when applyCompactLandscape or applyCompactPortrait is true */}
+            {/* Unified Heading (LET'S TALK) */}
             <h2
               className="contact-backdrop-heading has-transform-box sharp-isometric-shadow neon-long-shadow"
               style={{
-                display: (applyCompactLandscape || applyCompactPortrait) ? 'block' : 'none',
+                display: (applyCompactLandscape || applyCompactPortrait) ? 'block' : 'inline-block',
                 position: 'relative',
                 top: 'auto',
                 left: 'auto',
                 transform: 'none',
                 fontSize: applyCompactPortrait
                   ? 'clamp(5.5rem, 9vw, 8rem)'
-                  : '5.6rem',
-                lineHeight: applyCompactPortrait ? 0.90 : 0.95,
+                  : applyCompactLandscape
+                  ? '5.6rem'
+                  : undefined,
+                lineHeight: applyCompactPortrait ? 0.90 : 0.88,
                 whiteSpace: 'nowrap',
                 textAlign: 'center',
-                width: '100%',
-                margin: '0 auto 0.75rem auto',
+                width: (applyCompactLandscape || applyCompactPortrait) ? '100%' : 'fit-content',
+                maxWidth: '100%',
+                margin: '0 auto var(--desktop-heading-gap, 0.75rem) auto',
+                paddingTop: (applyCompactLandscape || applyCompactPortrait) ? undefined : '4px',
                 paddingBottom: applyCompactPortrait ? 0 : '0.2rem',
                 flexShrink: 0,
                 zIndex: 25,
                 letterSpacing: '0.04em',
                 alignSelf: 'center',
+                boxSizing: 'border-box',
+                overflow: 'visible',
               }}
             >
               LET&apos;S TALK
@@ -423,7 +326,7 @@ export default function ContactUI({
                       maxHeight: 'none',
                     }
                   : {
-                      marginTop: '0.5rem',
+                      marginTop: '0px',
                     }
               }
             >
